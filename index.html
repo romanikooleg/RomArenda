@@ -64,8 +64,8 @@
 let items = [];
 let cart = [];
 
-// URL вашей опубликованной CSV таблицы
-const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQf1xA9dYH8nX9lFhH6D-J4zIVi1uZ0JekjgDQTx0b_aTOxA/pub?output=csv";
+// Рабочая CSV ссылка твоей таблицы
+const csvUrl = "https://docs.google.com/spreadsheets/d/1DvUxIzOd4Eld-VmTkBR3y-XzZ0JekjgDQTx0b_aTOxA/gviz/tq?tqx=out:csv&sheet=1";
 
 Papa.parse(csvUrl, {
   download: true,
@@ -89,6 +89,7 @@ function renderItems(filterTag = "", search = "") {
   filtered.forEach(item => {
     const card = document.createElement('div');
     card.className = "bg-white p-4 rounded shadow flex flex-col transition hover:shadow-lg";
+    const safeName = item.Наименование.replace(/\s+/g,'');
     card.innerHTML = `
       <img src="${item.Фото}" alt="${item.Наименование}" class="h-32 object-contain mb-2">
       <h3 class="font-semibold">${item.Наименование}</h3>
@@ -101,13 +102,13 @@ function renderItems(filterTag = "", search = "") {
         <li>3 дня - ${item['Цена/3суток']}₽</li>
         <li>5 дней и больше - ${item['От 5 суток']}₽</li>
       </ul>
-      <select id="daysSelect-${item.Наименование.replace(/\s+/g,'')}" class="border rounded p-1 mt-1">
+      <select id="daysSelect-${safeName}" class="border rounded p-1 mt-1">
         <option value="Цена/Сутки">1 день</option>
         <option value="Цена/2суток">2 дня</option>
         <option value="Цена/3суток">3 дня</option>
         <option value="От 5 суток">5 дней и больше</option>
       </select>
-      <button onclick="addToCart(${JSON.stringify(item).replace(/"/g,'&quot;')}, 'daysSelect-${item.Наименование.replace(/\s+/g,'')}')" class="mt-2 bg-green-500 text-white py-1 px-2 rounded hover:bg-green-600 transition">Заказать</button>
+      <button onclick="addToCart(${JSON.stringify(item).replace(/"/g,'&quot;')}, 'daysSelect-${safeName}')" class="mt-2 bg-green-500 text-white py-1 px-2 rounded hover:bg-green-600 transition">Заказать</button>
     `;
     container.appendChild(card);
   });
@@ -206,4 +207,3 @@ function sendOrder() {
 </script>
 </body>
 </html>
-
