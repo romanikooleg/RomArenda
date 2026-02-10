@@ -64,16 +64,20 @@
 let items = [];
 let cart = [];
 
-// Загрузка CSV из Google Таблицы
+// Ссылка на CSV (убедись, что таблица опубликована как CSV)
 const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQf1xA9dYH8nX9lFhH6D-J4zIVi1uZ0JekjgDQTx0b_aTOxA/pub?output=csv";
 
+// Загрузка CSV
 Papa.parse(csvUrl, {
   download: true,
   header: true,
   complete: function(results) {
-    items = results.data.filter(i => i['Название']);
+    items = results.data.filter(i => i['Название'] && i['Название'].trim() !== "");
     renderTags();
     renderItems();
+  },
+  error: function(err) {
+    console.error("Ошибка загрузки CSV:", err);
   }
 });
 
@@ -94,17 +98,18 @@ function renderItems(filterTag = "", search = "") {
       <p class="text-sm text-gray-500">${item.Категория}</p>
       <p class="text-green-600 font-bold">${item.Вналичии === "Да" ? "В наличии" : "Нет в наличии"}</p>
       <p class="font-bold mt-1">₽${item.Цена}</p>
-      <button onclick="addToCart(${JSON.stringify(item).replace(/"/g, '&quot;')})" class="mt-2 bg-green-500 text-white py-1 px-2 rounded hover:bg-green-600 transition">Заказать в 1 клик</button>
+      <button onclick='addToCart(${JSON.stringify(item).replace(/'/g,"&#39;")})' class="mt-2 bg-green-500 text-white py-1 px-2 rounded hover:bg-green-600 transition">Заказать в 1 клик</button>
     `;
     container.appendChild(card);
   });
   lucide.replace();
 }
 
-// Теги категорий
+// Рендер тегов категорий
 function renderTags() {
   const container = document.getElementById('tagsContainer');
-  const categories = [...new Set(items.map(i => i.Категория))];
+  container.innerHTML = '';
+  const categories = [...new Set(items.map(i => i.Категория).filter(Boolean))];
   categories.forEach(cat => {
     const btn = document.createElement('button');
     btn.className = "bg-gray-200 px-3 py-1 rounded hover:bg-gray-300";
@@ -146,10 +151,16 @@ function removeFromCart(index) {
   renderCart();
 }
 
+// Открытие/закрытие корзины
 function toggleCart(forceOpen = false) {
   const modal = document.getElementById('cartModal');
-  if(forceOpen) modal.classList.add('flex'); modal.classList.remove('hidden');
-  else modal.classList.toggle('hidden'); modal.classList.toggle('flex');
+  if(forceOpen) {
+    modal.classList.add('flex');
+    modal.classList.remove('hidden');
+  } else {
+    modal.classList.toggle('hidden');
+    modal.classList.toggle('flex');
+  }
 }
 
 // Маска телефона
@@ -167,7 +178,7 @@ function toggleAddress(radio) {
   document.getElementById('addressField').classList.toggle('hidden', radio.value === "Самовывоз");
 }
 
-// Отправка в Telegram
+// Отправка заказа в Telegram
 function sendOrder() {
   if(!cart.length) { alert("Корзина пуста"); return; }
   const name = document.getElementById('clientName').value.trim();
@@ -183,12 +194,10 @@ function sendOrder() {
   if(delivery === "Доставка") message += `%0A🏠 АДРЕС: ${address}`;
   else message += `%0A📍 СКЛАД: ${address}`;
 
-  const telegramLink = `https://www.google.com/search?q=https://t.me/RomArend?text=${message}`;
+  const telegramLink = `https://t.me/RomArend?text=${message}`;
   window.open(telegramLink, '_blank');
 }
-
 </script>
 
 </body>
 </html>
-
