@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>РомАренда</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/lucide@latest/dist/lucide.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+<!-- Шапка -->
+<header class="bg-white shadow p-4 flex flex-col md:flex-row items-center justify-between">
+  <div class="flex items-center space-x-3 mb-2 md:mb-0">
+    <img src="Логотип.jpg" alt="Логотип" class="h-12 w-12 object-contain">
+    <span class="text-2xl font-bold">РомАренда</span>
+  </div>
+  <div class="text-center mb-2 md:mb-0">
+    <h1 class="text-xl font-semibold">Аренда строительного инструмента</h1>
+    <p class="text-sm text-gray-500">Профессиональное оборудование для ваших задач</p>
+  </div>
+  <div class="flex space-x-3">
+    <button onclick="window.location.href='tel:+79152772441'" class="bg-green-500 text-white px-4 py-2 rounded flex items-center space-x-1">
+      <i data-lucide="phone" class="w-5 h-5"></i><span>Позвонить</span>
+    </button>
+    <button onclick="toggleCart()" class="bg-blue-500 text-white px-4 py-2 rounded flex items-center space-x-1">
+      <i data-lucide="shopping-cart" class="w-5 h-5"></i><span>Корзина</span>
+    </button>
+  </div>
+</header>
+
+<!-- Фильтры и поиск -->
+<section class="p-4">
+  <input id="searchInput" type="text" placeholder="Поиск..." class="border rounded w-full px-3 py-2 mb-2" oninput="filterItems()">
+  <div id="tagsContainer" class="flex flex-wrap gap-2 mb-2"></div>
+</section>
+
+<!-- Карточки товаров -->
+<section id="itemsContainer" class="p-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"></section>
+
+<!-- Модальное окно корзины -->
+<div id="cartModal" class="fixed inset-0 bg-black bg-opacity-50 hidden justify-center items-center z-50">
+  <div class="bg-white w-full max-w-md p-6 rounded shadow-lg relative">
+    <button onclick="toggleCart()" class="absolute top-2 right-2 text-gray-500 hover:text-gray-800">
+      <i data-lucide="x" class="w-6 h-6"></i>
+    </button>
+    <h2 class="text-xl font-bold mb-4">Корзина</h2>
+    <div id="cartItems" class="space-y-2 max-h-64 overflow-y-auto"></div>
+    <div class="mt-4">
+      <input id="clientName" type="text" placeholder="Имя" class="border rounded w-full px-3 py-2 mb-2">
+      <input id="clientPhone" type="tel" placeholder="Телефон" class="border rounded w-full px-3 py-2 mb-2" onfocus="maskPhone(this)">
+      <div class="flex items-center mb-2">
+        <label class="mr-2"><input type="radio" name="delivery" value="Самовывоз" checked onchange="toggleAddress(this)"> Самовывоз</label>
+        <label><input type="radio" name="delivery" value="Доставка" onchange="toggleAddress(this)"> Доставка</label>
+      </div>
+      <input id="addressField" type="text" placeholder="Адрес" class="border rounded w-full px-3 py-2 mb-2 hidden">
+      <button onclick="sendOrder()" class="bg-blue-500 text-white w-full py-2 rounded mt-2">Отправить в Telegram</button>
+    </div>
+  </div>
+</div>
+
+<script>
+let items = [];
+let cart = [];
+
+// Загрузка CSV из Google Таблицы
+const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQf1xA9dYH8nX9lFhH6D-J4zIVi1uZ0JekjgDQTx0b_aTOxA/pub?output=csv";
+
+Papa.parse(csvUrl, {
+  download: true,
+  header: true,
+  complete: function(results) {
+    items = results.data.filter(i => i['Название']);
+    renderTags();
+    renderItems();
+  }
+});
+
+// Рендер карточек
+function renderItems(filterTag = "", search = "") {
+  const container = document.getElementById('itemsContainer');
+  container.innerHTML = '';
+  let filtered = items.filter(item => 
+    (!filterTag || item.Категория === filterTag) &&
+    (!search || item.Название.toLowerCase().includes(search.toLowerCase()))
+  );
+  filtered.forEach(item => {
+    const card = document.createElement('div');
+    card.className = "bg-white p-4 rounded shadow flex flex-col transition hover:shadow-lg";
+    card.innerHTML = `
+      <img src="${item.Фото}" alt="${item.Название}" class="h-32 object-contain mb-2">
+      <h3 class="font-semibold">${item.Название}</h3>
+      <p class="text-sm text-gray-500">${item.Категория}</p>
+      <p class="text-green-600 font-bold">${item.Вналичии === "Да" ? "В наличии" : "Нет в наличии"}</p>
+      <p class="font-bold mt-1">₽${item.Цена}</p>
+      <button onclick="addToCart(${JSON.stringify(item).replace(/"/g, '&quot;')})" class="mt-2 bg-green-500 text-white py-1 px-2 rounded hover:bg-green-600 transition">Заказать в 1 клик</button>
+    `;
+    container.appendChild(card);
+  });
+  lucide.replace();
+}
+
+// Теги категорий
+function renderTags() {
+  const container = document.getElementById('tagsContainer');
+  const categories = [...new Set(items.map(i => i.Категория))];
+  categories.forEach(cat => {
+    const btn = document.createElement('button');
+    btn.className = "bg-gray-200 px-3 py-1 rounded hover:bg-gray-300";
+    btn.innerText = cat;
+    btn.onclick = () => { renderItems(cat, document.getElementById('searchInput').value) };
+    container.appendChild(btn);
+  });
+}
+
+// Поиск
+function filterItems() {
+  renderItems("", document.getElementById('searchInput').value);
+}
+
+// Корзина
+function addToCart(item) {
+  cart.push(item);
+  renderCart();
+  toggleCart(true);
+}
+
+function renderCart() {
+  const container = document.getElementById('cartItems');
+  container.innerHTML = '';
+  cart.forEach((item, index) => {
+    const div = document.createElement('div');
+    div.className = "flex justify-between items-center bg-gray-100 p-2 rounded";
+    div.innerHTML = `
+      <span>${item.Название} - ₽${item.Цена}</span>
+      <button onclick="removeFromCart(${index})" class="text-red-500"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+    `;
+    container.appendChild(div);
+  });
+  lucide.replace();
+}
+
+function removeFromCart(index) {
+  cart.splice(index, 1);
+  renderCart();
+}
+
+function toggleCart(forceOpen = false) {
+  const modal = document.getElementById('cartModal');
+  if(forceOpen) modal.classList.add('flex'); modal.classList.remove('hidden');
+  else modal.classList.toggle('hidden'); modal.classList.toggle('flex');
+}
+
+// Маска телефона
+function maskPhone(input) {
+  if(!input.value) input.value = "+7 (";
+  input.addEventListener('input', () => {
+    let val = input.value.replace(/\D/g, '');
+    if(val.startsWith('7')) val = val.slice(1);
+    input.value = "+7 (" + (val.substring(0,3)) + (val.length>3?") "+val.substring(3,6):"") + (val.length>6?"-"+val.substring(6,8):"") + (val.length>8?"-"+val.substring(8,10):"");
+  });
+}
+
+// Переключение адреса
+function toggleAddress(radio) {
+  document.getElementById('addressField').classList.toggle('hidden', radio.value === "Самовывоз");
+}
+
+// Отправка в Telegram
+function sendOrder() {
+  if(!cart.length) { alert("Корзина пуста"); return; }
+  const name = document.getElementById('clientName').value.trim();
+  const phone = document.getElementById('clientPhone').value.trim();
+  if(!name || !phone) { alert("Заполните Имя и Телефон"); return; }
+
+  const delivery = document.querySelector('input[name="delivery"]:checked').value;
+  const address = delivery === "Доставка" ? document.getElementById('addressField').value.trim() : "Люблинская 7/2 к1";
+  const itemsText = cart.map(i => i.Название).join(", ");
+  const total = cart.reduce((sum, i) => sum + parseFloat(i.Цена), 0);
+
+  let message = `🛠 ЗАКАЗ: ${itemsText}%0A💰 СУММА: ${total}₽%0A👤 КЛИЕНТ: ${name}%0A📞 ТЕЛ: ${phone}%0A📍 ТИП: ${delivery}`;
+  if(delivery === "Доставка") message += `%0A🏠 АДРЕС: ${address}`;
+  else message += `%0A📍 СКЛАД: ${address}`;
+
+  const telegramLink = `https://www.google.com/search?q=https://t.me/RomArend?text=${message}`;
+  window.open(telegramLink, '_blank');
+}
+
+</script>
+
+</body>
+</html>
