@@ -64,20 +64,16 @@
 let items = [];
 let cart = [];
 
-// Ссылка на CSV (убедись, что таблица опубликована как CSV)
+// URL вашей опубликованной CSV таблицы
 const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQf1xA9dYH8nX9lFhH6D-J4zIVi1uZ0JekjgDQTx0b_aTOxA/pub?output=csv";
 
-// Загрузка CSV
 Papa.parse(csvUrl, {
   download: true,
   header: true,
   complete: function(results) {
-    items = results.data.filter(i => i['Название'] && i['Название'].trim() !== "");
+    items = results.data.filter(i => i['Наименование']);
     renderTags();
     renderItems();
-  },
-  error: function(err) {
-    console.error("Ошибка загрузки CSV:", err);
   }
 });
 
@@ -87,29 +83,41 @@ function renderItems(filterTag = "", search = "") {
   container.innerHTML = '';
   let filtered = items.filter(item => 
     (!filterTag || item.Категория === filterTag) &&
-    (!search || item.Название.toLowerCase().includes(search.toLowerCase()))
+    (!search || item.Наименование.toLowerCase().includes(search.toLowerCase()))
   );
+
   filtered.forEach(item => {
     const card = document.createElement('div');
     card.className = "bg-white p-4 rounded shadow flex flex-col transition hover:shadow-lg";
     card.innerHTML = `
-      <img src="${item.Фото}" alt="${item.Название}" class="h-32 object-contain mb-2">
-      <h3 class="font-semibold">${item.Название}</h3>
+      <img src="${item.Фото}" alt="${item.Наименование}" class="h-32 object-contain mb-2">
+      <h3 class="font-semibold">${item.Наименование}</h3>
       <p class="text-sm text-gray-500">${item.Категория}</p>
-      <p class="text-green-600 font-bold">${item.Вналичии === "Да" ? "В наличии" : "Нет в наличии"}</p>
-      <p class="font-bold mt-1">₽${item.Цена}</p>
-      <button onclick='addToCart(${JSON.stringify(item).replace(/'/g,"&#39;")})' class="mt-2 bg-green-500 text-white py-1 px-2 rounded hover:bg-green-600 transition">Заказать в 1 клик</button>
+      <p class="text-green-600 font-bold">${item['В наличии'] === "Да" ? "В наличии" : "Нет"}</p>
+      <p class="font-bold mt-1">Цены:</p>
+      <ul>
+        <li>1 день - ${item['Цена/Сутки']}₽</li>
+        <li>2 дня - ${item['Цена/2суток']}₽</li>
+        <li>3 дня - ${item['Цена/3суток']}₽</li>
+        <li>5 дней и больше - ${item['От 5 суток']}₽</li>
+      </ul>
+      <select id="daysSelect-${item.Наименование.replace(/\s+/g,'')}" class="border rounded p-1 mt-1">
+        <option value="Цена/Сутки">1 день</option>
+        <option value="Цена/2суток">2 дня</option>
+        <option value="Цена/3суток">3 дня</option>
+        <option value="От 5 суток">5 дней и больше</option>
+      </select>
+      <button onclick="addToCart(${JSON.stringify(item).replace(/"/g,'&quot;')}, 'daysSelect-${item.Наименование.replace(/\s+/g,'')}')" class="mt-2 bg-green-500 text-white py-1 px-2 rounded hover:bg-green-600 transition">Заказать</button>
     `;
     container.appendChild(card);
   });
   lucide.replace();
 }
 
-// Рендер тегов категорий
+// Теги категорий
 function renderTags() {
   const container = document.getElementById('tagsContainer');
-  container.innerHTML = '';
-  const categories = [...new Set(items.map(i => i.Категория).filter(Boolean))];
+  const categories = [...new Set(items.map(i => i.Категория))];
   categories.forEach(cat => {
     const btn = document.createElement('button');
     btn.className = "bg-gray-200 px-3 py-1 rounded hover:bg-gray-300";
@@ -125,8 +133,11 @@ function filterItems() {
 }
 
 // Корзина
-function addToCart(item) {
-  cart.push(item);
+function addToCart(item, selectId) {
+  const select = document.getElementById(selectId);
+  const priceColumn = select.value;
+  const price = parseFloat(item[priceColumn]);
+  cart.push({ ...item, price, days: priceColumn });
   renderCart();
   toggleCart(true);
 }
@@ -138,7 +149,7 @@ function renderCart() {
     const div = document.createElement('div');
     div.className = "flex justify-between items-center bg-gray-100 p-2 rounded";
     div.innerHTML = `
-      <span>${item.Название} - ₽${item.Цена}</span>
+      <span>${item.Наименование} (${item.days}) - ₽${item.price}</span>
       <button onclick="removeFromCart(${index})" class="text-red-500"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
     `;
     container.appendChild(div);
@@ -151,16 +162,10 @@ function removeFromCart(index) {
   renderCart();
 }
 
-// Открытие/закрытие корзины
 function toggleCart(forceOpen = false) {
   const modal = document.getElementById('cartModal');
-  if(forceOpen) {
-    modal.classList.add('flex');
-    modal.classList.remove('hidden');
-  } else {
-    modal.classList.toggle('hidden');
-    modal.classList.toggle('flex');
-  }
+  if(forceOpen) modal.classList.add('flex'); modal.classList.remove('hidden');
+  else modal.classList.toggle('hidden'); modal.classList.toggle('flex');
 }
 
 // Маска телефона
@@ -178,7 +183,7 @@ function toggleAddress(radio) {
   document.getElementById('addressField').classList.toggle('hidden', radio.value === "Самовывоз");
 }
 
-// Отправка заказа в Telegram
+// Отправка в Telegram
 function sendOrder() {
   if(!cart.length) { alert("Корзина пуста"); return; }
   const name = document.getElementById('clientName').value.trim();
@@ -187,17 +192,18 @@ function sendOrder() {
 
   const delivery = document.querySelector('input[name="delivery"]:checked').value;
   const address = delivery === "Доставка" ? document.getElementById('addressField').value.trim() : "Люблинская 7/2 к1";
-  const itemsText = cart.map(i => i.Название).join(", ");
-  const total = cart.reduce((sum, i) => sum + parseFloat(i.Цена), 0);
+  const itemsText = cart.map(i => `${i.Наименование} (${i.days})`).join(", ");
+  const total = cart.reduce((sum, i) => sum + parseFloat(i.price), 0);
 
   let message = `🛠 ЗАКАЗ: ${itemsText}%0A💰 СУММА: ${total}₽%0A👤 КЛИЕНТ: ${name}%0A📞 ТЕЛ: ${phone}%0A📍 ТИП: ${delivery}`;
   if(delivery === "Доставка") message += `%0A🏠 АДРЕС: ${address}`;
   else message += `%0A📍 СКЛАД: ${address}`;
 
-  const telegramLink = `https://t.me/RomArend?text=${message}`;
+  const telegramLink = `https://www.google.com/search?q=https://t.me/RomArend?text=${message}`;
   window.open(telegramLink, '_blank');
 }
-</script>
 
+</script>
 </body>
 </html>
+
