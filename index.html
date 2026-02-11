@@ -19,10 +19,6 @@
       text-align: center;
     }
 
-    header img {
-      height: 60px;
-    }
-
     select {
       padding: 10px;
       font-size: 16px;
@@ -99,14 +95,16 @@
 <div class="container" id="products"></div>
 
 <script>
-const sheetURL = https: "https://docs.google.com/spreadsheets/d/e/2PACX-1vTOtUQAhnBMNrCPWFj0u6cjQeb0qWscrovHdCWvuBQMaCCirL4ds3i6NtjqwMpcReNsrhrY_X8ICXOL/pub?gid=2109115062&single=true&output=csv";
+const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTOtUQAhnBMNrCPWFj0u6cjQeb0qWscrovHdCWvuBQMaCCirL4ds3i6NtjqwMpcReNsrhrY_X8ICXOL/pub?gid=2109115062&single=true&output=csv";
 
 fetch(sheetURL)
   .then(res => res.text())
   .then(csv => {
-    const rows = csv.split("\n").slice(1);
+    const rows = csv.split("\n").slice(1).filter(r => r.trim() !== "");
+
     const products = rows.map(row => {
       const cols = row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
+
       return {
         category: cols[0],
         name: cols[1],
@@ -166,6 +164,7 @@ fetch(sheetURL)
 
 </body>
 </html>
+
 
 
 
