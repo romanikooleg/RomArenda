@@ -14,7 +14,7 @@
   --white: #FFFFFF;
 }
 
-/* --- Общие стили --- */
+/* Общие стили */
 body {
   margin: 0;
   font-family: Arial, sans-serif;
@@ -23,7 +23,7 @@ body {
 }
 a { text-decoration: none; }
 
-/* --- Header --- */
+/* Header */
 header {
   background: var(--main-black);
   color: var(--white);
@@ -47,7 +47,7 @@ header img:hover { transform: scale(1.1); }
 header h1 { margin:0; }
 header p { margin:0; font-size:14px; }
 
-/* --- Контролы поиска/фильтры --- */
+/* Контролы фильтров */
 .controls {
   display: flex;
   flex-wrap: wrap;
@@ -70,7 +70,7 @@ input, select {
 input:focus, select:focus { border-color: var(--main-yellow); outline: none; }
 label { font-size: 14px; display:flex; align-items:center; gap:4px; }
 
-/* --- Карточки товаров --- */
+/* Карточки товаров */
 .container {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px,1fr));
@@ -119,7 +119,7 @@ label { font-size: 14px; display:flex; align-items:center; gap:4px; }
 .cartBtn { background: var(--main-yellow); color: var(--main-black); font-weight: bold; }
 .card a button { background: var(--main-yellow); font-weight: bold; }
 
-/* --- Подробное описание (разворачиваемое) --- */
+/* Подробное описание */
 .card-details {
   max-height: 0;
   overflow: hidden;
@@ -130,7 +130,7 @@ label { font-size: 14px; display:flex; align-items:center; gap:4px; }
   padding-top: 10px;
 }
 
-/* --- Корзина --- */
+/* Корзина */
 #cartBox {
   position: fixed;
   inset: 0;
@@ -153,7 +153,7 @@ label { font-size: 14px; display:flex; align-items:center; gap:4px; }
 #cart h3 { margin-top:0; }
 .cartItem { border-bottom: 1px solid #ddd; padding: 6px 0; font-size: 14px; }
 
-/* --- Фиксированная кнопка аренды --- */
+/* Sticky кнопка аренды */
 .sticky-order-btn {
   position: fixed;
   bottom: 15px;
@@ -170,10 +170,10 @@ label { font-size: 14px; display:flex; align-items:center; gap:4px; }
 }
 .sticky-order-btn:hover { transform: translateX(-50%) scale(1.05); }
 
-/* --- Анимация появления --- */
+/* Анимация появления */
 @keyframes fadeIn { from { opacity: 0; transform: translateY(10px);} to { opacity: 1; transform: translateY(0);} }
 
-/* --- Адаптив --- */
+/* Адаптив */
 @media(max-width:600px){
   .card img { height: 150px; }
   .controls { flex-direction: column; gap: 6px; }
@@ -221,13 +221,14 @@ label { font-size: 14px; display:flex; align-items:center; gap:4px; }
 <button class="sticky-order-btn" onclick="openCart()">Арендовать</button>
 
 <script>
+// URL вашей таблицы CSV
 const sheetURL="https://docs.google.com/spreadsheets/d/e/2PACX-1vTOtUQAhnBMNrCPWFj0u6cjQeb0qWscrovHdCWvuBQMaCCirL4ds3i6NtjqwMpcReNsrhrY_X8ICXOL/pub?gid=2109115062&single=true&output=csv";
 
 let products=[];
 let cart = JSON.parse(localStorage.getItem('cart')) || [];
 document.getElementById("cartCount").textContent = cart.length;
 
-// --- Загрузка данных ---
+// --- Загрузка CSV ---
 fetch(sheetURL)
 .then(r => r.text())
 .then(csv => {
@@ -237,13 +238,13 @@ fetch(sheetURL)
     return {
       cat: c[0],
       name: c[1],
-      desc: c[2]?.replaceAll('"',''),
-      img: c[3],
-      p1: Number(c[4]),
-      p2: Number(c[5]),
-      p3: Number(c[6]),
-      p5: Number(c[7]),
-      avail: c[8]
+      desc: c[2]?.replaceAll('"','') || 'Описание отсутствует',
+      img: c[3] || 'https://via.placeholder.com/300x180.png?text=Нет+изображения',
+      p1: Number(c[4]) || 0,
+      p2: Number(c[5]) || 0,
+      p3: Number(c[6]) || 0,
+      p5: Number(c[7]) || 0,
+      avail: c[8] || 'Нет'
     };
   });
   initFilters();
@@ -283,11 +284,11 @@ function applyFilters(){
   render(filtered);
 }
 
-// --- Рендер карточек с подробным описанием ---
+// --- Рендер карточек с раскрытием ---
 function render(list){
   const cont = document.getElementById("products");
   cont.innerHTML = "";
-  list.forEach((i,index) => {
+  list.forEach(i => {
     const badge = i.avail==="Да"?"yes":"no";
     const card = document.createElement("div");
     card.className="card";
@@ -301,9 +302,7 @@ function render(list){
         3 суток: ${i.p3} ₽<br>
         от 5 суток: ${i.p5} ₽
       </div>
-      <div class="card-details">
-        <p>${i.desc}</p>
-      </div>
+      <div class="card-details"><p>${i.desc}</p></div>
       <button onclick='addCart("${i.name}",${i.p1})'>В корзину</button>
       <a href="https://t.me/ArendMSK" target="_blank"><button>Арендовать</button></a>
     `;
@@ -353,6 +352,7 @@ function sendOrder(){
 
 </body>
 </html>
+
 
 
 
