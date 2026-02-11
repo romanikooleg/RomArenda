@@ -1,65 +1,172 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <title>РомАренда</title>
+  <meta charset="UTF-8" />
+  <title>РомАренда — аренда инструмента</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
   <style>
-    body { font-family: Arial, sans-serif; background:#f5f5f5; }
-    .card {
-      background:white;
-      border-radius:10px;
-      padding:15px;
-      margin:10px;
-      box-shadow:0 2px 5px rgba(0,0,0,.1);
-      width:300px;
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f2f2f2;
     }
-    img { width:100%; border-radius:10px; }
-    .grid { display:flex; flex-wrap:wrap; gap:15px; }
+
+    header {
+      background: #222;
+      color: white;
+      padding: 15px;
+      text-align: center;
+    }
+
+    header img {
+      height: 60px;
+    }
+
+    select {
+      padding: 10px;
+      font-size: 16px;
+      margin: 15px auto;
+      display: block;
+    }
+
+    .container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 15px;
+      padding: 15px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+
+    .card h3 {
+      margin: 10px 0 5px;
+    }
+
+    .card p {
+      font-size: 14px;
+      white-space: pre-line;
+    }
+
+    .price {
+      margin-top: auto;
+      font-weight: bold;
+    }
+
+    button {
+      margin-top: 10px;
+      padding: 10px;
+      background: #25D366;
+      border: none;
+      color: white;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #1da851;
+    }
   </style>
 </head>
+
 <body>
 
-<h1>РомАренда</h1>
-<div id="items" class="grid">Загрузка...</div>
+<header>
+  <h1>РомАренда</h1>
+  <p>Аренда инструмента</p>
+  <p>📞 +7 915 277 24 41</p>
+</header>
 
-<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+<select id="categoryFilter">
+  <option value="all">Все категории</option>
+</select>
+
+<div class="container" id="products"></div>
 
 <script>
-const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTOtUQAhnBMNrCPWFj0u6cjQeb0qWscrovHdCWvuBQMaCCirL4ds3i6NtjqwMpcReNsrhrY_X8ICXOL/pub?gid=2109115062&single=true&output=csv";
+const sheetURL = https://docs.google.com/spreadsheets/d/e/2PACX-1vTOtUQAhnBMNrCPWFj0u6cjQeb0qWscrovHdCWvuBQMaCCirL4ds3i6NtjqwMpcReNsrhrY_X8ICXOL/pub?gid=2109115062&single=true&output=csv;
 
-Papa.parse(csvUrl, {
-  download: true,
-  header: true,
-  encoding: "UTF-8",
-  complete: function(results) {
-    const data = results.data;
-    const container = document.getElementById("items");
-    container.innerHTML = "";
-
-    data.forEach(item => {
-      if (!item["Наименование"]) return;
-
-      const card = document.createElement("div");
-      card.className = "card";
-
-      card.innerHTML = `
-        <img src="${item["Фото"]}" alt="">
-        <h3>${item["Наименование"]}</h3>
-        <p>${item["Описание"]}</p>
-        <p><b>1 сутки:</b> ${item["Цена/Сутки"]} ₽</p>
-        <p><b>2 суток:</b> ${item["Цена/2суток"]} ₽</p>
-        <p><b>3 суток:</b> ${item["Цена/3суток"]} ₽</p>
-        <p><b>От 5 суток:</b> ${item["От 5 суток"]} ₽</p>
-        <p><b>В наличии:</b> ${item["В наличии"]}</p>
-      `;
-
-      container.appendChild(card);
+fetch(sheetURL)
+  .then(res => res.text())
+  .then(csv => {
+    const rows = csv.split("\n").slice(1);
+    const products = rows.map(row => {
+      const cols = row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
+      return {
+        category: cols[0],
+        name: cols[1],
+        description: cols[2]?.replaceAll('"',''),
+        image: cols[3],
+        price1: cols[4],
+        price2: cols[5],
+        price3: cols[6],
+        price5: cols[7],
+        available: cols[8]
+      };
     });
-  }
-});
+
+    const container = document.getElementById("products");
+    const filter = document.getElementById("categoryFilter");
+
+    const categories = [...new Set(products.map(p => p.category))];
+    categories.forEach(cat => {
+      const opt = document.createElement("option");
+      opt.value = cat;
+      opt.textContent = cat;
+      filter.appendChild(opt);
+    });
+
+    function render(list) {
+      container.innerHTML = "";
+      list.forEach(item => {
+        const card = document.createElement("div");
+        card.className = "card";
+
+        card.innerHTML = `
+          <img src="${item.image}" alt="">
+          <h3>${item.name}</h3>
+          <p>${item.description}</p>
+          <div class="price">
+            1 сутки: ${item.price1} ₽<br>
+            2 суток: ${item.price2} ₽<br>
+            3 суток: ${item.price3} ₽<br>
+            от 5 суток: ${item.price5} ₽
+          </div>
+          <a href="https://t.me/ArendMSK target="_blank">
+            <button>Арендовать</button>
+          </a>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    render(products);
+
+    filter.addEventListener("change", () => {
+      if (filter.value === "all") render(products);
+      else render(products.filter(p => p.category === filter.value));
+    });
+  });
 </script>
 
 </body>
 </html>
+
+
 
 
