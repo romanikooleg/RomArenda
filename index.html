@@ -65,7 +65,7 @@ let items = [];
 let cart = [];
 
 // Рабочая CSV ссылка твоей таблицы
-const csvUrl = "https://docs.google.com/spreadsheets/d/1DvUxIzOd4Eld-VmTkBR3y-XzZ0JekjgDQTx0b_aTOxA/gviz/tq?tqx=out:csv&sheet=1";
+const csvUrl = data.csv;
 
 Papa.parse(csvUrl, {
   download: true,
@@ -207,3 +207,4 @@ function sendOrder() {
 </script>
 </body>
 </html>
+
