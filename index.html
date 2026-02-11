@@ -1,169 +1,167 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <title>РомАренда — аренда инструмента</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta charset="UTF-8">
+<title>РомАренда — аренда инструмента</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f2f2f2;
-    }
-
-    header {
-      background: #222;
-      color: white;
-      padding: 15px;
-      text-align: center;
-    }
-
-    select {
-      padding: 10px;
-      font-size: 16px;
-      margin: 15px auto;
-      display: block;
-    }
-
-    .container {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 15px;
-      padding: 15px;
-    }
-
-    .card {
-      background: white;
-      border-radius: 12px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-      padding: 10px;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .card img {
-      width: 100%;
-      height: 200px;
-      object-fit: cover;
-      border-radius: 10px;
-    }
-
-    .card h3 {
-      margin: 10px 0 5px;
-    }
-
-    .card p {
-      font-size: 14px;
-      white-space: pre-line;
-    }
-
-    .price {
-      margin-top: auto;
-      font-weight: bold;
-    }
-
-    button {
-      margin-top: 10px;
-      padding: 10px;
-      background: #25D366;
-      border: none;
-      color: white;
-      border-radius: 8px;
-      font-size: 16px;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background: #1da851;
-    }
-  </style>
+<style>
+body{margin:0;font-family:Arial;background:#f3f3f3}
+header{background:#1f2937;color:#fff;padding:10px;text-align:center}
+header img{height:60px;margin-bottom:5px}
+.controls{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;padding:10px;background:#fff}
+input,select{padding:8px;border-radius:6px;border:1px solid #ccc}
+.container{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:15px;padding:15px}
+.card{background:#fff;border-radius:12px;box-shadow:0 2px 5px rgba(0,0,0,.2);padding:10px;display:flex;flex-direction:column}
+.card img{width:100%;height:180px;object-fit:cover;border-radius:10px}
+.badge{padding:4px 8px;border-radius:6px;color:#fff;font-size:12px;width:fit-content}
+.yes{background:#16a34a}
+.no{background:#dc2626}
+.price{font-weight:bold;margin-top:5px}
+button{margin-top:6px;padding:8px;border:none;border-radius:8px;background:#25D366;color:white;font-size:14px;cursor:pointer}
+.cartBtn{background:#2563eb}
+#cartBox{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;justify-content:center;align-items:center}
+#cart{background:#fff;padding:15px;border-radius:12px;width:90%;max-width:400px}
+.cartItem{border-bottom:1px solid #ddd;padding:5px}
+@media(max-width:600px){
+.card img{height:150px}
+}
+</style>
 </head>
 
 <body>
 
 <header>
-  <h1>РомАренда</h1>
-  <p>Аренда инструмента</p>
-  <p>📞 +7 915 277 24 41</p>
+<img src="logo.png" alt="РомАренда">
+<h1>РомАренда</h1>
+<p>📞 +7 915 277 24 41</p>
 </header>
 
-<select id="categoryFilter">
-  <option value="all">Все категории</option>
+<div class="controls">
+<input id="search" placeholder="Поиск по названию">
+<select id="categoryFilter"><option value="all">Все категории</option></select>
+<select id="sortPrice">
+<option value="none">Без сортировки</option>
+<option value="asc">Цена ↑</option>
+<option value="desc">Цена ↓</option>
 </select>
+<button class="cartBtn" onclick="openCart()">Корзина (<span id="cartCount">0</span>)</button>
+</div>
 
 <div class="container" id="products"></div>
 
+<div id="cartBox">
+<div id="cart">
+<h3>Корзина</h3>
+<div id="cartItems"></div>
+<input id="clientName" placeholder="Ваше имя"><br><br>
+<input id="clientPhone" placeholder="Телефон"><br><br>
+<button onclick="sendOrder()">Отправить в Telegram</button>
+<button onclick="closeCart()">Закрыть</button>
+</div>
+</div>
+
 <script>
-const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTOtUQAhnBMNrCPWFj0u6cjQeb0qWscrovHdCWvuBQMaCCirL4ds3i6NtjqwMpcReNsrhrY_X8ICXOL/pub?gid=2109115062&single=true&output=csv";
+const sheetURL="https://docs.google.com/spreadsheets/d/e/2PACX-1vTOtUQAhnBMNrCPWFj0u6cjQeb0qWscrovHdCWvuBQMaCCirL4ds3i6NtjqwMpcReNsrhrY_X8ICXOL/pub?gid=2109115062&single=true&output=csv";
 
-fetch(sheetURL)
-  .then(res => res.text())
-  .then(csv => {
-    const rows = csv.split("\n").slice(1).filter(r => r.trim() !== "");
+let products=[];
+let cart=[];
 
-    const products = rows.map(row => {
-      const cols = row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
+fetch(sheetURL).then(r=>r.text()).then(csv=>{
+const rows=csv.split("\n").slice(1).filter(r=>r.trim()!=="");
+products=rows.map(r=>{
+const c=r.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
+return{
+cat:c[0],
+name:c[1],
+desc:c[2]?.replaceAll('"',''),
+img:c[3],
+p1:Number(c[4]),
+p2:Number(c[5]),
+p3:Number(c[6]),
+p5:Number(c[7]),
+avail:c[8]
+};
+});
+initFilters();
+render(products);
+});
 
-      return {
-        category: cols[0],
-        name: cols[1],
-        description: cols[2]?.replaceAll('"',''),
-        image: cols[3],
-        price1: cols[4],
-        price2: cols[5],
-        price3: cols[6],
-        price5: cols[7],
-        available: cols[8]
-      };
-    });
+function initFilters(){
+const f=document.getElementById("categoryFilter");
+[...new Set(products.map(p=>p.cat))].forEach(cat=>{
+const o=document.createElement("option");
+o.value=cat;o.textContent=cat;f.appendChild(o);
+});
+}
 
-    const container = document.getElementById("products");
-    const filter = document.getElementById("categoryFilter");
+function render(list){
+const cont=document.getElementById("products");
+cont.innerHTML="";
+list.forEach(i=>{
+const badge=i.avail==="Да"?"yes":"no";
+const card=document.createElement("div");
+card.className="card";
+card.innerHTML=`
+<span class="badge ${badge}">${i.avail==="Да"?"В наличии":"Нет"}</span>
+<img src="${i.img}">
+<h3>${i.name}</h3>
+<p>${i.desc}</p>
+<div class="price">
+1 сутки: ${i.p1} ₽<br>
+2 суток: ${i.p2} ₽<br>
+3 суток: ${i.p3} ₽<br>
+от 5 суток: ${i.p5} ₽
+</div>
+<button onclick='addCart("${i.name}",${i.p1})'>В корзину</button>
+<a href="https://t.me/ArendMSK" target="_blank"><button>Арендовать</button></a>
+`;
+cont.appendChild(card);
+});
+}
 
-    const categories = [...new Set(products.map(p => p.category))];
-    categories.forEach(cat => {
-      const opt = document.createElement("option");
-      opt.value = cat;
-      opt.textContent = cat;
-      filter.appendChild(opt);
-    });
+function addCart(name,price){
+cart.push({name,price});
+document.getElementById("cartCount").textContent=cart.length;
+}
 
-    function render(list) {
-      container.innerHTML = "";
-      list.forEach(item => {
-        const card = document.createElement("div");
-        card.className = "card";
+function openCart(){
+document.getElementById("cartBox").style.display="flex";
+renderCart();
+}
+function closeCart(){
+document.getElementById("cartBox").style.display="none";
+}
 
-        card.innerHTML = `
-          <img src="${item.image}" alt="">
-          <h3>${item.name}</h3>
-          <p>${item.description}</p>
-          <div class="price">
-            1 сутки: ${item.price1} ₽<br>
-            2 суток: ${item.price2} ₽<br>
-            3 суток: ${item.price3} ₽<br>
-            от 5 суток: ${item.price5} ₽
-          </div>
-          <a href="https://t.me/ArendMSK" target="_blank">
-            <button>Арендовать</button>
-          </a>
-        `;
-        container.appendChild(card);
-      });
-    }
+function renderCart(){
+const box=document.getElementById("cartItems");
+box.innerHTML="";
+cart.forEach(i=>{
+const d=document.createElement("div");
+d.className="cartItem";
+d.textContent=i.name+" - "+i.price+" ₽";
+box.appendChild(d);
+});
+}
 
-    render(products);
+function sendOrder(){
+if(!cart.length) return alert("Корзина пуста");
+const name=document.getElementById("clientName").value;
+const phone=document.getElementById("clientPhone").value;
+if(!name||!phone) return alert("Введите имя и телефон");
 
-    filter.addEventListener("change", () => {
-      if (filter.value === "all") render(products);
-      else render(products.filter(p => p.category === filter.value));
-    });
-  });
+let text="ЗАКАЗ:%0A";
+cart.forEach(i=>text+=`${i.name} - ${i.price}₽%0A`);
+text+=`Имя: ${name}%0AТелефон: ${phone}`;
+
+window.open("https://t.me/ArendMSK?text="+text,"_blank");
+}
 </script>
 
 </body>
 </html>
+
+
 
 
 
