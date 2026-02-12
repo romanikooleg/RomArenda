@@ -6,253 +6,301 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-:root {
-  --main-yellow: #FFC107;
-  --main-black: #1F1F1F;
-  --light-gray: #F3F3F3;
-  --white: #FFFFFF;
+:root{
+  --yellow:#FFC107;
+  --black:#111;
+  --gray:#f2f2f2;
 }
 
-/* Общие стили */
-body { margin:0; font-family: Arial, sans-serif; background: var(--light-gray); color: var(--main-black);}
-a{text-decoration:none;}
-header {background: var(--main-black); color: var(--white); padding:15px 10px; text-align:center;}
-header .logo-container{display:flex; align-items:center; justify-content:center; gap:12px; flex-wrap:wrap;}
-header img{height:60px; border-radius:8px; object-fit:contain; transition:0.3s;}
-header img:hover{transform:scale(1.1);}
-header h1, header p{margin:0;}
-header p{font-size:14px;}
+body{
+  margin:0;
+  font-family:Segoe UI,Arial;
+  background:var(--gray);
+  color:#000;
+}
 
-/* Контролы фильтров */
-.controls {display:flex; flex-wrap:wrap; gap:8px; justify-content:center; padding:12px; background: var(--white); box-shadow:0 2px 4px rgba(0,0,0,0.1); position:sticky; top:0; z-index:200;}
-input, select {padding:8px; border-radius:6px; border:1px solid #ccc; font-size:14px; transition:0.2s;}
-input:focus, select:focus{border-color:var(--main-yellow); outline:none;}
-label {font-size:14px; display:flex; align-items:center; gap:4px;}
+header{
+  background:var(--black);
+  color:var(--yellow);
+  padding:12px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  flex-wrap:wrap;
+}
 
-/* Карточки товаров */
-.container {display:grid; grid-template-columns: repeat(auto-fill,minmax(260px,1fr)); gap:20px; padding:20px;}
-.card {background: var(--white); border-radius:12px; box-shadow:0 2px 5px rgba(0,0,0,0.15); padding:10px; display:flex; flex-direction:column; transition:transform 0.3s, box-shadow 0.3s; cursor:pointer; overflow:hidden; opacity:0; animation:fadeIn 0.5s forwards;}
-.card:hover{transform:translateY(-5px); box-shadow:0 8px 15px rgba(0,0,0,0.2);}
-.card img{width:100%; height:180px; object-fit:cover; border-radius:10px; transition:0.3s;}
-.card img:hover{transform:scale(1.05);}
-.badge {padding:4px 8px; border-radius:6px; color:var(--main-black); font-size:12px; width:fit-content; margin-bottom:5px; font-weight:bold;}
-.yes {background: var(--main-yellow);}
-.no {background:#dc2626;}
-.price {font-weight:bold; margin-top:5px;}
-.card button {margin-top:6px; color:var(--main-black); padding:8px; border:none; border-radius:8px; font-size:14px; cursor:pointer; transition:0.3s;}
-.card button:hover{transform:scale(1.05); box-shadow:0 4px 10px rgba(0,0,0,0.25);}
-.cartBtn{background:var(--main-yellow); color:var(--main-black); font-weight:bold;}
-.card a button{background:var(--main-yellow); font-weight:bold;}
+header img{
+  height:55px;
+  border-radius:10px;
+}
 
-/* Подробное описание */
-.card-details {max-height:0; overflow:hidden; transition:max-height 0.5s ease, padding 0.5s ease;}
-.card.open .card-details{max-height:200px; padding-top:10px;}
+header h1{margin:0;font-size:22px;}
+header a{color:var(--yellow);text-decoration:none;font-weight:bold;}
 
-/* Корзина */
-#cartBox {position:fixed; inset:0; background:rgba(0,0,0,0.6); display:none; justify-content:center; align-items:center; z-index:999;}
-#cart {background:var(--white); padding:20px; border-radius:12px; width:90%; max-width:400px; max-height:90%; overflow-y:auto; box-shadow:0 4px 15px rgba(0,0,0,0.25);}
-#cart h3{margin-top:0;}
-.cartItem{border-bottom:1px solid #ddd; padding:6px 0; font-size:14px;}
+.controls{
+  background:#fff;
+  padding:10px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  position:sticky;
+  top:0;
+  z-index:100;
+  box-shadow:0 2px 6px rgba(0,0,0,.2);
+}
 
-/* Sticky кнопка аренды */
-.sticky-order-btn{position:fixed; bottom:15px; left:50%; transform:translateX(-50%); background:var(--main-yellow); padding:12px 20px; border-radius:8px; font-weight:bold; z-index:300; cursor:pointer; box-shadow:0 4px 10px rgba(0,0,0,0.25); transition:0.3s;}
-.sticky-order-btn:hover{transform:translateX(-50%) scale(1.05);}
+input,select{
+  padding:8px;
+  border-radius:8px;
+  border:1px solid #ccc;
+  font-size:14px;
+}
 
-/* Анимация появления */
-@keyframes fadeIn{from{opacity:0; transform:translateY(10px);} to{opacity:1; transform:translateY(0);}}
+button{
+  background:var(--yellow);
+  border:none;
+  padding:10px;
+  border-radius:10px;
+  font-weight:bold;
+  cursor:pointer;
+}
 
-/* Адаптив */
-@media(max-width:600px){.card img{height:150px;} .controls{flex-direction:column; gap:6px;}}
+button:hover{opacity:0.85;}
+
+.how{
+  display:flex;
+  justify-content:center;
+  gap:15px;
+  padding:15px;
+}
+
+.how div{
+  background:#222;
+  color:#fff;
+  padding:12px;
+  border-radius:12px;
+  text-align:center;
+  min-width:120px;
+}
+
+.how span{
+  background:var(--yellow);
+  color:#000;
+  border-radius:50%;
+  padding:4px 9px;
+  font-weight:bold;
+}
+
+.container{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+  gap:15px;
+  padding:15px;
+}
+
+.card{
+  background:#1b1b1b;
+  color:#fff;
+  border-radius:16px;
+  padding:12px;
+  box-shadow:0 4px 12px rgba(0,0,0,.3);
+  transition:.2s;
+  cursor:pointer;
+}
+
+.card:hover{transform:translateY(-4px);}
+
+.card img{
+  width:100%;
+  height:180px;
+  object-fit:contain;
+  background:#fff;
+  border-radius:12px;
+}
+
+.price{
+  color:var(--yellow);
+  font-size:18px;
+  margin:5px 0;
+}
+
+.badge{
+  background:var(--yellow);
+  color:#000;
+  padding:3px 8px;
+  border-radius:8px;
+  font-size:12px;
+  display:inline-block;
+}
+
+.no{background:#e53935;color:#fff;}
+
+.details{
+  max-height:0;
+  overflow:hidden;
+  transition:max-height .4s ease;
+}
+
+.card.open .details{max-height:200px;}
+
+.trust{
+  display:flex;
+  justify-content:center;
+  gap:15px;
+  padding:20px;
+}
+
+.trust div{
+  background:#222;
+  color:#fff;
+  padding:12px;
+  border-radius:12px;
+}
+
+.fixed{
+  position:fixed;
+  bottom:15px;
+  right:15px;
+  background:var(--yellow);
+  padding:12px 16px;
+  border-radius:20px;
+  font-weight:bold;
+  box-shadow:0 4px 10px rgba(0,0,0,.4);
+}
+
+@media(max-width:600px){
+  .how{flex-direction:column;}
+}
 </style>
 </head>
 <body>
 
 <header>
-  <div class="logo-container">
-    <img src="logo.png" alt="РомАренда">
-    <div>
-      <h1>РомАренда</h1>
-      <p>📞 +7 915 277 24 41</p>
-    </div>
-  </div>
+<img src="logo.png">
+<div>
+<h1>РомАренда</h1>
+<a href="tel:+79152772441">📞 +7 915 277 24 41</a>
+</div>
 </header>
 
 <div class="controls">
-  <input id="search" placeholder="Поиск по названию">
-  <select id="categoryFilter"><option value="all">Все категории</option></select>
-  <label><input type="checkbox" id="availableOnly"> В наличии</label>
-  <select id="sortPrice">
-    <option value="none">Без сортировки</option>
-    <option value="asc">Цена ↑</option>
-    <option value="desc">Цена ↓</option>
-  </select>
-  <button class="cartBtn" onclick="openCart()">Корзина (<span id="cartCount">0</span>)</button>
+<input id="search" placeholder="🔍 Найти инструмент">
+<select id="categoryFilter"><option value="all">Все категории</option></select>
+<label><input type="checkbox" id="availableOnly"> В наличии</label>
 </div>
+
+<section class="how">
+<div><span>1</span><p>Выберите инструмент</p></div>
+<div><span>2</span><p>Нажмите «Заказать»</p></div>
+<div><span>3</span><p>Мы свяжемся с вами</p></div>
+</section>
 
 <div class="container" id="products"></div>
 
-<div id="cartBox">
-  <div id="cart">
-    <h3>Корзина</h3>
-    <div id="cartItems"></div>
-    <input id="clientName" placeholder="Ваше имя"><br><br>
-    <input id="clientPhone" placeholder="Телефон"><br><br>
-    <button onclick="sendOrder()">Отправить в Telegram</button>
-    <button onclick="closeCart()">Закрыть</button>
-  </div>
-</div>
+<section class="trust">
+<div>✔ Работаем без выходных</div>
+<div>✔ Проверенный инструмент</div>
+<div>✔ Быстрый ответ</div>
+</section>
 
-<button class="sticky-order-btn" onclick="openCart()">Арендовать</button>
+<div class="fixed" onclick="openMaxOrder()">🟡 Заказать в МАКС</div>
 
 <script>
-// URL вашей таблицы CSV
-const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTOtUQAhnBMNrCPWFj0u6cjQeb0qWscrovHdCWvuBQMaCCirL4ds3i6NtjqwMpcReNsrhrY_X8ICXOL/pub?gid=2109115062&single=true&output=csv";
+const sheetURL = "ВСТАВЬ_СЮДА_ССЫЛКУ_CSV";
 
-let products = [];
-let cart = JSON.parse(localStorage.getItem('cart')) || [];
-document.getElementById("cartCount").textContent = cart.length;
+let products=[];
 
-// --- Загрузка CSV ---
 fetch(sheetURL)
-  .then(r => r.text())
-  .then(csv => {
-    const rows = csv.split("\n").slice(1)
-      .map(r => r.trim())
-      .filter(r => r !== "");
+.then(r=>r.text())
+.then(csv=>{
+  const rows = csv.split("\n").slice(1);
+  products = rows.map(r=>{
+    const c = r.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
 
-    const tempProducts = rows.map(r => {
-      const c = r.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
-
-      if(!c[0] || !c[1]) return null; // игнорируем строки без категории или названия
-
-      return {
-        cat: c[0].trim(),
-        name: c[1].trim(),
-        desc: c[2] ? c[2].replace(/"/g, '').replace(/\n/g, '|') : 'Описание отсутствует',
-        img: c[3] ? c[3].trim() : 'https://via.placeholder.com/300x180.png?text=Нет+изображения',
-        p1: c[4] ? Number(c[4]) : 0,
-        p2: c[5] ? Number(c[5]) : 0,
-        p3: c[6] ? Number(c[6]) : 0,
-        p5: c[7] ? Number(c[7]) : 0,
-        avail: c[8] ? c[8].trim().replace(/"/g,'').toLowerCase() === "да" : false
-      };
-    }).filter(p => p !== null);
-
-    // --- убираем дубли по названию ---
-    const seen = new Set();
-    products = tempProducts.filter(p => {
-      const key = p.name.toLowerCase();
-      if(seen.has(key)) return false;
-      seen.add(key);
-      return true;
-    });
-
-    initFilters();
-    applyFilters();
+    return {
+      id:c[0],
+      cat:c[1],
+      name:c[2],
+      desc:c[3]?.replace(/"/g,'') || '',
+      img:c[4] || 'https://via.placeholder.com/300x200?text=Нет+фото',
+      price:c[5],
+      avail:c[6]?.toLowerCase()=="да"
+    }
   });
 
-// --- Фильтры ---
-function initFilters() {
-  const f = document.getElementById("categoryFilter");
-  [...new Set(products.map(p => p.cat))].forEach(cat => {
-    const o = document.createElement("option");
-    o.value = cat;
-    o.textContent = cat;
+  initFilters();
+  render(products);
+});
+
+function initFilters(){
+  const f=document.getElementById("categoryFilter");
+  [...new Set(products.map(p=>p.cat))].forEach(c=>{
+    const o=document.createElement("option");
+    o.value=c;o.textContent=c;
     f.appendChild(o);
   });
 }
 
-document.getElementById("search").addEventListener("input", applyFilters);
-document.getElementById("categoryFilter").addEventListener("change", applyFilters);
-document.getElementById("sortPrice").addEventListener("change", applyFilters);
-document.getElementById("availableOnly").addEventListener("change", applyFilters);
+document.getElementById("search").oninput=applyFilters;
+document.getElementById("categoryFilter").onchange=applyFilters;
+document.getElementById("availableOnly").onchange=applyFilters;
 
-function applyFilters() {
-  let filtered = [...products];
-  const search = document.getElementById("search").value.toLowerCase();
-  const cat = document.getElementById("categoryFilter").value;
-  const sort = document.getElementById("sortPrice").value;
-  const available = document.getElementById("availableOnly").checked;
+function applyFilters(){
+  let list=[...products];
+  const s=document.getElementById("search").value.toLowerCase();
+  const c=document.getElementById("categoryFilter").value;
+  const a=document.getElementById("availableOnly").checked;
 
-  if(cat !== "all") filtered = filtered.filter(p => p.cat === cat);
-  if(search) filtered = filtered.filter(p => p.name.toLowerCase().includes(search));
-  if(available) filtered = filtered.filter(p => p.avail);
+  if(s) list=list.filter(p=>p.name.toLowerCase().includes(s));
+  if(c!="all") list=list.filter(p=>p.cat==c);
+  if(a) list=list.filter(p=>p.avail);
 
-  if(sort === "asc") filtered.sort((a,b) => a.p1 - b.p1);
-  if(sort === "desc") filtered.sort((a,b) => b.p1 - a.p1);
-
-  render(filtered);
+  render(list);
 }
 
-// --- Рендер карточек ---
-function render(list) {
-  const cont = document.getElementById("products");
-  cont.innerHTML = "";
-  list.forEach(i => {
-    const badgeClass = i.avail ? "yes" : "no";
-    const badgeText = i.avail ? "В наличии" : "Нет";
-    const card = document.createElement("div");
-    card.className = "card";
-    card.innerHTML = `
-      <span class="badge ${badgeClass}">${badgeText}</span>
-      <img src="${i.img}" alt="${i.name}">
-      <h3>${i.name}</h3>
-      <div class="price">
-        1 сутки: ${i.p1} ₽<br>
-        2 суток: ${i.p2} ₽<br>
-        3 суток: ${i.p3} ₽<br>
-        от 5 суток: ${i.p5} ₽
-      </div>
-      <div class="card-details"><p>${i.desc}</p></div>
-      <button onclick='addCart("${i.name}",${i.p1})'>В корзину</button>
-      <a href="https://t.me/ArendMSK" target="_blank"><button>Арендовать</button></a>
+function render(list){
+  const cont=document.getElementById("products");
+  cont.innerHTML="";
+  list.forEach(p=>{
+    const card=document.createElement("div");
+    card.className="card";
+    card.innerHTML=`
+      <span class="badge ${p.avail?'':'no'}">${p.avail?'В наличии':'Нет'}</span>
+      <img src="${p.img}" onerror="this.src='https://via.placeholder.com/300x200?text=Нет+фото'">
+      <h3>${p.name}</h3>
+      <div class="price">от ${p.price} ₽ / сутки</div>
+      <button onclick="sendToMax('${p.id}','${p.name}','${p.price}')">🟡 Заказать</button>
+      <div class="details"><p>${p.desc}</p></div>
     `;
-    card.addEventListener("click", function(e){
-      if(!e.target.closest("button") && !e.target.closest("a")) card.classList.toggle("open");
-    });
+    card.onclick=e=>{
+      if(!e.target.closest("button")) card.classList.toggle("open");
+    }
     cont.appendChild(card);
   });
 }
 
-// --- Корзина ---
-function addCart(name, price) {
-  cart.push({name, price});
-  localStorage.setItem('cart', JSON.stringify(cart));
-  document.getElementById("cartCount").textContent = cart.length;
-}
-function openCart() {document.getElementById("cartBox").style.display="flex"; renderCart();}
-function closeCart() {document.getElementById("cartBox").style.display="none";}
-function renderCart() {
-  const box = document.getElementById("cartItems");
-  box.innerHTML = "";
-  cart.forEach(i => {
-    const d = document.createElement("div");
-    d.className = "cartItem";
-    d.textContent = i.name + " - " + i.price + " ₽";
-    box.appendChild(d);
-  });
+// --- MAX messenger ---
+function sendToMax(id,name,price){
+  const data={
+    id:id,
+    name:name,
+    price:price
+  };
+
+  if(window.MaxApp){
+    MaxApp.sendData(JSON.stringify(data));
+  } else {
+    alert("МАКС не найден. Открывайте сайт из приложения МАКС.");
+  }
 }
 
-// --- Отправка заказа ---
-function sendOrder() {
-  if(!cart.length) return alert("Корзина пуста");
-  const name = document.getElementById("clientName").value.trim();
-  const phone = document.getElementById("clientPhone").value.trim();
-  if(!name || !phone) return alert("Введите имя и телефон");
-  let text = "ЗАКАЗ:%0A";
-  cart.forEach(i => text+=`${i.name} - ${i.price}₽%0A`);
-  text += `Имя: ${name}%0AТелефон: ${phone}`;
-  window.open("https://t.me/ArendMSK?text="+text,"_blank");
+function openMaxOrder(){
+  alert("Выберите инструмент и нажмите Заказать");
 }
 </script>
 
 </body>
 </html>
-
-
-
-
-
 
 
 
