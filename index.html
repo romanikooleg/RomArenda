@@ -3,307 +3,228 @@
 <head>
 <meta charset="UTF-8">
 <title>РомАренда — аренда инструмента</title>
+
+<meta name="description" content="РомАренда — аренда строительного инструмента. Быстрый заказ, честные цены, удобный каталог.">
+<meta name="keywords" content="аренда инструмента, прокат инструмента, РомАренда">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#FFC107">
+
 <style>
-:root{
-  --yellow:#FFC107;
-  --black:#111;
-  --gray:#f2f2f2;
+:root {
+--yellow:#FFC107;
+--black:#1F1F1F;
+--white:#fff;
+--gray:#f3f3f3;
 }
 
-body{
-  margin:0;
-  font-family:Segoe UI,Arial;
-  background:var(--gray);
-  color:#000;
-}
+body{margin:0;font-family:Arial;background:var(--gray);}
+header{background:var(--black);padding:12px 20px;}
+.header-inner{display:flex;justify-content:space-between;align-items:center;max-width:1200px;margin:auto;}
+.brand{display:flex;align-items:center;gap:10px;color:var(--yellow);}
+.brand img{height:55px;border-radius:8px;}
+.phone{background:var(--yellow);padding:10px 16px;border-radius:10px;font-weight:bold;}
 
-header{
-  background:var(--black);
-  color:var(--yellow);
-  padding:12px;
-  display:flex;
-  align-items:center;
-  gap:12px;
-  flex-wrap:wrap;
-}
+.controls{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;padding:10px;background:#fff;position:sticky;top:0;z-index:10;}
 
-header img{
-  height:55px;
-  border-radius:10px;
-}
-
-header h1{margin:0;font-size:22px;}
-header a{color:var(--yellow);text-decoration:none;font-weight:bold;}
-
-.controls{
-  background:#fff;
-  padding:10px;
-  display:flex;
-  flex-wrap:wrap;
-  gap:8px;
-  position:sticky;
-  top:0;
-  z-index:100;
-  box-shadow:0 2px 6px rgba(0,0,0,.2);
-}
-
-input,select{
-  padding:8px;
-  border-radius:8px;
-  border:1px solid #ccc;
-  font-size:14px;
-}
-
-button{
-  background:var(--yellow);
-  border:none;
-  padding:10px;
-  border-radius:10px;
-  font-weight:bold;
-  cursor:pointer;
-}
-
-button:hover{opacity:0.85;}
-
-.how{
-  display:flex;
-  justify-content:center;
-  gap:15px;
-  padding:15px;
-}
-
-.how div{
-  background:#222;
-  color:#fff;
-  padding:12px;
-  border-radius:12px;
-  text-align:center;
-  min-width:120px;
-}
-
-.how span{
-  background:var(--yellow);
-  color:#000;
-  border-radius:50%;
-  padding:4px 9px;
-  font-weight:bold;
-}
-
-.container{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
-  gap:15px;
-  padding:15px;
-}
+.container{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px;padding:20px;}
 
 .card{
-  background:#1b1b1b;
-  color:#fff;
-  border-radius:16px;
-  padding:12px;
-  box-shadow:0 4px 12px rgba(0,0,0,.3);
-  transition:.2s;
-  cursor:pointer;
+background:#fff;border-radius:12px;padding:10px;
+box-shadow:0 2px 6px rgba(0,0,0,.15);
+transition:.3s;
+animation:fade .4s;
+cursor:pointer;
+}
+.card:hover{transform:scale(1.03);}
+.card img{width:100%;height:170px;object-fit:cover;border-radius:10px;}
+
+.badge{padding:4px 8px;border-radius:6px;font-size:12px;font-weight:bold;}
+.yes{background:var(--yellow);}
+.no{background:#dc2626;color:#fff;}
+
+button{
+background:var(--yellow);
+border:none;
+padding:10px;
+border-radius:8px;
+font-weight:bold;
+cursor:pointer;
+transition:.2s;
+}
+button:hover{transform:scale(1.05);}
+
+@keyframes fade{
+from{opacity:0;transform:translateY(10px);}
+to{opacity:1;transform:translateY(0);}
 }
 
-.card:hover{transform:translateY(-4px);}
-
-.card img{
-  width:100%;
-  height:180px;
-  object-fit:contain;
-  background:#fff;
-  border-radius:12px;
+/* MODAL */
+#modal{
+position:fixed;inset:0;
+background:rgba(0,0,0,.6);
+display:none;
+justify-content:center;
+align-items:center;
+z-index:999;
+}
+.modal-card{
+background:#fff;
+border-radius:12px;
+max-width:400px;
+width:90%;
+padding:15px;
+animation:zoom .3s;
+}
+@keyframes zoom{
+from{transform:scale(.7);}
+to{transform:scale(1);}
 }
 
-.price{
-  color:var(--yellow);
-  font-size:18px;
-  margin:5px 0;
+/* Quick order */
+.quick{
+margin-top:10px;
+display:flex;
+gap:8px;
 }
 
-.badge{
-  background:var(--yellow);
-  color:#000;
-  padding:3px 8px;
-  border-radius:8px;
-  font-size:12px;
-  display:inline-block;
-}
-
-.no{background:#e53935;color:#fff;}
-
-.details{
-  max-height:0;
-  overflow:hidden;
-  transition:max-height .4s ease;
-}
-
-.card.open .details{max-height:200px;}
-
-.trust{
-  display:flex;
-  justify-content:center;
-  gap:15px;
-  padding:20px;
-}
-
-.trust div{
-  background:#222;
-  color:#fff;
-  padding:12px;
-  border-radius:12px;
-}
-
-.fixed{
-  position:fixed;
-  bottom:15px;
-  right:15px;
-  background:var(--yellow);
-  padding:12px 16px;
-  border-radius:20px;
-  font-weight:bold;
-  box-shadow:0 4px 10px rgba(0,0,0,.4);
-}
-
-@media(max-width:600px){
-  .how{flex-direction:column;}
+.install{
+position:fixed;
+bottom:15px;
+right:15px;
+background:#000;
+color:#fff;
+padding:10px 14px;
+border-radius:10px;
+display:none;
 }
 </style>
 </head>
 <body>
 
 <header>
+<div class="header-inner">
+<div class="brand">
 <img src="logo.png">
-<div>
-<h1>РомАренда</h1>
-<a href="tel:+79152772441">📞 +7 915 277 24 41</a>
+<h2>РомАренда</h2>
+</div>
+<div class="phone">📞 +7 915 277 24 41</div>
 </div>
 </header>
 
 <div class="controls">
-<input id="search" placeholder="🔍 Найти инструмент">
+<input id="search" placeholder="Поиск">
 <select id="categoryFilter"><option value="all">Все категории</option></select>
-<label><input type="checkbox" id="availableOnly"> В наличии</label>
 </div>
-
-<section class="how">
-<div><span>1</span><p>Выберите инструмент</p></div>
-<div><span>2</span><p>Нажмите «Заказать»</p></div>
-<div><span>3</span><p>Мы свяжемся с вами</p></div>
-</section>
 
 <div class="container" id="products"></div>
 
-<section class="trust">
-<div>✔ Работаем без выходных</div>
-<div>✔ Проверенный инструмент</div>
-<div>✔ Быстрый ответ</div>
-</section>
+<!-- MODAL -->
+<div id="modal">
+<div class="modal-card" id="modalContent"></div>
+</div>
 
-<div class="fixed" onclick="openMaxOrder()">🟡 Заказать в МАКС</div>
+<button class="install" id="installBtn">Установить приложение</button>
 
 <script>
-const sheetURL = "ВСТАВЬ_СЮДА_ССЫЛКУ_CSV";
+const sheetURL="https://docs.google.com/spreadsheets/d/e/2PACX-1vTOtUQAhnBMNrCPWFj0u6cjQeb0qWscrovHdCWvuBQMaCCirL4ds3i6NtjqwMpcReNsrhrY_X8ICXOL/pub?gid=2109115062&single=true&output=csv";
 
 let products=[];
 
-fetch(sheetURL)
-.then(r=>r.text())
-.then(csv=>{
-  const rows = csv.split("\n").slice(1);
-  products = rows.map(r=>{
-    const c = r.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
-
-    return {
-      id:c[0],
-      cat:c[1],
-      name:c[2],
-      desc:c[3]?.replace(/"/g,'') || '',
-      img:c[4] || 'https://via.placeholder.com/300x200?text=Нет+фото',
-      price:c[5],
-      avail:c[6]?.toLowerCase()=="да"
-    }
-  });
-
-  initFilters();
-  render(products);
+fetch(sheetURL).then(r=>r.text()).then(csv=>{
+const rows=csv.split("\n").slice(1);
+products=rows.map(r=>{
+const c=r.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
+return{
+cat:c[0],
+name:c[1],
+desc:c[2],
+img:c[3]||"https://via.placeholder.com/300",
+price:c[4],
+avail:(c[8]||"").toLowerCase().includes("да")
+}
+});
+initFilters();
+render(products);
 });
 
 function initFilters(){
-  const f=document.getElementById("categoryFilter");
-  [...new Set(products.map(p=>p.cat))].forEach(c=>{
-    const o=document.createElement("option");
-    o.value=c;o.textContent=c;
-    f.appendChild(o);
-  });
+[...new Set(products.map(p=>p.cat))].forEach(cat=>{
+const o=document.createElement("option");
+o.value=cat;o.textContent=cat;
+categoryFilter.appendChild(o);
+});
 }
 
-document.getElementById("search").oninput=applyFilters;
-document.getElementById("categoryFilter").onchange=applyFilters;
-document.getElementById("availableOnly").onchange=applyFilters;
+search.oninput=()=>apply();
+categoryFilter.onchange=()=>apply();
 
-function applyFilters(){
-  let list=[...products];
-  const s=document.getElementById("search").value.toLowerCase();
-  const c=document.getElementById("categoryFilter").value;
-  const a=document.getElementById("availableOnly").checked;
-
-  if(s) list=list.filter(p=>p.name.toLowerCase().includes(s));
-  if(c!="all") list=list.filter(p=>p.cat==c);
-  if(a) list=list.filter(p=>p.avail);
-
-  render(list);
+function apply(){
+let list=[...products];
+if(search.value) list=list.filter(p=>p.name.toLowerCase().includes(search.value.toLowerCase()));
+if(categoryFilter.value!=="all") list=list.filter(p=>p.cat===categoryFilter.value);
+render(list);
 }
 
 function render(list){
-  const cont=document.getElementById("products");
-  cont.innerHTML="";
-  list.forEach(p=>{
-    const card=document.createElement("div");
-    card.className="card";
-    card.innerHTML=`
-      <span class="badge ${p.avail?'':'no'}">${p.avail?'В наличии':'Нет'}</span>
-      <img src="${p.img}" onerror="this.src='https://via.placeholder.com/300x200?text=Нет+фото'">
-      <h3>${p.name}</h3>
-      <div class="price">от ${p.price} ₽ / сутки</div>
-      <button onclick="sendToMax('${p.id}','${p.name}','${p.price}')">🟡 Заказать</button>
-      <div class="details"><p>${p.desc}</p></div>
-    `;
-    card.onclick=e=>{
-      if(!e.target.closest("button")) card.classList.toggle("open");
-    }
-    cont.appendChild(card);
-  });
+products.innerHTML="";
+list.forEach(p=>{
+const card=document.createElement("div");
+card.className="card";
+card.innerHTML=`
+<span class="badge ${p.avail?"yes":"no"}">${p.avail?"В наличии":"Нет"}</span>
+<img src="${p.img}">
+<h3>${p.name}</h3>
+<p><b>${p.price} ₽ / сутки</b></p>
+<button>Подробнее</button>
+`;
+card.onclick=()=>openModal(p);
+products.appendChild(card);
+});
 }
 
-// --- MAX messenger ---
-function sendToMax(id,name,price){
-  const data={
-    id:id,
-    name:name,
-    price:price
-  };
+function openModal(p){
+modal.style.display="flex";
+modalContent.innerHTML=`
+<h3>${p.name}</h3>
+<img src="${p.img}" style="width:100%;border-radius:10px;">
+<p>${p.desc}</p>
+<p><b>${p.price} ₽ / сутки</b></p>
 
-  if(window.MaxApp){
-    MaxApp.sendData(JSON.stringify(data));
-  } else {
-    alert("МАКС не найден. Открывайте сайт из приложения МАКС.");
-  }
+<div class="quick">
+<button onclick="quickOrder('${p.name}',${p.price})">Быстрый заказ</button>
+<button onclick="closeModal()">Закрыть</button>
+</div>
+`;
 }
 
-function openMaxOrder(){
-  alert("Выберите инструмент и нажмите Заказать");
+function closeModal(){modal.style.display="none";}
+
+function quickOrder(name,price){
+let text=`БЫСТРЫЙ ЗАКАЗ\n${name} - ${price}₽`;
+window.open("https://t.me/ArendMSK?text="+encodeURIComponent(text));
 }
+
+/* PWA */
+if('serviceWorker' in navigator){
+navigator.serviceWorker.register('sw.js');
+}
+
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt',e=>{
+e.preventDefault();
+deferredPrompt=e;
+installBtn.style.display="block";
+});
+
+installBtn.onclick=()=>{
+deferredPrompt.prompt();
+};
 </script>
 
 </body>
 </html>
-
-
-
 
 
 
