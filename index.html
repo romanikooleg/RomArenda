@@ -4,8 +4,7 @@
 <meta charset="UTF-8">
 <title>РомАренда — аренда инструмента</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Аренда строительного инструмента и оборудования. Быстро, удобно и надежно.">
-<meta name="keywords" content="аренда, инструмент, стройка, оборудование, RomArenda">
+
 <style>
 :root {
   --main-yellow: #FFC107;
@@ -14,147 +13,214 @@
   --white: #FFFFFF;
 }
 
-/* Общие стили */
 body { margin:0; font-family: Arial, sans-serif; background: var(--light-gray); color: var(--main-black);}
 a{text-decoration:none; color: inherit;}
-header {background: var(--main-black); color: var(--white); padding:15px 10px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap;}
-header .logo {display:flex; align-items:center; gap:12px;}
-header .logo img{height:60px; border-radius:8px; object-fit:contain; transition:0.3s;}
-header .logo img:hover{transform:scale(1.1);}
-header .logo h1{margin:0;}
-header .phone{font-size:20px; font-weight:bold;}
 
-/* Плитки категорий и инфо */
-#categoriesGrid {display:grid; grid-template-columns: repeat(auto-fill,minmax(200px,1fr)); gap:15px; padding:20px;}
-.tile {background: var(--white); border-radius:12px; padding:20px; text-align:center; cursor:pointer; transition:0.3s; box-shadow:0 2px 5px rgba(0,0,0,0.15);}
-.tile:hover{transform:scale(1.05); box-shadow:0 6px 15px rgba(0,0,0,0.2);}
-.tile h3{margin:10px 0; font-size:18px;}
+header {display:flex; justify-content:space-between; align-items:center; padding:15px 20px; background: var(--main-black); color: var(--white);}
+header .logo-container {display:flex; align-items:center; gap:12px;}
+header img {height:60px; border-radius:8px; object-fit:contain; transition:0.3s;}
+header img:hover{transform:scale(1.1);}
+header .phone {font-size:18px; font-weight:bold;}
 
-/* Карточки товаров */
-#productsContainer {display:grid; grid-template-columns: repeat(auto-fill,minmax(260px,1fr)); gap:20px; padding:20px; display:none;}
-.card {background: var(--white); border-radius:12px; box-shadow:0 2px 5px rgba(0,0,0,0.15); padding:10px; display:flex; flex-direction:column; transition:transform 0.3s, box-shadow 0.3s; cursor:pointer; overflow:hidden;}
+.tabs {display:flex; justify-content:center; gap:10px; background: var(--white); padding:10px; box-shadow:0 2px 4px rgba(0,0,0,0.1);}
+.tab-btn {padding:8px 12px; border:none; border-radius:6px; background:#eee; cursor:pointer; transition:0.2s;}
+.tab-btn.active {background:var(--main-yellow); font-weight:bold;}
+
+.tab-content {display:none; padding:20px;}
+.tab-content.active {display:block; animation:fadeIn 0.3s;}
+
+.category-grid {display:flex; flex-wrap:wrap; gap:15px; margin-bottom:20px;}
+.category-tile {background:var(--white); padding:15px; border-radius:10px; cursor:pointer; flex:1 1 150px; text-align:center; box-shadow:0 2px 5px rgba(0,0,0,0.15); transition:0.3s;}
+.category-tile:hover {transform:scale(1.05); box-shadow:0 8px 15px rgba(0,0,0,0.2);}
+
+.container {display:grid; grid-template-columns: repeat(auto-fill,minmax(260px,1fr)); gap:20px;}
+.card {background: var(--white); border-radius:12px; box-shadow:0 2px 5px rgba(0,0,0,0.15); padding:10px; display:flex; flex-direction:column; cursor:pointer; transition:transform 0.3s, box-shadow 0.3s;}
 .card:hover{transform:translateY(-5px); box-shadow:0 8px 15px rgba(0,0,0,0.2);}
 .card img{width:100%; height:180px; object-fit:cover; border-radius:10px;}
 .badge {padding:4px 8px; border-radius:6px; color:var(--main-black); font-size:12px; width:fit-content; margin-bottom:5px; font-weight:bold;}
 .yes {background: var(--main-yellow);}
 .no {background:#dc2626;}
 .price {font-weight:bold; margin-top:5px;}
-.card button {margin-top:6px; color:var(--main-black); padding:8px; border:none; border-radius:8px; font-size:14px; cursor:pointer; transition:0.3s; background: var(--main-yellow);}
+.card button {margin-top:6px; color:var(--main-black); padding:8px; border:none; border-radius:8px; font-size:14px; cursor:pointer; transition:0.3s;}
 .card button:hover{transform:scale(1.05); box-shadow:0 4px 10px rgba(0,0,0,0.25);}
+.fastOrderBtn {background:#00C851; color:#fff; font-weight:bold; margin-top:5px;}
 
-/* Модальное окно для товара */
-#modal {position:fixed; inset:0; background:rgba(0,0,0,0.6); display:none; justify-content:center; align-items:center; z-index:999;}
-#modalContent {background: var(--white); border-radius:12px; padding:20px; width:90%; max-width:400px; max-height:90%; overflow-y:auto; position:relative;}
-#modalContent h3{margin-top:0;}
-#modalClose {position:absolute; top:10px; right:10px; cursor:pointer; font-weight:bold; font-size:18px;}
+.term-block {background:var(--white); padding:15px; border-radius:10px; margin-bottom:15px; box-shadow:0 2px 5px rgba(0,0,0,0.1);}
+.term-block h3 {margin-top:0; margin-bottom:8px;}
+.term-block ul {padding-left:20px; margin:0;}
 
-/* Адаптив */
-@media(max-width:600px){header{flex-direction:column; align-items:flex-start;} .phone{font-size:18px; margin-top:10px;} .card img{height:150px;} #categoriesGrid {grid-template-columns: repeat(auto-fill,minmax(140px,1fr));}}
+@keyframes fadeIn{from{opacity:0; transform:translateY(10px);} to{opacity:1; transform:translateY(0);}}
+
+@media(max-width:600px){
+  .card img{height:150px;}
+  .category-grid{flex-direction:column;}
+}
 </style>
 </head>
 <body>
 
 <header>
-  <div class="logo">
+  <div class="logo-container">
     <img src="logo.png" alt="РомАренда">
     <h1>РомАренда</h1>
   </div>
   <div class="phone">📞 +7 915 277 24 41</div>
 </header>
 
-<!-- Плитки категорий и инфо -->
-<div id="categoriesGrid">
-  <!-- Плитки будут добавлены JS -->
+<!-- Навигация -->
+<div class="tabs">
+  <button class="tab-btn active" data-tab="catalog">Каталог</button>
+  <button class="tab-btn" data-tab="terms">Условия аренды</button>
+  <button class="tab-btn" data-tab="delivery">Доставка</button>
+  <button class="tab-btn" data-tab="contacts">Контакты</button>
 </div>
 
-<!-- Контейнер карточек -->
-<div id="productsContainer"></div>
+<!-- Секция Каталог -->
+<div id="catalog" class="tab-content active">
+  <h2>Каталог инструментов</h2>
+  <div class="category-grid" id="categoryGrid"></div>
+  <div class="container" id="products"></div>
+</div>
 
-<!-- Модальное окно товара -->
-<div id="modal">
-  <div id="modalContent">
-    <span id="modalClose" onclick="closeModal()">✖</span>
-    <h3 id="modalTitle"></h3>
-    <img id="modalImg" src="" alt="" style="width:100%;border-radius:10px;">
-    <p id="modalDesc"></p>
-    <div class="price" id="modalPrice"></div>
-    <button onclick="orderModal()">Заказать в МАКС</button>
+<!-- Секция Условия аренды -->
+<div id="terms" class="tab-content">
+  <h2>✅ Условия аренды</h2>
+  <div class="term-block">
+    <h3>Вариант 1: Под минимальный обеспечительный платеж</h3>
+    <ul>
+      <li>Документы: Оригинал паспорта РФ с пропиской (Москва или МО до 250 км).</li>
+      <li>Договор: Заключается на месте с действующим контактным телефоном.</li>
+      <li>Залог: Небольшая фиксированная сумма.</li>
+    </ul>
+  </div>
+  <div class="term-block">
+    <h3>Вариант 2: Обеспечительный платеж</h3>
+    <ul>
+      <li>Условие: Нет паспорта или прописки Мск/МО.</li>
+      <li>Договор: С указанием действующего контактного телефона.</li>
+      <li>Залог: 80% рыночной стоимости инструмента.</li>
+    </ul>
+  </div>
+  <div class="term-block">
+    <h3>🌟 Программа лояльности «Доверие»</h3>
+    <p>Без залога при аренде более 3-х раз, возврат вовремя и постоянная прописка в Москве или МО.</p>
+  </div>
+  <div class="term-block">
+    <h3>Как получить инструмент:</h3>
+    <ul>
+      <li>Позвоните или оставьте заявку.</li>
+      <li>Приезжайте в пункт аренды.</li>
+      <li>Оплатите аренду, подпишите договор и забирайте инструмент.</li>
+    </ul>
+  </div>
+  <div class="term-block">
+    <h3>Возврат:</h3>
+    <p>Мы даем +2 часа на дорогу. Инструмент должен быть чистым.</p>
+  </div>
+  <div class="term-block">
+    <h3>Продление:</h3>
+    <p>Напишите нам в Telegram или позвоните. Мы продлим срок и вы доплатите за разницу.</p>
+  </div>
+  <div class="term-block">
+    <h3>Поломки и гарантии:</h3>
+    <p>Весь инструмент исправен. Ответственность клиента — только при потере комплектующих или сильных механических ударах.</p>
   </div>
 </div>
 
-<script>
-// --- Категории и инфо плитки ---
-const tiles = [
-  {title:"Электроинструмент", type:"category"},
-  {title:"Строительное оборудование", type:"category"},
-  {title:"Сантехника", type:"category"},
-  {title:"Условия аренды", type:"info"},
-  {title:"Доставка", type:"info"},
-  {title:"Контакты", type:"info"}
-];
+<!-- Секция Доставка -->
+<div id="delivery" class="tab-content">
+  <h2>✅ Доставка</h2>
+  <div class="term-block">
+    <p>Текстильщики, Печатники, Кузьминки. Привезем инструмент от 30 минут!</p>
+  </div>
+</div>
 
-const categoriesGrid = document.getElementById("categoriesGrid");
-tiles.forEach(t=>{
-  const div = document.createElement("div");
-  div.className="tile";
-  div.innerHTML=`<h3>${t.title}</h3>`;
-  div.onclick = ()=>{ 
-    if(t.type==="category") loadCategory(t.title);
-    else alert(t.title+" информация"); 
-  };
-  categoriesGrid.appendChild(div);
+<!-- Секция Контакты -->
+<div id="contacts" class="tab-content">
+  <h2>Контакты</h2>
+  <p>📞 +7 915 277 24 41</p>
+  <p>📧 Telegram: <a href="https://t.me/ArendMSK" target="_blank">ArendMSK</a></p>
+  <p>🏢 Пункт выдачи: Москва, ул. Примерная, д.1</p>
+</div>
+
+<!-- Скрипты -->
+<script>
+// --- Вкладки ---
+document.querySelectorAll('.tab-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(btn.dataset.tab).classList.add('active');
+  });
 });
 
-// --- Данные товаров (пример) ---
-let products = [
-  {cat:"Электроинструмент", name:"Дрель Bosch", desc:"Дрель ударная Bosch 500W", img:"https://via.placeholder.com/300x180.png?text=Дрель", p1:500, avail:true},
-  {cat:"Электроинструмент", name:"Шуруповерт Makita", desc:"Аккумуляторный шуруповерт", img:"https://via.placeholder.com/300x180.png?text=Шуруповерт", p1:700, avail:false},
-  {cat:"Строительное оборудование", name:"Бетономешалка", desc:"Бетономешалка 120л", img:"https://via.placeholder.com/300x180.png?text=Бетономешалка", p1:1500, avail:true},
-  {cat:"Сантехника", name:"Перфоратор", desc:"Перфоратор электрический", img:"https://via.placeholder.com/300x180.png?text=Перфоратор", p1:800, avail:true}
-];
+// --- Таблица CSV ---
+const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTOtUQAhnBMNrCPWFj0u6cjQeb0qWscrovHdCWvuBQMaCCirL4ds3i6NtjqwMpcReNsrhrY_X8ICXOL/pub?gid=2109115062&single=true&output=csv";
 
-// --- Подгрузка товаров по категории ---
-function loadCategory(cat){
-  const container = document.getElementById("productsContainer");
-  container.style.display="grid";
-  container.innerHTML="";
-  products.filter(p=>p.cat===cat).forEach(p=>{
-    const div=document.createElement("div");
-    div.className="card";
-    const badgeClass=p.avail?"yes":"no";
-    const badgeText=p.avail?"В наличии":"Нет";
-    div.innerHTML=`
-      <span class="badge ${badgeClass}">${badgeText}</span>
-      <img src="${p.img}" alt="${p.name}">
-      <h3>${p.name}</h3>
-      <div class="price">${p.p1} ₽/сутки</div>
-      <button onclick="openModal('${p.name}','${p.img}','${p.desc}','${p.p1}')">Подробнее</button>
-    `;
+let products = [];
+fetch(sheetURL)
+  .then(r=>r.text())
+  .then(csv=>{
+    const rows = csv.split("\n").slice(1).map(r=>r.trim()).filter(r=>r!=="");
+    products = rows.map(r=>{
+      const c = r.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
+      if(!c[0]||!c[1]) return null;
+      return {
+        cat:c[0].trim(),
+        name:c[1].trim(),
+        desc:c[2]?c[2].replace(/"/g,'').replace(/\n/g,'|'):'Описание отсутствует',
+        img:c[3]?c[3].trim():'https://via.placeholder.com/300x180.png?text=Нет+изображения',
+        p1:c[4]?Number(c[4]):0,
+        avail:c[8]?c[8].trim().toLowerCase()==="да":false
+      };
+    }).filter(p=>p!==null);
+    renderCategories();
+    renderProducts(products);
+  });
+
+// --- Категории ---
+function renderCategories(){
+  const container = document.getElementById('categoryGrid');
+  const cats = [...new Set(products.map(p=>p.cat))];
+  cats.forEach(c=>{
+    const div = document.createElement('div');
+    div.className='category-tile';
+    div.textContent=c;
+    div.onclick=()=>renderProducts(products.filter(p=>p.cat===c));
     container.appendChild(div);
   });
 }
 
-// --- Модальное окно ---
-function openModal(name,img,desc,price){
-  document.getElementById("modalTitle").textContent=name;
-  document.getElementById("modalImg").src=img;
-  document.getElementById("modalDesc").textContent=desc;
-  document.getElementById("modalPrice").innerHTML=price+" ₽/сутки";
-  document.getElementById("modal").style.display="flex";
+// --- Рендер продуктов ---
+function renderProducts(list){
+  const cont = document.getElementById('products');
+  cont.innerHTML='';
+  list.forEach(i=>{
+    const badgeClass = i.avail?'yes':'no';
+    const badgeText = i.avail?'В наличии':'Нет';
+    const card = document.createElement('div');
+    card.className='card';
+    card.innerHTML=`
+      <span class="badge ${badgeClass}">${badgeText}</span>
+      <img src="${i.img}" alt="${i.name}">
+      <h3>${i.name}</h3>
+      <div>${i.desc.replace(/\|/g,'<br>')}</div>
+      <div class="price">1 сутки: ${i.p1} ₽</div>
+      <button class="fastOrderBtn" onclick='fastOrder("${i.name}",${i.p1})'>Заказать в МАКС</button>
+    `;
+    cont.appendChild(card);
+  });
 }
-function closeModal(){document.getElementById("modal").style.display="none";}
 
-// --- Быстрый заказ ---
-function orderModal(){
-  const name=document.getElementById("modalTitle").textContent;
-  const price=document.getElementById("modalPrice").textContent;
-  const text=`ЗАКАЗ:%0A${name} - ${price}`;
-  window.open("https://t.me/ArendMSK?text="+text,"_blank");
+// --- Быстрый заказ Telegram ---
+function fastOrder(name, price){
+  const text=`ЗАКАЗ: ${name} - ${price}₽`;
+  window.open(`https://t.me/ArendMSK?text=${encodeURIComponent(text)}`,"_blank");
 }
 </script>
 </body>
 </html>
-
 
 
 
