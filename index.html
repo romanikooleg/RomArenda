@@ -16,12 +16,34 @@
 /* Общие стили */
 body { margin:0; font-family: Arial, sans-serif; background: var(--light-gray); color: var(--main-black);}
 a{text-decoration:none;}
-header {background: var(--main-black); color: var(--white); padding:15px 10px; text-align:center;}
-header .logo-container{display:flex; align-items:center; justify-content:center; gap:12px; flex-wrap:wrap;}
-header img{height:60px; border-radius:8px; object-fit:contain; transition:0.3s;}
+
+/* Хедер */
+header {background: var(--main-black); color: var(--white); padding:15px 20px; text-align:center;}
+header .logo-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* логотип слева, телефон справа */
+  flex-wrap: nowrap;
+}
+header img {
+  height: 120px; /* увеличили в 2 раза */
+  border-radius: 8px;
+  object-fit: contain;
+  transition: 0.3s;
+}
 header img:hover{transform:scale(1.1);}
-header h1, header p{margin:0;}
-header p{font-size:14px;}
+header h1 {
+  margin: 0;
+  font-size: 2em; /* увеличиваем текст */
+  flex-grow: 1;
+  text-align: left;
+  margin-left: 12px;
+}
+header p {
+  margin: 0;
+  font-size: 28px; /* увеличен размер */
+  text-align: right;
+}
 
 /* Контролы фильтров */
 .controls {display:flex; flex-wrap:wrap; gap:8px; justify-content:center; padding:12px; background: var(--white); box-shadow:0 2px 4px rgba(0,0,0,0.1); position:sticky; top:0; z-index:200;}
@@ -62,18 +84,23 @@ label {font-size:14px; display:flex; align-items:center; gap:4px;}
 @keyframes fadeIn{from{opacity:0; transform:translateY(10px);} to{opacity:1; transform:translateY(0);}}
 
 /* Адаптив */
-@media(max-width:600px){.card img{height:150px;} .controls{flex-direction:column; gap:6px;}}
+@media(max-width:600px){
+  .card img{height:150px;}
+  .controls{flex-direction:column; gap:6px;}
+  header .logo-container {flex-direction: column; align-items: flex-start;}
+  header p {text-align:left; margin-top:6px;}
+}
 </style>
 </head>
 <body>
 
 <header>
   <div class="logo-container">
-    <img src="logo.png" alt="РомАренда">
-    <div>
+    <div style="display:flex; align-items:center; gap:12px;">
+      <img src="logo.png" alt="РомАренда">
       <h1>РомАренда</h1>
-      <p>📞 +7 915 277 24 41</p>
     </div>
+    <p>📞 +7 915 277 24 41</p>
   </div>
 </header>
 
@@ -248,6 +275,7 @@ function sendOrder() {
 
 </body>
 </html>
+
 
 
 
