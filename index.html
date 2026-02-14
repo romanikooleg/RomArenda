@@ -1,66 +1,172 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>РомАренда — аренда инструмента</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+:root {
+  --main-yellow: #FFC107;
+  --main-black: #1F1F1F;
+  --light-gray: #F3F3F3;
+  --white: #FFFFFF;
+}
+
+/* Общие стили */
+body {margin:0; font-family: Arial, sans-serif; background: var(--light-gray); color: var(--main-black);}
+a{text-decoration:none;}
+header {background: var(--main-black); color: var(--white); padding:15px 20px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap;}
+header .logo {display:flex; align-items:center; gap:10px; cursor:pointer;}
+header .logo img{height:80px; border-radius:8px; transition:0.3s;}
+header .logo img:hover{transform:scale(1.1);}
+header .logo h1{margin:0; font-size:32px;}
+header .phone{font-size:28px; font-weight:bold;}
+
+/* Навигация плитками */
+.nav-tiles {display:flex; flex-wrap:wrap; gap:15px; justify-content:center; margin:20px 0;}
+.tile {background: var(--white); padding:20px 25px; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,0.15); cursor:pointer; font-weight:bold; transition:0.3s; text-align:center;}
+.tile:hover{transform:translateY(-5px); box-shadow:0 6px 15px rgba(0,0,0,0.25);}
+
+/* Контейнер товаров */
+.container {display:grid; grid-template-columns: repeat(auto-fill,minmax(260px,1fr)); gap:20px; padding:20px;}
+.card {background: var(--white); border-radius:12px; box-shadow:0 2px 5px rgba(0,0,0,0.15); padding:10px; display:flex; flex-direction:column; transition:transform 0.3s, box-shadow 0.3s; cursor:pointer; overflow:hidden;}
+.card:hover{transform:translateY(-5px); box-shadow:0 8px 15px rgba(0,0,0,0.2);}
+.card img{width:100%; height:180px; object-fit:cover; border-radius:10px; transition:0.3s;}
+.card img:hover{transform:scale(1.05);}
+.badge {padding:4px 8px; border-radius:6px; color:var(--main-black); font-size:12px; width:fit-content; margin-bottom:5px; font-weight:bold;}
+.yes {background: var(--main-yellow);}
+.no {background:#dc2626;}
+.price {font-weight:bold; margin-top:5px;}
+.card button {margin-top:6px; color:var(--main-black); padding:8px; border:none; border-radius:8px; font-size:14px; cursor:pointer; transition:0.3s;}
+.card button:hover{transform:scale(1.05); box-shadow:0 4px 10px rgba(0,0,0,0.25);}
+.card-details {max-height:0; overflow:hidden; transition:max-height 0.5s ease, padding 0.5s ease;}
+.card.open .card-details{max-height:200px; padding-top:10px;}
+
+/* Модальное окно заказа */
+#orderBox {position:fixed; inset:0; background:rgba(0,0,0,0.6); display:none; justify-content:center; align-items:center; z-index:999;}
+#order {background:var(--white); padding:20px; border-radius:12px; width:90%; max-width:400px; max-height:90%; overflow-y:auto; box-shadow:0 4px 15px rgba(0,0,0,0.25);}
+#order h3{margin-top:0;}
+#order input{width:100%; padding:8px; margin-bottom:10px; border-radius:6px; border:1px solid #ccc;}
+#order button{padding:10px; width:100%; border:none; border-radius:8px; background:var(--main-yellow); font-weight:bold; cursor:pointer; transition:0.3s;}
+#order button:hover{transform:scale(1.05);}
+
+/* Анимации */
+@keyframes fadeIn{from{opacity:0; transform:translateY(10px);} to{opacity:1; transform:translateY(0);}}
+
+@media(max-width:600px){header .phone{font-size:22px;} .card img{height:150px;}}
+</style>
+</head>
+<body>
+
 <header>
-  <div class="header-left" onclick="goHome()" style="cursor:pointer;">
+  <div class="logo" onclick="window.location.reload()">
     <img src="logo.png" alt="РомАренда">
     <h1>РомАренда</h1>
   </div>
-  <div class="header-right">
-    📞 +7 915 277 24 41
-  </div>
+  <div class="phone">📞 +7 915 277 24 41</div>
 </header>
 
-<style>
-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 15px 20px;
-  background: var(--main-black);
-  color: var(--white);
-}
+<!-- Навигация плитками -->
+<div class="nav-tiles">
+  <div class="tile" onclick="showCategory('Каталог')">Каталог</div>
+  <div class="tile" onclick="showCategory('Условия аренды')">Условия аренды</div>
+  <div class="tile" onclick="showCategory('Доставка')">Доставка</div>
+  <div class="tile" onclick="showCategory('Контакты')">Контакты</div>
+</div>
 
-header img {
-  height: 60px;
-  margin-right: 12px;
-  transition: 0.3s;
-}
+<!-- Контейнер контента -->
+<div id="content"></div>
 
-header img:hover {
-  transform: scale(1.1);
-}
-
-header h1 {
-  margin: 0;
-  font-size: 24px;
-}
-
-.header-left {
-  display: flex;
-  align-items: center;
-}
-
-.header-right {
-  font-size: 28px; /* примерно в 2 раза больше чем раньше */
-  font-weight: bold;
-}
-
-@media(max-width:600px){
-  header {
-    flex-direction: column;
-    gap: 10px;
-  }
-  .header-right {
-    font-size: 22px;
-  }
-}
-</style>
+<!-- Модальное окно заказа -->
+<div id="orderBox">
+  <div id="order">
+    <h3>Арендовать инструмент</h3>
+    <input id="clientName" placeholder="Ваше имя">
+    <input id="clientPhone" placeholder="Телефон">
+    <button onclick="sendOrder()">Отправить</button>
+    <button onclick="closeOrder()">Закрыть</button>
+  </div>
+</div>
 
 <script>
-function goHome() {
-  window.scrollTo({top:0, behavior:'smooth'});
+// --- Пример данных ---
+// Для твоей таблицы CSV заменяем на fetch(sheetURL)
+const products = [
+  {cat:'Перфораторы', name:'Перфоратор Bosch', desc:'Мощный перфоратор', img:'https://via.placeholder.com/300x180', p1:1000,p2:1800,p3:2500,p5:4000, avail:true},
+  {cat:'Дрели', name:'Дрель Makita', desc:'Удобная дрель', img:'https://via.placeholder.com/300x180', p1:800,p2:1500,p3:2200,p5:3500, avail:false},
+];
+
+// --- Отправка заказа ---
+function openOrder(){document.getElementById('orderBox').style.display='flex';}
+function closeOrder(){document.getElementById('orderBox').style.display='none';}
+function sendOrder(){
+  const name=document.getElementById('clientName').value.trim();
+  const phone=document.getElementById('clientPhone').value.trim();
+  if(!name||!phone){alert('Введите имя и телефон');return;}
+  // Здесь можно отправить через Telegram Bot API
+  alert(`Заказ отправлен!\nИмя: ${name}\nТелефон: ${phone}`);
+  closeOrder();
 }
+
+// --- Навигация плитками ---
+function showCategory(section){
+  const c=document.getElementById('content');
+  if(section==='Каталог'){
+    let html='<div class="container">';
+    products.forEach(p=>{
+      const badge=p.avail?'В наличии':'Нет';
+      const badgeClass=p.avail?'yes':'no';
+      html+=`<div class="card">
+        <span class="badge ${badgeClass}">${badge}</span>
+        <img src="${p.img}" alt="${p.name}">
+        <h3>${p.name}</h3>
+        <div class="price">
+          1 сутки: ${p.p1} ₽<br>
+          2 суток: ${p.p2} ₽<br>
+          3 суток: ${p.p3} ₽<br>
+          от 5 суток: ${p.p5} ₽
+        </div>
+        <div class="card-details"><p>${p.desc}</p></div>
+        <button onclick="openOrder()">Арендовать</button>
+      </div>`;
+    });
+    html+='</div>';
+    c.innerHTML=html;
+  } else if(section==='Условия аренды'){
+    c.innerHTML=`<div style="padding:20px; background:white; border-radius:12px; max-width:800px; margin:20px auto;">
+      <h2>Условия аренды</h2>
+      <p>✅ Вариант 1: Под минимальный обеспечительный платеж.<br>
+      Документы: Оригинал паспорта РФ с пропиской (Москва или МО до 250 км).<br>
+      Договор: Заключается на месте с указанием контактного телефона.<br>
+      Залог: Вносится небольшая фиксированная сумма.</p>
+      <p>✅ Вариант 2: Обеспечительный платеж.<br>
+      Договор: Оформляется с указанием действующего контактного телефона.</p>
+      <p>🌟 Программа лояльности «Доверие»: Более 3-х аренда без залога, вовремя возвращенный инструмент, постоянная прописка в Москве/МО.</p>
+      <p>✅ Получение инструмента: Позвоните или оставьте заявку, оплатите аренду, подпишите договор и забирайте инструмент.</p>
+      <p>✅ Возврат: +2 часа на дорогу.</p>
+      <p>✅ Продление: Напишите в Telegram или позвоните.</p>
+      <p>✅ Поломки и гарантии: Ответственность клиента только при потере комплектующих, вскрытии корпуса или сильных ударах.</p>
+    </div>`;
+  } else if(section==='Доставка'){
+    c.innerHTML=`<div style="padding:20px; background:white; border-radius:12px; max-width:800px; margin:20px auto;">
+      <h2>Доставка</h2>
+      <p>✅ Доставка: Текстильщики, Печатники, Кузьминки. Привезем инструмент от 30 минут!</p>
+    </div>`;
+  } else if(section==='Контакты'){
+    c.innerHTML=`<div style="padding:20px; background:white; border-radius:12px; max-width:800px; margin:20px auto;">
+      <h2>Контакты</h2>
+      <p>📞 +7 915 277 24 41</p>
+      <p>📧 info@romarenda.ru</p>
+      <p>🏢 Москва, РФ</p>
+    </div>`;
+  }
+}
+
+// --- Изначально показываем главную плитки ---
+document.getElementById('content').innerHTML='<p style="text-align:center; margin-top:40px; font-size:20px;">Выберите раздел сверху плиток</p>';
 </script>
-
-
+</body>
+</html>
 
 
 
