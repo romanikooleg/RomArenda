@@ -12,29 +12,29 @@
   --main-black: #1F1F1F;
   --light-gray: #F3F3F3;
   --white: #FFFFFF;
+  --main-bg: #f2f2f2 url('https://images.unsplash.com/photo-1600267167602-6c7f9c205fb7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80') center/cover no-repeat;
 }
 
-/* Общие стили */
-body { margin:0; font-family: Arial, sans-serif; background: var(--light-gray); color: var(--main-black);}
+body { margin:0; font-family: Arial, sans-serif; background: var(--main-bg); color: var(--main-black);}
 a{text-decoration:none; color:inherit;}
-header {background: var(--main-black); color: var(--white); padding:15px 10px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap;}
+header {background: rgba(31,31,31,0.9); color: var(--white); padding:15px 20px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; position: sticky; top:0; z-index:1000;}
 header .logo-container{display:flex; align-items:center; gap:12px; cursor:pointer;}
-header .logo-container img{height:50px; border-radius:6px; object-fit:contain; transition:0.3s;}
+header .logo-container img{height:60px; border-radius:6px; object-fit:contain; transition:0.3s;}
 header .logo-container img:hover{transform:scale(1.1);}
-header .phone{font-size:18px; font-weight:bold;}
+header .phone{font-size:22px; font-weight:bold;}
 
 /* Навигация */
-nav {background: var(--white); box-shadow:0 2px 4px rgba(0,0,0,0.1); display:flex; justify-content:center; flex-wrap:wrap; gap:10px; padding:10px;}
+nav {background: rgba(255,255,255,0.95); box-shadow:0 2px 4px rgba(0,0,0,0.1); display:flex; justify-content:center; flex-wrap:wrap; gap:10px; padding:10px; position: sticky; top:80px; z-index:900;}
 nav button {padding:8px 12px; border:none; border-radius:6px; background: var(--main-yellow); cursor:pointer; transition:0.3s; font-weight:bold;}
 nav button:hover{transform:scale(1.05);}
 
 /* Плитки категорий на главной */
 #categories {display:grid; grid-template-columns: repeat(auto-fill,minmax(160px,1fr)); gap:12px; padding:20px;}
-.category-card {background: var(--white); border-radius:10px; padding:12px; text-align:center; box-shadow:0 2px 5px rgba(0,0,0,0.1); cursor:pointer; transition:0.3s;}
+.category-card {background: var(--white); border-radius:10px; padding:12px; text-align:center; box-shadow:0 2px 5px rgba(0,0,0,0.15); cursor:pointer; transition:0.3s;}
 .category-card:hover{transform:translateY(-5px); box-shadow:0 6px 12px rgba(0,0,0,0.15);}
 
 /* Контейнеры контента */
-.container {padding:20px;}
+.container {padding:20px; background:rgba(255,255,255,0.95); border-radius:10px; margin:20px auto; max-width:1200px;}
 .section-title {font-size:20px; font-weight:bold; margin-bottom:10px;}
 
 /* Условия аренды и доставка */
@@ -80,20 +80,23 @@ nav button:hover{transform:scale(1.05);}
   <button onclick="showSection('contacts')">Контакты</button>
 </nav>
 
+<!-- Главная с категориями -->
 <div id="home" class="container">
   <div id="categories"></div>
 </div>
 
+<!-- Каталог -->
 <div id="catalog" class="container" style="display:none;">
   <div id="products"></div>
 </div>
 
+<!-- Условия аренды -->
 <div id="rent" class="container" style="display:none;">
   <div class="info-box">
     <div class="section-title">✅ Условия аренды:</div>
     <ul>
-      <li><b>Вариант 1:</b> Под минимальный обеспечительный платеж. Документы: Оригинал паспорта РФ с пропиской (Москва или МО до 250 км). Договор: на месте. Залог: небольшая фиксированная сумма.</li>
-      <li><b>Вариант 2:</b> Если у вас нет паспорта РФ с пропиской Мск/МО. Договор оформляется с указанием действующего телефона.</li>
+      <li><b>Вариант 1:</b> Под минимальный обеспечительный платеж. Документы: паспорт РФ с пропиской (Москва или МО до 250 км). Договор: на месте. Залог: небольшая фиксированная сумма.</li>
+      <li><b>Вариант 2:</b> Если нет паспорта с пропиской Мск/МО. Договор оформляется с указанием действующего телефона.</li>
       <li>🌟 Программа лояльности «Доверие» — аренда без залога при выполнении условий.</li>
       <li>✅ Как получить инструмент: Позвоните или оставьте заявку, подпишите договор, забирайте инструмент.</li>
       <li>✅ Возврат (с бонусом по времени): +2 часа на дорогу.</li>
@@ -103,6 +106,7 @@ nav button:hover{transform:scale(1.05);}
   </div>
 </div>
 
+<!-- Доставка -->
 <div id="delivery" class="container" style="display:none;">
   <div class="info-box">
     <div class="section-title">✅ ДОСТАВКА</div>
@@ -110,6 +114,7 @@ nav button:hover{transform:scale(1.05);}
   </div>
 </div>
 
+<!-- Контакты -->
 <div id="contacts" class="container" style="display:none;">
   <div class="info-box">
     <div class="section-title">Контакты</div>
@@ -117,6 +122,7 @@ nav button:hover{transform:scale(1.05);}
   </div>
 </div>
 
+<!-- Модальное окно заказа -->
 <div id="orderModal">
   <div id="orderForm">
     <h3>Быстрый заказ</h3>
@@ -222,9 +228,9 @@ function sendOrderTelegram(){
     });
 }
 </script>
-
 </body>
 </html>
+
 
 
 
