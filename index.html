@@ -2,383 +2,246 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<title>Аренда строительного инструмента — РомАренда</title>
+<title>РомАренда — аренда инструмента</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Аренда строительного инструмента. Быстро, без залога. Заказ в 1 клик. РомАренда">
 
 <style>
 :root {
-  --yellow:#FFC107;
-  --black:#1F1F1F;
-  --gray:#f4f4f4;
-  --white:#fff;
-  --blue:#0088cc;
+  --main-yellow: #FFC107;
+  --main-black: #1F1F1F;
+  --light-gray: #F3F3F3;
+  --white: #FFFFFF;
+  --tg-blue: #0088cc; 
 }
 
-body{margin:0;font-family:Segoe UI,Arial;background:var(--gray);color:var(--black);}
+/* Общие стили */
+body { margin:0; font-family: 'Segoe UI', Arial, sans-serif; background: var(--light-gray); color: var(--main-black);}
+a {text-decoration:none;}
 
-header{
-background:var(--black);
-color:white;
-padding:15px;
-}
+header {background: var(--main-black); color: var(--white); padding:15px 20px; text-align:center;}
+header .logo-container { display: flex; align-items: center; justify-content: space-between; flex-wrap: nowrap; }
+header img { height: 100px; border-radius: 8px; object-fit: contain; }
 
-.header-top{
-display:flex;
-align-items:center;
-justify-content:space-between;
-gap:15px;
-flex-wrap:wrap;
-}
+/* Блок названия и слогана */
+.title-block { text-align: left; flex-grow: 1; margin-left: 12px; }
+header h1 { margin: 0; font-size: 1.8em; line-height: 1.1; }
+.slogan { font-size: 0.85em; color: var(--main-yellow); margin-top: 4px; font-weight: 500; opacity: 0.9; }
 
-.logo{
-display:flex;
-align-items:center;
-gap:10px;
-}
+header p { margin: 0; font-size: 22px; text-align: right; font-weight: bold; color: var(--main-yellow); }
 
-.logo img{height:70px;border-radius:8px;}
+/* Фильтры */
+.controls {display:flex; flex-wrap:wrap; gap:8px; justify-content:center; padding:12px; background: var(--white); box-shadow:0 2px 4px rgba(0,0,0,0.1); position:sticky; top:0; z-index:200;}
+input, select {padding:10px; border-radius:8px; border:1px solid #ccc; font-size:14px; outline: none;}
 
-.hero{
-margin-top:10px;
-font-size:14px;
-color:#ccc;
-}
+/* Карточки */
+.container {display:grid; grid-template-columns: repeat(auto-fill,minmax(280px,1fr)); gap:20px; padding:20px;}
+.card {background: var(--white); border-radius:15px; box-shadow:0 4px 6px rgba(0,0,0,0.05); padding:15px; display:flex; flex-direction:column; transition: 0.3s; cursor:pointer; opacity:0; animation:fadeIn 0.5s forwards;}
+.card:hover{transform:translateY(-5px); box-shadow:0 12px 20px rgba(0,0,0,0.1);}
+.card img{width:100%; height:180px; object-fit:cover; border-radius:12px;}
 
-.phone{color:var(--yellow);font-weight:bold;font-size:18px;}
+.price {font-size: 1.2em; font-weight:bold; margin: 10px 0; color: var(--main-black);}
 
-.controls{
-position:sticky;
-top:0;
-z-index:100;
-background:white;
-padding:10px;
-display:flex;
-gap:10px;
-flex-wrap:wrap;
-justify-content:center;
-box-shadow:0 2px 5px rgba(0,0,0,0.1);
-}
+/* Кнопки */
+button {padding:12px; border:none; border-radius:10px; font-size:14px; cursor:pointer; font-weight:bold; transition: 0.2s;}
+.cartBtn {background: var(--main-yellow); color: var(--main-black); margin-bottom: 8px;}
+.oneClickBtn {background: var(--tg-blue); color: white;} 
 
-input,select{
-padding:10px;
-border-radius:10px;
-border:1px solid #ccc;
-}
+/* Детали */
+.card-details {max-height:0; overflow:hidden; transition: 0.4s; font-size: 0.9em; color: #666;}
+.card.open .card-details{max-height:300px; padding-top:10px;}
 
-.cartBtn{
-background:var(--yellow);
-border:none;
-border-radius:10px;
-padding:10px 16px;
-font-weight:bold;
-cursor:pointer;
-}
+/* Корзина */
+#cartBox {position:fixed; inset:0; background:rgba(0,0,0,0.7); display:none; justify-content:center; align-items:center; z-index:999;}
+#cart {background:var(--white); padding:25px; border-radius:20px; width:90%; max-width:400px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.2);}
+.cartItem {border-bottom:1px solid #eee; padding:10px 0; display: flex; justify-content: space-between; align-items: center;}
 
-.container{
-display:grid;
-grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
-gap:20px;
-padding:20px;
-}
-
-.card{
-background:white;
-border-radius:16px;
-box-shadow:0 5px 12px rgba(0,0,0,0.08);
-overflow:hidden;
-display:flex;
-flex-direction:column;
-transition:.3s;
-}
-
-.card:hover{transform:translateY(-5px);}
-
-.card img{
-width:100%;
-height:200px;
-object-fit:cover;
-}
-
-.card-body{
-padding:12px;
-display:flex;
-flex-direction:column;
-flex-grow:1;
-}
-
-.card h3{margin:0 0 6px;}
-
-.price{
-font-size:18px;
-font-weight:bold;
-margin-bottom:6px;
-}
-
-.badge{
-display:inline-block;
-background:#e8f5e9;
-color:#2e7d32;
-padding:4px 8px;
-border-radius:8px;
-font-size:12px;
-margin-bottom:6px;
-}
-
-.desc{
-font-size:13px;
-color:#666;
-flex-grow:1;
-}
-
-.actions{
-margin-top:10px;
-display:flex;
-flex-direction:column;
-gap:8px;
-}
-
-.oneClickBtn{
-background:var(--blue);
-color:white;
-border:none;
-padding:12px;
-border-radius:10px;
-font-weight:bold;
-cursor:pointer;
-}
-
-.addBtn{
-background:#eee;
-border:none;
-padding:10px;
-border-radius:10px;
-cursor:pointer;
-}
-
-button:active{transform:scale(.97);}
-
-/* CART */
-#cartBox{
-position:fixed;
-inset:0;
-background:rgba(0,0,0,.6);
-display:none;
-justify-content:center;
-align-items:center;
-z-index:999;
-}
-
-#cart{
-background:white;
-padding:20px;
-border-radius:20px;
-width:90%;
-max-width:400px;
-}
-
-.cartItem{
-display:flex;
-justify-content:space-between;
-border-bottom:1px solid #eee;
-padding:6px 0;
-}
-
-.trust{
-display:flex;
-gap:15px;
-justify-content:center;
-padding:10px;
-background:white;
-font-size:13px;
-}
+@keyframes fadeIn{from{opacity:0; transform:translateY(15px);} to{opacity:1; transform:translateY(0);}}
 
 @media(max-width:600px){
-.header-top{flex-direction:column;align-items:flex-start;}
+  header .logo-container {flex-direction: column; align-items: flex-start;}
+  header p {text-align:left; margin-top:10px; font-size: 20px;}
+  .title-block { margin-left: 0; margin-top: 10px; }
 }
 </style>
 </head>
-
 <body>
 
 <header>
-<div class="header-top">
-  <div class="logo">
-    <img src="logo.png">
-    <h1>РомАренда</h1>
+  <div class="logo-container">
+    <div style="display:flex; align-items:center; flex-wrap: wrap;">
+      <img src="logo.png" alt="РомАренда">
+      <div class="title-block">
+        <h1>РомАренда</h1>
+        <div class="slogan">Аренда строительного инструмента • Быстро • Без залога • Заказ в 1 клик</div>
+      </div>
+    </div>
+    <p>📞 +7 915 277 24 41</p>
   </div>
-  <div class="phone">📞 +7 915 277 24 41</div>
-</div>
-<div class="hero">
-Аренда строительного инструмента • Быстро • Без залога • Заказ в 1 клик
-</div>
 </header>
 
 <div class="controls">
-<input id="search" placeholder="🔍 Поиск...">
-<select id="categoryFilter"><option value="all">Все категории</option></select>
-<button class="cartBtn" onclick="openCart()">🛒 Корзина (<span id="cartCount">0</span>)</button>
-</div>
-
-<div class="trust">
-<div>⚡ Выдача за 10 минут</div>
-<div>🛠 Более 50 инструментов</div>
-<div>📍 Работаем без выходных</div>
+  <input id="search" placeholder="🔍 Поиск инструмента...">
+  <select id="categoryFilter"><option value="all">Все категории</option></select>
+  <button class="cartBtn" onclick="openCart()" style="margin:0; padding: 10px 20px;">🛒 Корзина (<span id="cartCount">0</span>)</button>
 </div>
 
 <div class="container" id="products"></div>
 
-<!-- CART -->
 <div id="cartBox">
-<div id="cart">
-<h2>🛒 Оформление заказа</h2>
-<div id="cartItems"></div>
-<div id="totalPrice" style="margin:10px 0;font-weight:bold;"></div>
-<input id="clientName" placeholder="Ваше имя" style="width:100%;padding:10px;margin:5px 0;">
-<input id="clientPhone" placeholder="Телефон" style="width:100%;padding:10px;margin-bottom:10px;">
-<button class="oneClickBtn" onclick="sendOrder()">Отправить заявку</button>
-<button onclick="closeCart()" style="margin-top:10px;background:none;border:none;">Назад</button>
-</div>
+  <div id="cart">
+    <h2 style="margin-top:0">📝 Оформление заказа</h2>
+    <div id="cartItems"></div>
+    <div id="totalPrice" style="margin: 15px 0; font-weight: bold; font-size: 1.2em; border-top: 2px solid #eee; padding-top: 10px;"></div>
+    <input id="clientName" placeholder="Ваше имя" style="width:100%; box-sizing:border-box; padding:12px; margin-bottom:10px; border: 1px solid #ddd; border-radius: 8px;">
+    <input id="clientPhone" placeholder="Ваш телефон" style="width:100%; box-sizing:border-box; padding:12px; margin-bottom:15px; border: 1px solid #ddd; border-radius: 8px;">
+    <button onclick="sendOrder()" style="width:100%; background:var(--tg-blue); color:white; padding:15px; font-size: 16px;">ОТПРАВИТЬ ЗАЯВКУ</button>
+    <button onclick="closeCart()" style="width:100%; background:none; color:#999; margin-top:10px;">Назад</button>
+  </div>
 </div>
 
 <script>
-const TG_TOKEN="ТВОЙ_ТОКЕН";
-const TG_CHAT_ID="ТВОЙ_CHAT_ID";
+const TG_TOKEN = "8575516738:AAGomt_lCqq1Uzdqf7D4UrReolJF_NKhYoM"; 
+const TG_CHAT_ID = "8359415363"; 
 
-const sheetURL="https://docs.google.com/spreadsheets/d/e/2PACX-1vTOtUQAhnBMNrCPWFj0u6cjQeb0qWscrovHdCWvuBQMaCCirL4ds3i6NtjqwMpcReNsrhrY_X8ICXOL/pub?gid=2109115062&single=true&output=csv";
+const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTOtUQAhnBMNrCPWFj0u6cjQeb0qWscrovHdCWvuBQMaCCirL4ds3i6NtjqwMpcReNsrhrY_X8ICXOL/pub?gid=2109115062&single=true&output=csv";
 
-const productsDiv=document.getElementById("products");
-const search=document.getElementById("search");
-const categoryFilter=document.getElementById("categoryFilter");
-const cartCount=document.getElementById("cartCount");
+let products = [];
+let cart = JSON.parse(localStorage.getItem('cart')) || [];
+document.getElementById("cartCount").textContent = cart.length;
 
-let products=[];
-let cart=JSON.parse(localStorage.getItem("cart"))||[];
-cartCount.textContent=cart.length;
+fetch(sheetURL + "&nocache=" + new Date().getTime())
+  .then(r => r.text())
+  .then(csv => {
+    const rows = csv.split("\n").slice(1).map(r => r.trim()).filter(r => r !== "");
+    products = rows.map(r => {
+      const c = r.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
+      if(!c[0] || !c[1]) return null;
+      return {
+        cat: c[0].trim(),
+        name: c[1].trim(),
+        desc: c[2] ? c[2].replace(/"/g, '').replace(/\n/g, ' ') : 'Описание уточняйте',
+        img: c[3] ? c[3].trim() : 'https://via.placeholder.com/300x180.png?text=Инструмент',
+        p1: c[4] ? Number(c[4]) : 0
+      };
+    }).filter(p => p !== null);
+    initFilters();
+    render(products);
+  });
 
-fetch(sheetURL)
-.then(r=>r.text())
-.then(csv=>{
-const rows=csv.split("\n").slice(1).filter(r=>r.trim()!=="");
-products=rows.map(r=>{
-const c=r.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
-return{
-cat:c[0],
-name:c[1],
-desc:c[2]||"Описание уточняйте",
-img:c[3]||"https://via.placeholder.com/300x200",
-price:Number(c[4])||0
-};
-});
-initFilters();
-render(products);
-});
-
-function initFilters(){
-[...new Set(products.map(p=>p.cat))].forEach(cat=>{
-let o=document.createElement("option");
-o.value=cat;
-o.textContent=cat;
-categoryFilter.appendChild(o);
-});
+function initFilters() {
+  const f = document.getElementById("categoryFilter");
+  [...new Set(products.map(p => p.cat))].forEach(cat => {
+    const o = document.createElement("option"); o.value = cat; o.textContent = cat;
+    f.appendChild(o);
+  });
 }
 
-search.addEventListener("input",()=>{
-let v=search.value.toLowerCase();
-render(products.filter(p=>p.name.toLowerCase().includes(v)));
+document.getElementById("search").addEventListener("input", () => {
+    const val = document.getElementById("search").value.toLowerCase();
+    render(products.filter(p => p.name.toLowerCase().includes(val)));
 });
 
-categoryFilter.addEventListener("change",e=>{
-let c=e.target.value;
-render(c=="all"?products:products.filter(p=>p.cat==c));
+document.getElementById("categoryFilter").addEventListener("change", (e) => {
+    const cat = e.target.value;
+    render(cat === "all" ? products : products.filter(p => p.cat === cat));
 });
 
-function render(list){
-productsDiv.innerHTML="";
-list.forEach(p=>{
-let card=document.createElement("div");
-card.className="card";
-card.innerHTML=`
-<img src="${p.img}">
-<div class="card-body">
-<span class="badge">В наличии</span>
-<h3>${p.name}</h3>
-<div class="price">${p.price} ₽ / сутки</div>
-<div class="desc">${p.desc}</div>
-<div class="actions">
-<button class="oneClickBtn" onclick="orderOne('${p.name}')">Заказать в 1 клик</button>
-<button class="addBtn" onclick="addCart('${p.name}',${p.price})">В корзину</button>
-</div>
-</div>
-`;
-productsDiv.appendChild(card);
-});
+function render(list) {
+  const cont = document.getElementById("products");
+  cont.innerHTML = "";
+  list.forEach(i => {
+    const card = document.createElement("div");
+    card.className = "card";
+    card.innerHTML = `
+      <img src="${i.img}">
+      <h3>${i.name}</h3>
+      <div class="price">${i.p1} ₽/сутки</div>
+      <div class="card-details"><p>${i.desc}</p></div>
+      <button class="cartBtn" onclick='addCart("${i.name}",${i.p1})'>В корзину</button>
+      <button class="oneClickBtn" onclick='orderOneClick("${i.name}")'>Заказать в 1 клик</button>
+    `;
+    card.onclick = (e) => { if(!e.target.closest("button")) card.classList.toggle("open"); };
+    cont.appendChild(card);
+  });
 }
 
-function addCart(name,price){
-cart.push({name,price});
-localStorage.setItem("cart",JSON.stringify(cart));
-cartCount.textContent=cart.length;
+function addCart(name, price) {
+  cart.push({name, price});
+  localStorage.setItem('cart', JSON.stringify(cart));
+  document.getElementById("cartCount").textContent = cart.length;
 }
 
-function openCart(){
-cartBox.style.display="flex";
-renderCart();
-}
-function closeCart(){cartBox.style.display="none";}
+function openCart() { document.getElementById("cartBox").style.display="flex"; renderCart(); }
+function closeCart() { document.getElementById("cartBox").style.display="none"; }
 
-function renderCart(){
-let box=cartItems;
-let total=0;
-box.innerHTML="";
-cart.forEach((i,idx)=>{
-total+=i.price;
-box.innerHTML+=`<div class="cartItem">${i.name} <b>${i.price}₽</b> <span onclick="removeItem(${idx})" style="color:red;cursor:pointer;">✕</span></div>`;
-});
-totalPrice.textContent=cart.length?`Итого: ${total} ₽/сутки`:"Корзина пуста";
+function renderCart() {
+  const box = document.getElementById("cartItems");
+  let total = 0;
+  box.innerHTML = cart.length ? "" : "Корзина пуста";
+  cart.forEach((i, idx) => {
+    total += i.price;
+    box.innerHTML += `<div class="cartItem"><span>${i.name}</span> <b>${i.price}₽</b> <span onclick="removeFromCart(${idx})" style="color:red; cursor:pointer; font-weight:bold;">✕</span></div>`;
+  });
+  document.getElementById("totalPrice").textContent = cart.length ? `Итого: ${total} ₽/сут.` : "";
 }
 
-function removeItem(i){
-cart.splice(i,1);
-localStorage.setItem("cart",JSON.stringify(cart));
-cartCount.textContent=cart.length;
-renderCart();
+function removeFromCart(idx) {
+    cart.splice(idx, 1);
+    localStorage.setItem('cart', JSON.stringify(cart));
+    document.getElementById("cartCount").textContent = cart.length;
+    renderCart();
 }
 
-function orderOne(name){
-let phone=prompt("Ваш телефон:");
-if(phone){
-sendTelegram(`⚡️ ЗАКАЗ\nТовар: ${name}\nТелефон: ${phone}`);
-}
-}
-
-function sendOrder(){
-let name=clientName.value;
-let phone=clientPhone.value;
-if(!name||!phone)return alert("Введите имя и телефон");
-
-let msg="🛒 ЗАКАЗ:\n";
-let total=0;
-cart.forEach(i=>{msg+=`${i.name} ${i.price}₽\n`;total+=i.price;});
-msg+=`Итого: ${total}₽\nИмя: ${name}\nТелефон: ${phone}`;
-sendTelegram(msg);
-
-cart=[];
-localStorage.clear();
-closeCart();
-cartCount.textContent=0;
+async function sendToTelegram(text) {
+    const url = `https://api.telegram.org/bot${TG_TOKEN}/sendMessage`;
+    try {
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ chat_id: TG_CHAT_ID, text: text, parse_mode: 'HTML' })
+        });
+        if(response.ok) {
+            alert("Заявка успешно отправлена! Скоро свяжемся.");
+            return true;
+        } else {
+            alert("Ошибка отправки. Позвоните нам.");
+        }
+    } catch (e) {
+        alert("Ошибка сети.");
+    }
 }
 
-function sendTelegram(text){
-fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendMessage`,{
-method:"POST",
-headers:{"Content-Type":"application/json"},
-body:JSON.stringify({chat_id:TG_CHAT_ID,text})
-});
-alert("Заявка отправлена!");
+function orderOneClick(itemName) {
+    const phone = prompt("Ваш телефон для заказа " + itemName + ":");
+    if(phone && phone.length > 5) {
+        const msg = `<b>⚡️ ЗАКАЗ В 1 КЛИК</b>\n\n🛠 Товар: <code>${itemName}</code>\n📞 Тел: <code>${phone}</code>`;
+        sendToTelegram(msg);
+    }
+}
+
+function sendOrder() {
+  const name = document.getElementById("clientName").value.trim();
+  const phone = document.getElementById("clientPhone").value.trim();
+  if(!name || !phone) return alert("Введите имя и телефон");
+
+  let list = "<b>🛒 НОВЫЙ ЗАКАЗ:</b>\n\n";
+  let total = 0;
+  cart.forEach((i, idx) => {
+      list += `${idx+1}. ${i.name} (${i.price}₽)\n`;
+      total += i.price;
+  });
+  list += `\n💰 <b>Итого: ${total} ₽/сут.</b>\n\n👤 Имя: ${name}\n📞 Телефон: ${phone}`;
+  
+  sendToTelegram(list).then(ok => {
+      if(ok) {
+          cart = [];
+          localStorage.removeItem('cart');
+          document.getElementById("cartCount").textContent = 0;
+          closeCart();
+      }
+  });
 }
 </script>
-
 </body>
 </html>
 
