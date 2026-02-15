@@ -34,9 +34,6 @@ input, select {padding:10px; border-radius:8px; border:1px solid #ccc; font-size
 .card:hover{transform:translateY(-5px); box-shadow:0 12px 20px rgba(0,0,0,0.1);}
 .card img{width:100%; height:180px; object-fit:cover; border-radius:12px;}
 
-.badge {padding:5px 10px; border-radius:20px; font-size:12px; width:fit-content; margin-bottom:10px; font-weight:bold; text-transform: uppercase;}
-.yes {background: #dcfce7; color: #166534;}
-.no {background: #fee2e2; color: #991b1b;}
 .price {font-size: 1.2em; font-weight:bold; margin: 10px 0; color: var(--main-black);}
 
 /* Кнопки */
@@ -94,7 +91,6 @@ button {padding:12px; border:none; border-radius:10px; font-size:14px; cursor:po
 </div>
 
 <script>
-// --- ТВОИ ДАННЫЕ УЖЕ ТУТ ---
 const TG_TOKEN = "8575516738:AAGomt_lCqq1Uzdqf7D4UrReolJF_NKhYoM"; 
 const TG_CHAT_ID = "8359415363"; 
 
@@ -116,8 +112,7 @@ fetch(sheetURL)
         name: c[1].trim(),
         desc: c[2] ? c[2].replace(/"/g, '').replace(/\n/g, ' ') : 'Описание уточняйте',
         img: c[3] ? c[3].trim() : 'https://via.placeholder.com/300x180.png?text=Инструмент',
-        p1: c[4] ? Number(c[4]) : 0,
-        avail: c[8] ? c[8].trim().replace(/"/g,'').toLowerCase() === "да" : false
+        p1: c[4] ? Number(c[4]) : 0
       };
     }).filter(p => p !== null);
     initFilters();
@@ -149,7 +144,6 @@ function render(list) {
     const card = document.createElement("div");
     card.className = "card";
     card.innerHTML = `
-      <span class="badge ${i.avail ? 'yes' : 'no'}">${i.avail ? 'В наличии' : 'Занят'}</span>
       <img src="${i.img}">
       <h3>${i.name}</h3>
       <div class="price">${i.p1} ₽/сутки</div>
@@ -241,4 +235,3 @@ function sendOrder() {
 </script>
 </body>
 </html>
-
