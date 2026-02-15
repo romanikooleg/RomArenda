@@ -38,22 +38,22 @@ section { max-width: 1200px; margin: 20px auto; padding: 20px; }
 
 /* Фильтры */
 .search-bar { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-bottom: 20px; }
-.search-bar input, .search-bar select { padding: 12px; border: 1px solid #ddd; border-radius: 8px; outline: none; min-width: 200px; }
+.search-bar input, .search-bar select { padding: 12px; border: 1px solid #ddd; border-radius: 8px; outline: none; min-width: 250px; }
 
 /* Карточки */
 .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; }
-.card { background: var(--white); border-radius: 15px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.08); transition: 0.3s; display: flex; flex-direction: column; cursor: pointer; }
-.card:hover { transform: translateY(-5px); }
-.card img { width: 100%; height: 180px; object-fit: cover; }
+.card { background: var(--white); border-radius: 15px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.08); transition: 0.3s; display: flex; flex-direction: column; cursor: pointer; border: 1px solid transparent; }
+.card:hover { transform: translateY(-5px); border-color: var(--main-yellow); }
+.card img { width: 100%; height: 200px; object-fit: cover; background: #eee; }
 .card-info { padding: 15px; flex-grow: 1; }
-.card h3 { margin: 0 0 10px; font-size: 1.1em; }
+.card h3 { margin: 0 0 10px; font-size: 1.1em; line-height: 1.3; height: 2.6em; overflow: hidden; }
 
-/* Прайс-лист в карточке */
+/* Прайс-лист */
 .price-table { background: #f9f9f9; border-radius: 8px; padding: 10px; margin-bottom: 15px; font-size: 0.85em; }
 .price-row { display: flex; justify-content: space-between; border-bottom: 1px solid #eee; padding: 4px 0; }
 .price-row:last-child { border: none; font-weight: bold; color: #000; }
 
-.desc-text { font-size: 0.85em; color: #666; display: none; margin-top: 10px; }
+.desc-text { font-size: 0.85em; color: #666; display: none; margin-top: 10px; border-top: 1px dashed #ccc; pt: 10px; }
 .card.open .desc-text { display: block; }
 
 /* Кнопки */
@@ -63,7 +63,7 @@ button { width: 100%; padding: 12px; border: none; border-radius: 8px; font-weig
 
 /* Блоки текста */
 .text-content { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); line-height: 1.7; }
-.text-content h3 { color: var(--tg-blue); margin-top: 25px; }
+.text-content h3 { color: var(--tg-blue); margin-top: 25px; border-bottom: 1px solid #eee; padding-bottom: 5px; }
 .text-content li { margin-bottom: 10px; }
 
 /* Плавающая кнопка */
@@ -75,8 +75,6 @@ button { width: 100%; padding: 12px; border: none; border-radius: 8px; font-weig
 
 @media (max-width: 600px) {
   .header-top { flex-direction: column; text-align: center; gap: 15px; }
-  .header-phone { text-align: center; }
-  nav { gap: 10px; }
   nav a { font-size: 0.75em; }
 }
 </style>
@@ -89,7 +87,7 @@ button { width: 100%; padding: 12px; border: none; border-radius: 8px; font-weig
       <img src="logo.png" alt="РомАренда">
       <div class="title-block">
         <h1>РомАренда</h1>
-        <div class="slogan">Быстро • Без залога • Заказ в 1 клик</div>
+        <div class="slogan">Аренда строительного инструмента • Быстро • Без залога • Заказ в 1 клик</div>
       </div>
     </div>
     <div class="header-phone">
@@ -107,7 +105,7 @@ button { width: 100%; padding: 12px; border: none; border-radius: 8px; font-weig
 <section id="catalog">
   <h2 class="section-title">Каталог инструмента</h2>
   <div class="search-bar">
-    <input type="text" id="searchInput" placeholder="Поиск инструмента...">
+    <input type="text" id="searchInput" placeholder="Поиск (напр. штроборез)...">
     <select id="catSelect"><option value="all">Все категории</option></select>
     <button class="btn-cart" onclick="showCart()" style="width: auto; padding: 10px 20px;">🛒 Корзина (<span id="count">0</span>)</button>
   </div>
@@ -117,9 +115,16 @@ button { width: 100%; padding: 12px; border: none; border-radius: 8px; font-weig
 <section id="terms">
   <h2 class="section-title">Условия аренды</h2>
   <div class="text-content">
-    <h3>Вариант 1: Под минимальный обеспечительный платеж</h3>
+    <h3>Вариант 1: Без залога</h3>
+    <p>При наличии Московской прописки и Московской области.</p>
     <ul>
       <li><b>Документы:</b> Оригинал паспорта РФ (прописка Москва/МО до 250 км).</li>
+    </ul>
+
+    <h3>Вариант 2: Под обеспечительный платеж</h3>
+    <p>Для клиентов без Московской прописки и Московской области.</p>
+    <ul>
+      <li><b>Документы:</b> Оригинал паспорта РФ.</li>
       <li><b>Договор:</b> Оформляется на месте за 5 минут.</li>
       <li><b>Залог:</b> Небольшая фиксированная сумма.</li>
     </ul>
@@ -127,8 +132,8 @@ button { width: 100%; padding: 12px; border: none; border-radius: 8px; font-weig
     <h3>🌟 Программа лояльности «Доверие»</h3>
     <p>Арендуйте <b>БЕЗ ЗАЛОГА</b>, если вы наш постоянный клиент (более 3-х раз), возвращаете всё вовремя и имеете прописку в Мск/МО.</p>
 
-    <div style="background: #fff9c4; padding: 15px; border-radius: 10px; margin-top: 20px;">
-      <b>⚠️ Важно:</b> Мы проверяем клиентов через системы ФССП и МВД на предмет задолженностей и судимостей. В аренде может быть отказано в одностороннем порядке.
+    <div style="background: #fff3e0; padding: 20px; border-radius: 10px; margin-top: 20px; border-left: 5px solid #ff9800;">
+      <b>⚠️ Важно:</b> Мы проверяем клиентов через системы ФССП и МВД на предмет задолженностей и судимостей. В связи с этим в услугах проката может быть отказано в одностороннем порядке. Проверка производится по единой системе МВД.
     </div>
   </div>
 </section>
@@ -136,14 +141,14 @@ button { width: 100%; padding: 12px; border: none; border-radius: 8px; font-weig
 <section id="delivery">
   <h2 class="section-title">Доставка и самовывоз</h2>
   <div class="text-content">
-    <p>📍 <b>Пункт выдачи:</b> Приезжайте к нам, оплачивайте на месте и забирайте инструмент.</p>
-    <p>🚀 <b>Доставка:</b> Текстильщики, Печатники, Кузьминки. Привезем от 30 минут!</p>
-    <p>🎁 <b>Бонус +2 часа:</b> Мы понимаем пробки. Взяли в 12:00 — вернуть нужно до 14:00 в день окончания срока.</p>
+    <p>🚀 <b>ДОСТАВКА:</b> Текстильщики, Печатники, Кузьминки. Привезем инструмент от 30 минут!</p>
+    <p>🎁 <b>Бонус по времени:</b> Мы даем +2 часа на дорогу! Взяли в 12:00 — вернуть нужно до 14:00 в день окончания срока.</p>
+    <p><b>Правила:</b> Инструмент должен быть чистым. Продление возможно по звонку или через Telegram.</p>
     
-    <h3>💰 Спецтарифы</h3>
+    <h3>💰 Специальные тарифы</h3>
     <ul>
-      <li><b>Тариф «Вечерний» (0.5 суток):</b> Взяли после 17:00 — вернули до 10:00.</li>
-      <li><b>Тариф «Выходные»:</b> Пятница (вечер) — Понедельник (утро). Оплата всего за 2-е суток!</li>
+      <li><b>Тариф «Вечерний» (0.5 суток):</b> Взяли после 17:00, вернули до 10:00.</li>
+      <li><b>Тариф «Выходные»:</b> Пятница вечер — Понедельник утро (оплата за 2 суток вместо 3-х).</li>
     </ul>
   </div>
 </section>
@@ -152,14 +157,14 @@ button { width: 100%; padding: 12px; border: none; border-radius: 8px; font-weig
 
 <div id="cartOverlay">
   <div id="cartModal">
-    <h3>Оформление заказа</h3>
+    <h3>📝 Оформление заказа</h3>
     <div id="cartItems"></div>
     <hr>
-    <p id="totalSum" style="font-weight:bold;"></p>
+    <p id="totalSum" style="font-weight:bold; font-size: 1.1em;"></p>
     <input type="text" id="userName" placeholder="Ваше имя" style="width:100%; padding:12px; margin-bottom:10px; border-radius:8px; border:1px solid #ddd;">
     <input type="text" id="userPhone" placeholder="+7 (___) ___-__-__" style="width:100%; padding:12px; margin-bottom:15px; border-radius:8px; border:1px solid #ddd;">
-    <button class="btn-cart" style="background:var(--tg-blue); color:white" onclick="sendToTG()">ОТПРАВИТЬ ЗАКАЗ</button>
-    <button onclick="hideCart()" style="background:none; color: #888;">Закрыть</button>
+    <button class="btn-cart" style="background:var(--tg-blue); color:white" onclick="sendToTG()">ОТПРАВИТЬ ЗАЯВКУ</button>
+    <button onclick="hideCart()" style="background:none; color: #888; font-size: 0.9em;">← Вернуться к выбору</button>
   </div>
 </div>
 
@@ -177,25 +182,25 @@ document.getElementById('userPhone').oninput = function(e){
   e.target.value = !x[2] ? x[1] : '+7 (' + x[2] + (x[3] ? ') ' + x[3] : '') + (x[4] ? '-' + x[4] : '') + (x[5] ? '-' + x[5] : '');
 };
 
-// Загрузка данных
-fetch(CSV_URL + "&cache=" + Date.now())
+// Загрузка
+fetch(CSV_URL + "&v=" + Date.now())
   .then(res => res.text())
   .then(data => {
     const rows = data.split('\n').slice(1);
     tools = rows.map(row => {
       const cols = row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
+      if(!cols[1]) return null;
       return {
         cat: cols[0]?.replace(/"/g,'').trim(),
         name: cols[1]?.replace(/"/g,'').trim(),
         desc: cols[2]?.replace(/"/g,'').trim(),
         img: cols[3]?.trim() || 'logo.png',
-        p1: cols[4]?.trim(), // 1 сутки
-        p2: cols[5]?.trim(), // 2 суток
-        p3: cols[6]?.trim()  // 3+ суток
+        p1: cols[4]?.trim() || '0',
+        p2: cols[5]?.trim(),
+        p3: cols[6]?.trim()
       };
-    }).filter(t => t.name);
+    }).filter(t => t !== null);
     
-    // Категории
     const cats = [...new Set(tools.map(t => t.cat))];
     cats.forEach(c => {
       let opt = document.createElement('option');
@@ -221,7 +226,7 @@ function render(arr) {
           ${t.p2 ? `<div class="price-row"><span>2 суток:</span> <span>${t.p2} ₽</span></div>` : ''}
           ${t.p3 ? `<div class="price-row"><span>от 3 суток:</span> <span>${t.p3} ₽</span></div>` : ''}
         </div>
-        <div class="desc-text">${t.desc || 'Описание уточняйте по телефону'}</div>
+        <div class="desc-text">${t.desc || 'Характеристики уточняйте у менеджера.'}</div>
         <button class="btn-cart" onclick="addToCart('${t.name}', '${t.p1}')">В корзину</button>
         <button class="btn-click" onclick="oneClick('${t.name}')">В 1 клик</button>
       </div>
@@ -231,7 +236,6 @@ function render(arr) {
   });
 }
 
-// Фильтры
 document.getElementById('searchInput').oninput = () => {
   const val = document.getElementById('searchInput').value.toLowerCase();
   render(tools.filter(t => t.name.toLowerCase().includes(val)));
@@ -249,27 +253,28 @@ function addToCart(name, price) {
 function showCart() {
   document.getElementById('cartOverlay').style.display = 'flex';
   const list = document.getElementById('cartItems');
-  list.innerHTML = cart.length ? '' : 'Корзина пуста';
+  list.innerHTML = cart.length ? '' : 'Корзина пока пуста';
   let total = 0;
   cart.forEach((item, i) => {
-    total += parseInt(item.price);
-    list.innerHTML += `<div style="display:flex; justify-content:space-between; margin-bottom:10px;">
-      <span>${item.name}</span> <b>${item.price}₽</b>
-      <span onclick="cart.splice(${i},1); showCart();" style="color:red; cursor:pointer;">✕</span>
+    total += parseInt(item.price.replace(/\s/g, ''));
+    list.innerHTML += `<div style="display:flex; justify-content:space-between; margin-bottom:10px; font-size:0.9em;">
+      <span style="max-width:70%">${item.name}</span> <b>${item.price}₽</b>
+      <span onclick="cart.splice(${i},1); showCart(); updateCount();" style="color:red; cursor:pointer; font-weight:bold; padding:0 5px;">✕</span>
     </div>`;
   });
-  document.getElementById('totalSum').textContent = `Итого (1-е сутки): ${total} ₽`;
+  document.getElementById('totalSum').textContent = `Итого за 1-е сутки: ${total} ₽`;
 }
 
+function updateCount() { document.getElementById('count').textContent = cart.length; }
 function hideCart() { document.getElementById('cartOverlay').style.display = 'none'; }
 
 async function sendToTG() {
   const name = document.getElementById('userName').value;
   const phone = document.getElementById('userPhone').value;
-  if(!name || phone.length < 10) return alert('Укажите имя и телефон');
+  if(!name || phone.length < 16) return alert('Пожалуйста, введите имя и полный номер телефона');
 
-  let text = `<b>🛒 ЗАКАЗ С САЙТА</b>\n\n👤 Имя: ${name}\n📞 Тел: ${phone}\n\n<b>Инструменты:</b>\n`;
-  cart.forEach((t, i) => text += `${i+1}. ${t.name} (${t.price}₽)\n`);
+  let text = `<b>🛒 НОВЫЙ ЗАКАЗ (КОРЗИНА)</b>\n\n👤 Имя: ${name}\n📞 Тел: ${phone}\n\n<b>Список:</b>\n`;
+  cart.forEach((t, i) => text += `${i+1}. ${t.name} (${t.p1}₽)\n`);
 
   const res = await fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`, {
     method: 'POST',
@@ -278,20 +283,20 @@ async function sendToTG() {
   });
   
   if(res.ok) {
-    alert('Заявка принята! Олег свяжется с вами.');
-    cart = []; document.getElementById('count').textContent = 0; hideCart();
+    alert('Заявка успешно отправлена! Ожидайте звонка.');
+    cart = []; updateCount(); hideCart();
   }
 }
 
 function oneClick(name) {
-  const p = prompt('Ваш телефон для заказа ' + name + ':');
-  if(p) {
+  const p = prompt('Ваш номер телефона для заказа ' + name + ':');
+  if(p && p.length > 5) {
     const text = `<b>⚡ ЗАКАЗ В 1 КЛИК</b>\n\n🛠 Инструмент: ${name}\n📞 Тел: ${p}`;
     fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ chat_id: CHAT_ID, text, parse_mode: 'HTML' })
-    }).then(() => alert('Заявка отправлена!'));
+    }).then(() => alert('Заявка на ' + name + ' отправлена!'));
   }
 }
 </script>
