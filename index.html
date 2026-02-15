@@ -233,7 +233,7 @@ font-size:13px;
 <div id="cart">
 <h2>🛒 Оформление заказа</h2>
 <div id="cartItems"></div>
-<div id="totalPrice"></div>
+<div id="totalPrice" style="margin:10px 0;font-weight:bold;"></div>
 <input id="clientName" placeholder="Ваше имя" style="width:100%;padding:10px;margin:5px 0;">
 <input id="clientPhone" placeholder="Телефон" style="width:100%;padding:10px;margin-bottom:10px;">
 <button class="oneClickBtn" onclick="sendOrder()">Отправить заявку</button>
@@ -247,15 +247,21 @@ const TG_CHAT_ID="ТВОЙ_CHAT_ID";
 
 const sheetURL="https://docs.google.com/spreadsheets/d/e/2PACX-1vTOtUQAhnBMNrCPWFj0u6cjQeb0qWscrovHdCWvuBQMaCCirL4ds3i6NtjqwMpcReNsrhrY_X8ICXOL/pub?gid=2109115062&single=true&output=csv";
 
+const productsDiv=document.getElementById("products");
+const search=document.getElementById("search");
+const categoryFilter=document.getElementById("categoryFilter");
+const cartCount=document.getElementById("cartCount");
+
 let products=[];
 let cart=JSON.parse(localStorage.getItem("cart"))||[];
-document.getElementById("cartCount").textContent=cart.length;
+cartCount.textContent=cart.length;
 
-fetch(sheetURL).then(r=>r.text()).then(csv=>{
-const rows=csv.split("\n").slice(1);
+fetch(sheetURL)
+.then(r=>r.text())
+.then(csv=>{
+const rows=csv.split("\n").slice(1).filter(r=>r.trim()!=="");
 products=rows.map(r=>{
 const c=r.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
-if(!c[0])return null;
 return{
 cat:c[0],
 name:c[1],
@@ -263,30 +269,29 @@ desc:c[2]||"Описание уточняйте",
 img:c[3]||"https://via.placeholder.com/300x200",
 price:Number(c[4])||0
 };
-}).filter(Boolean);
+});
 initFilters();
 render(products);
 });
 
 function initFilters(){
-const f=document.getElementById("categoryFilter");
 [...new Set(products.map(p=>p.cat))].forEach(cat=>{
 let o=document.createElement("option");
 o.value=cat;
 o.textContent=cat;
-f.appendChild(o);
+categoryFilter.appendChild(o);
 });
 }
 
-document.getElementById("search").addEventListener("input",()=>{
+search.addEventListener("input",()=>{
 let v=search.value.toLowerCase();
 render(products.filter(p=>p.name.toLowerCase().includes(v)));
 });
 
-categoryFilter.onchange=e=>{
+categoryFilter.addEventListener("change",e=>{
 let c=e.target.value;
 render(c=="all"?products:products.filter(p=>p.cat==c));
-};
+});
 
 function render(list){
 productsDiv.innerHTML="";
@@ -316,7 +321,10 @@ localStorage.setItem("cart",JSON.stringify(cart));
 cartCount.textContent=cart.length;
 }
 
-function openCart(){cartBox.style.display="flex";renderCart();}
+function openCart(){
+cartBox.style.display="flex";
+renderCart();
+}
 function closeCart(){cartBox.style.display="none";}
 
 function renderCart(){
@@ -325,12 +333,12 @@ let total=0;
 box.innerHTML="";
 cart.forEach((i,idx)=>{
 total+=i.price;
-box.innerHTML+=`<div class="cartItem">${i.name} <b>${i.price}₽</b> <span onclick="remove(${idx})" style="color:red;cursor:pointer;">✕</span></div>`;
+box.innerHTML+=`<div class="cartItem">${i.name} <b>${i.price}₽</b> <span onclick="removeItem(${idx})" style="color:red;cursor:pointer;">✕</span></div>`;
 });
 totalPrice.textContent=cart.length?`Итого: ${total} ₽/сутки`:"Корзина пуста";
 }
 
-function remove(i){
+function removeItem(i){
 cart.splice(i,1);
 localStorage.setItem("cart",JSON.stringify(cart));
 cartCount.textContent=cart.length;
@@ -348,18 +356,20 @@ function sendOrder(){
 let name=clientName.value;
 let phone=clientPhone.value;
 if(!name||!phone)return alert("Введите имя и телефон");
+
 let msg="🛒 ЗАКАЗ:\n";
 let total=0;
 cart.forEach(i=>{msg+=`${i.name} ${i.price}₽\n`;total+=i.price;});
 msg+=`Итого: ${total}₽\nИмя: ${name}\nТелефон: ${phone}`;
 sendTelegram(msg);
+
 cart=[];
 localStorage.clear();
 closeCart();
 cartCount.textContent=0;
 }
 
-async function sendTelegram(text){
+function sendTelegram(text){
 fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendMessage`,{
 method:"POST",
 headers:{"Content-Type":"application/json"},
