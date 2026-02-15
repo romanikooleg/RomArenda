@@ -11,6 +11,7 @@
   --main-black: #1F1F1F;
   --light-gray: #F3F3F3;
   --white: #FFFFFF;
+  --max-blue: #0078FF; /* Фирменный цвет мессенджера MAX */
 }
 
 /* Общие стили */
@@ -22,11 +23,11 @@ header {background: var(--main-black); color: var(--white); padding:15px 20px; t
 header .logo-container {
   display: flex;
   align-items: center;
-  justify-content: space-between; /* логотип слева, телефон справа */
+  justify-content: space-between;
   flex-wrap: nowrap;
 }
 header img {
-  height: 120px; /* увеличили в 2 раза */
+  height: 120px;
   border-radius: 8px;
   object-fit: contain;
   transition: 0.3s;
@@ -34,14 +35,14 @@ header img {
 header img:hover{transform:scale(1.1);}
 header h1 {
   margin: 0;
-  font-size: 2em; /* увеличиваем текст */
+  font-size: 2em;
   flex-grow: 1;
   text-align: left;
   margin-left: 12px;
 }
 header p {
   margin: 0;
-  font-size: 28px; /* увеличен размер */
+  font-size: 28px;
   text-align: right;
 }
 
@@ -59,12 +60,14 @@ label {font-size:14px; display:flex; align-items:center; gap:4px;}
 .card img:hover{transform:scale(1.05);}
 .badge {padding:4px 8px; border-radius:6px; color:var(--main-black); font-size:12px; width:fit-content; margin-bottom:5px; font-weight:bold;}
 .yes {background: var(--main-yellow);}
-.no {background:#dc2626;}
+.no {background:#dc2626; color: white;}
 .price {font-weight:bold; margin-top:5px;}
-.card button {margin-top:6px; color:var(--main-black); padding:8px; border:none; border-radius:8px; font-size:14px; cursor:pointer; transition:0.3s;}
-.card button:hover{transform:scale(1.05); box-shadow:0 4px 10px rgba(0,0,0,0.25);}
-.cartBtn{background:var(--main-yellow); color:var(--main-black); font-weight:bold;}
-.card a button{background:var(--main-yellow); font-weight:bold;}
+
+/* Кнопки */
+.card button {margin-top:6px; padding:10px; border:none; border-radius:8px; font-size:14px; cursor:pointer; transition:0.3s; font-weight:bold;}
+.card button:hover{transform:scale(1.02); opacity: 0.9;}
+.cartBtn {background: var(--main-yellow); color: var(--main-black);}
+.maxBtn {background: var(--max-blue); color: white; display: block; width: 100%; text-align: center; margin-top: 5px;}
 
 /* Подробное описание */
 .card-details {max-height:0; overflow:hidden; transition:max-height 0.5s ease, padding 0.5s ease;}
@@ -74,21 +77,18 @@ label {font-size:14px; display:flex; align-items:center; gap:4px;}
 #cartBox {position:fixed; inset:0; background:rgba(0,0,0,0.6); display:none; justify-content:center; align-items:center; z-index:999;}
 #cart {background:var(--white); padding:20px; border-radius:12px; width:90%; max-width:400px; max-height:90%; overflow-y:auto; box-shadow:0 4px 15px rgba(0,0,0,0.25);}
 #cart h3{margin-top:0;}
+#cart input {width: 95%; margin-bottom: 10px;}
 .cartItem{border-bottom:1px solid #ddd; padding:6px 0; font-size:14px;}
+.sendOrderBtn {background: var(--max-blue); color: white; width: 100%; padding: 12px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;}
 
-/* Sticky кнопка аренды */
+/* Sticky кнопка */
 .sticky-order-btn{position:fixed; bottom:15px; left:50%; transform:translateX(-50%); background:var(--main-yellow); padding:12px 20px; border-radius:8px; font-weight:bold; z-index:300; cursor:pointer; box-shadow:0 4px 10px rgba(0,0,0,0.25); transition:0.3s;}
-.sticky-order-btn:hover{transform:translateX(-50%) scale(1.05);}
 
-/* Анимация появления */
 @keyframes fadeIn{from{opacity:0; transform:translateY(10px);} to{opacity:1; transform:translateY(0);}}
 
-/* Адаптив */
 @media(max-width:600px){
-  .card img{height:150px;}
-  .controls{flex-direction:column; gap:6px;}
   header .logo-container {flex-direction: column; align-items: flex-start;}
-  header p {text-align:left; margin-top:6px;}
+  header p {text-align:left; margin-top:6px; font-size: 22px;}
 }
 </style>
 </head>
@@ -120,71 +120,51 @@ label {font-size:14px; display:flex; align-items:center; gap:4px;}
 
 <div id="cartBox">
   <div id="cart">
-    <h3>Корзина</h3>
+    <h3>🛒 Ваш заказ</h3>
     <div id="cartItems"></div>
-    <input id="clientName" placeholder="Ваше имя"><br><br>
-    <input id="clientPhone" placeholder="Телефон"><br><br>
-    <button onclick="sendOrder()">Отправить в Telegram</button>
-    <button onclick="closeCart()">Закрыть</button>
+    <hr>
+    <input id="clientName" placeholder="Ваше имя">
+    <input id="clientPhone" placeholder="Телефон для связи">
+    <button class="sendOrderBtn" onclick="sendOrder()">Отправить заявку в MAX</button>
+    <button style="width:100%; background:none; border:none; margin-top:10px; cursor:pointer; color:gray;" onclick="closeCart()">← Вернуться к покупкам</button>
   </div>
 </div>
 
-<button class="sticky-order-btn" onclick="openCart()">Арендовать</button>
+<button class="sticky-order-btn" onclick="openCart()">Оформить аренду</button>
 
 <script>
-// URL вашей таблицы CSV
 const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTOtUQAhnBMNrCPWFj0u6cjQeb0qWscrovHdCWvuBQMaCCirL4ds3i6NtjqwMpcReNsrhrY_X8ICXOL/pub?gid=2109115062&single=true&output=csv";
+const myMaxPhone = "79152772441"; // Твой номер для MAX
 
 let products = [];
 let cart = JSON.parse(localStorage.getItem('cart')) || [];
 document.getElementById("cartCount").textContent = cart.length;
 
-// --- Загрузка CSV ---
 fetch(sheetURL)
   .then(r => r.text())
   .then(csv => {
-    const rows = csv.split("\n").slice(1)
-      .map(r => r.trim())
-      .filter(r => r !== "");
-
-    const tempProducts = rows.map(r => {
+    const rows = csv.split("\n").slice(1).map(r => r.trim()).filter(r => r !== "");
+    products = rows.map(r => {
       const c = r.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
-
-      if(!c[0] || !c[1]) return null; // игнорируем строки без категории или названия
-
+      if(!c[0] || !c[1]) return null;
       return {
         cat: c[0].trim(),
         name: c[1].trim(),
-        desc: c[2] ? c[2].replace(/"/g, '').replace(/\n/g, '|') : 'Описание отсутствует',
-        img: c[3] ? c[3].trim() : 'https://via.placeholder.com/300x180.png?text=Нет+изображения',
+        desc: c[2] ? c[2].replace(/"/g, '').replace(/\n/g, ' ') : 'Описание отсутствует',
+        img: c[3] ? c[3].trim() : 'https://via.placeholder.com/300x180.png?text=Нет+фото',
         p1: c[4] ? Number(c[4]) : 0,
-        p2: c[5] ? Number(c[5]) : 0,
-        p3: c[6] ? Number(c[6]) : 0,
-        p5: c[7] ? Number(c[7]) : 0,
         avail: c[8] ? c[8].trim().replace(/"/g,'').toLowerCase() === "да" : false
       };
     }).filter(p => p !== null);
-
-    // --- убираем дубли по названию ---
-    const seen = new Set();
-    products = tempProducts.filter(p => {
-      const key = p.name.toLowerCase();
-      if(seen.has(key)) return false;
-      seen.add(key);
-      return true;
-    });
 
     initFilters();
     applyFilters();
   });
 
-// --- Фильтры ---
 function initFilters() {
   const f = document.getElementById("categoryFilter");
   [...new Set(products.map(p => p.cat))].forEach(cat => {
-    const o = document.createElement("option");
-    o.value = cat;
-    o.textContent = cat;
+    const o = document.createElement("option"); o.value = cat; o.textContent = cat;
     f.appendChild(o);
   });
 }
@@ -204,78 +184,89 @@ function applyFilters() {
   if(cat !== "all") filtered = filtered.filter(p => p.cat === cat);
   if(search) filtered = filtered.filter(p => p.name.toLowerCase().includes(search));
   if(available) filtered = filtered.filter(p => p.avail);
-
   if(sort === "asc") filtered.sort((a,b) => a.p1 - b.p1);
   if(sort === "desc") filtered.sort((a,b) => b.p1 - a.p1);
 
   render(filtered);
 }
 
-// --- Рендер карточек ---
 function render(list) {
   const cont = document.getElementById("products");
   cont.innerHTML = "";
   list.forEach(i => {
     const badgeClass = i.avail ? "yes" : "no";
-    const badgeText = i.avail ? "В наличии" : "Нет";
+    const badgeText = i.avail ? "В наличии" : "Занят";
     const card = document.createElement("div");
     card.className = "card";
     card.innerHTML = `
       <span class="badge ${badgeClass}">${badgeText}</span>
       <img src="${i.img}" alt="${i.name}">
       <h3>${i.name}</h3>
-      <div class="price">
-        1 сутки: ${i.p1} ₽<br>
-        2 суток: ${i.p2} ₽<br>
-        3 суток: ${i.p3} ₽<br>
-        от 5 суток: ${i.p5} ₽
-      </div>
+      <div class="price">От ${i.p1} ₽/сутки</div>
       <div class="card-details"><p>${i.desc}</p></div>
-      <button onclick='addCart("${i.name}",${i.p1})'>В корзину</button>
-      <a href="https://t.me/ArendMSK" target="_blank"><button>Арендовать</button></a>
+      <button class="cartBtn" onclick='addCart("${i.name}",${i.p1})'>Добавить в корзину</button>
+      <button class="maxBtn" onclick="directMax('${i.name}')">Спросить в MAX</button>
     `;
-    card.addEventListener("click", function(e){
-      if(!e.target.closest("button") && !e.target.closest("a")) card.classList.toggle("open");
+    card.addEventListener("click", (e) => {
+      if(!e.target.closest("button")) card.classList.toggle("open");
     });
     cont.appendChild(card);
   });
 }
 
-// --- Корзина ---
 function addCart(name, price) {
   cart.push({name, price});
   localStorage.setItem('cart', JSON.stringify(cart));
   document.getElementById("cartCount").textContent = cart.length;
 }
-function openCart() {document.getElementById("cartBox").style.display="flex"; renderCart();}
-function closeCart() {document.getElementById("cartBox").style.display="none";}
+
+function openCart() { document.getElementById("cartBox").style.display="flex"; renderCart(); }
+function closeCart() { document.getElementById("cartBox").style.display="none"; }
+
 function renderCart() {
   const box = document.getElementById("cartItems");
-  box.innerHTML = "";
-  cart.forEach(i => {
+  box.innerHTML = cart.length ? "" : "<p>Корзина пока пуста</p>";
+  cart.forEach((i, index) => {
     const d = document.createElement("div");
     d.className = "cartItem";
-    d.textContent = i.name + " - " + i.price + " ₽";
+    d.innerHTML = `<span>${i.name}</span> <b>${i.price}₽</b> <span style="color:red; cursor:pointer; float:right;" onclick="removeItem(${index})">✕</span>`;
     box.appendChild(d);
   });
 }
 
-// --- Отправка заказа ---
+function removeItem(index) {
+  cart.splice(index, 1);
+  localStorage.setItem('cart', JSON.stringify(cart));
+  document.getElementById("cartCount").textContent = cart.length;
+  renderCart();
+}
+
+// Прямая связь по товару
+function directMax(itemName) {
+  const text = encodeURIComponent(`Здравствуйте! Интересует аренда: ${itemName}. Есть в наличии?`);
+  window.open(`https://max.ru/chat/${myMaxPhone}?text=${text}`, "_blank");
+}
+
+// Отправка всей корзины
 function sendOrder() {
-  if(!cart.length) return alert("Корзина пуста");
+  if(!cart.length) return alert("Добавьте товары в корзину");
   const name = document.getElementById("clientName").value.trim();
   const phone = document.getElementById("clientPhone").value.trim();
-  if(!name || !phone) return alert("Введите имя и телефон");
-  let text = "ЗАКАЗ:%0A";
-  cart.forEach(i => text+=`${i.name} - ${i.price}₽%0A`);
-  text += `Имя: ${name}%0AТелефон: ${phone}`;
-  window.open("https://t.me/ArendMSK?text="+text,"_blank");
+  
+  if(!name || !phone) return alert("Пожалуйста, заполните имя и телефон");
+
+  let orderList = "";
+  cart.forEach((i, idx) => orderList += `${idx+1}. ${i.name} (${i.price}₽)\n`);
+  
+  const fullText = `🚀 НОВЫЙ ЗАКАЗ С САЙТА:\n\n${orderList}\n👤 Клиент: ${name}\n📞 Тел: ${phone}`;
+  const maxUrl = `https://max.ru/chat/${myMaxPhone}?text=${encodeURIComponent(fullText)}`;
+  
+  window.open(maxUrl, "_blank");
 }
 </script>
 
 </body>
 </html>
-
 
 
 
