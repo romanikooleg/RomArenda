@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<title>РомАренда — Прокат инструмента в Москве</title>
+<title>РомАренда — Прокат инструмента</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/png" href="logo.png">
 
@@ -10,287 +10,289 @@
 :root {
   --main-yellow: #FFC107;
   --main-black: #1F1F1F;
-  --light-gray: #F8F9FA;
+  --light-gray: #F4F7F6;
   --white: #FFFFFF;
   --tg-blue: #0088cc;
-  --text-gray: #444;
 }
 
-body { margin:0; font-family: 'Segoe UI', Roboto, sans-serif; background: var(--light-gray); color: var(--main-black); line-height: 1.6;}
+* { box-sizing: border-box; scroll-behavior: smooth; }
+body { margin:0; font-family: 'Segoe UI', Arial, sans-serif; background: var(--light-gray); color: var(--main-black); }
 
 /* Шапка */
-header {background: var(--main-black); color: var(--white); padding:20px; box-shadow: 0 4px 10px rgba(0,0,0,0.3);}
-.header-content { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; }
-.logo-area { display: flex; align-items: center; gap: 15px; }
-header img { height: 80px; border-radius: 10px; }
-.title-block h1 { margin: 0; font-size: 2em; letter-spacing: 1px; }
-.slogan { font-size: 0.9em; color: var(--main-yellow); font-weight: 500; margin-top: 5px; }
-.contact-header { text-align: right; }
-.contact-header a { color: var(--main-yellow); font-size: 1.4em; font-weight: bold; text-decoration: none; }
+header { background: var(--main-black); color: var(--white); padding: 15px 20px; }
+.header-top { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; }
+.logo-box { display: flex; align-items: center; gap: 15px; }
+header img { height: 70px; border-radius: 8px; }
+.title-block h1 { margin: 0; font-size: 1.6em; }
+.slogan { font-size: 0.8em; color: var(--main-yellow); }
+.header-phone a { color: var(--main-yellow); font-size: 1.3em; font-weight: bold; text-decoration: none; }
 
-/* Фильтры и Поиск */
-.controls-bg { background: var(--white); border-bottom: 1px solid #ddd; position: sticky; top: 0; z-index: 100; }
-.controls { max-width: 1200px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 15px; padding: 15px 20px; justify-content: center; }
-.controls input, .controls select { padding: 12px 15px; border-radius: 8px; border: 1px solid #ccc; font-size: 15px; outline: none; min-width: 250px; }
-.controls input:focus { border-color: var(--main-yellow); }
+/* Навигация */
+nav { background: #2c2c2c; position: sticky; top: 0; z-index: 1000; display: flex; justify-content: center; gap: 20px; padding: 12px; flex-wrap: wrap;}
+nav a { color: white; text-decoration: none; font-size: 0.9em; font-weight: bold; text-transform: uppercase; transition: 0.3s;}
+nav a:hover { color: var(--main-yellow); }
 
-/* Карточки товаров */
-.container { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; padding: 30px 20px; max-width: 1200px; margin: 0 auto; }
-.card { background: var(--white); border-radius: 18px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.05); transition: 0.3s; display: flex; flex-direction: column; position: relative; border: 1px solid #eee; }
-.card:hover { transform: translateY(-8px); box-shadow: 0 12px 25px rgba(0,0,0,0.1); }
-.card img { width: 100%; height: 200px; object-fit: cover; background: #eee; }
-.card-content { padding: 15px; flex-grow: 1; display: flex; flex-direction: column; }
-.card h3 { margin: 0 0 10px 0; font-size: 1.2em; color: #222; }
-.price { font-size: 1.4em; font-weight: 800; color: #000; margin-bottom: 10px; }
-.card-details { font-size: 0.9em; color: #666; margin-bottom: 15px; display: none; }
-.card.open .card-details { display: block; }
+/* Секции */
+section { max-width: 1200px; margin: 20px auto; padding: 20px; }
+.section-title { border-left: 5px solid var(--main-yellow); padding-left: 15px; margin-bottom: 25px; font-size: 1.5em; }
+
+/* Фильтры */
+.search-bar { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-bottom: 20px; }
+.search-bar input, .search-bar select { padding: 12px; border: 1px solid #ddd; border-radius: 8px; outline: none; min-width: 200px; }
+
+/* Карточки */
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; }
+.card { background: var(--white); border-radius: 15px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.08); transition: 0.3s; display: flex; flex-direction: column; cursor: pointer; }
+.card:hover { transform: translateY(-5px); }
+.card img { width: 100%; height: 180px; object-fit: cover; }
+.card-info { padding: 15px; flex-grow: 1; }
+.card h3 { margin: 0 0 10px; font-size: 1.1em; }
+
+/* Прайс-лист в карточке */
+.price-table { background: #f9f9f9; border-radius: 8px; padding: 10px; margin-bottom: 15px; font-size: 0.85em; }
+.price-row { display: flex; justify-content: space-between; border-bottom: 1px solid #eee; padding: 4px 0; }
+.price-row:last-child { border: none; font-weight: bold; color: #000; }
+
+.desc-text { font-size: 0.85em; color: #666; display: none; margin-top: 10px; }
+.card.open .desc-text { display: block; }
 
 /* Кнопки */
-button { padding: 12px; border: none; border-radius: 10px; font-size: 14px; cursor: pointer; font-weight: bold; transition: 0.2s; }
-.cartBtn { background: var(--main-yellow); color: var(--main-black); margin-bottom: 8px; width: 100%; }
-.oneClickBtn { background: var(--main-black); color: white; width: 100%; }
-.oneClickBtn:hover { background: #333; }
+button { width: 100%; padding: 12px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 5px; transition: 0.2s; }
+.btn-cart { background: var(--main-yellow); color: #000; }
+.btn-click { background: var(--main-black); color: #fff; }
 
-/* Блок условий аренды (Пункт 4) */
-.terms-section { max-width: 900px; margin: 40px auto; padding: 40px 20px; background: var(--white); border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
-.terms-section h2 { border-bottom: 3px solid var(--main-yellow); display: inline-block; margin-bottom: 25px; }
-.term-block { margin-bottom: 30px; }
-.term-block h3 { color: var(--tg-blue); margin-bottom: 10px; display: flex; align-items: center; gap: 10px; }
-.term-block ul { padding-left: 20px; }
-.term-block li { margin-bottom: 8px; }
-.highlight-box { background: #fffde7; border-left: 5px solid var(--main-yellow); padding: 15px; margin: 15px 0; border-radius: 0 10px 10px 0; }
+/* Блоки текста */
+.text-content { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); line-height: 1.7; }
+.text-content h3 { color: var(--tg-blue); margin-top: 25px; }
+.text-content li { margin-bottom: 10px; }
 
-/* Плавающая кнопка связи (Пункт 2) */
-.fab { position: fixed; bottom: 30px; right: 30px; background: #25D366; color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 20px rgba(0,0,0,0.2); cursor: pointer; z-index: 1000; text-decoration: none; font-size: 30px; transition: 0.3s; }
-.fab:hover { transform: scale(1.1); }
+/* Плавающая кнопка */
+.fab { position: fixed; bottom: 20px; right: 20px; background: #25D366; color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 30px; text-decoration: none; box-shadow: 0 4px 15px rgba(0,0,0,0.3); z-index: 1000; }
 
 /* Корзина */
-#cartBox { position: fixed; inset: 0; background: rgba(0,0,0,0.8); display: none; justify-content: center; align-items: center; z-index: 2000; padding: 10px; }
-#cart { background: var(--white); padding: 30px; border-radius: 25px; width: 100%; max-width: 450px; position: relative; }
-.cartItem { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #eee; }
+#cartOverlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); display: none; justify-content: center; align-items: center; z-index: 2000; padding: 15px; }
+#cartModal { background: white; width: 100%; max-width: 450px; padding: 30px; border-radius: 20px; }
 
-/* Адаптивность */
-@media (max-width: 768px) {
-  .header-content { flex-direction: column; text-align: center; }
-  .logo-area { flex-direction: column; }
-  .title-block { margin: 15px 0; }
-  .contact-header { text-align: center; }
+@media (max-width: 600px) {
+  .header-top { flex-direction: column; text-align: center; gap: 15px; }
+  .header-phone { text-align: center; }
+  nav { gap: 10px; }
+  nav a { font-size: 0.75em; }
 }
 </style>
 </head>
 <body>
 
 <header>
-  <div class="header-content">
-    <div class="logo-area">
+  <div class="header-top">
+    <div class="logo-box">
       <img src="logo.png" alt="РомАренда">
       <div class="title-block">
         <h1>РомАренда</h1>
-        <div class="slogan">Аренда строительного инструмента • Быстро • Без залога • Заказ в 1 клик</div>
+        <div class="slogan">Быстро • Без залога • Заказ в 1 клик</div>
       </div>
     </div>
-    <div class="contact-header">
+    <div class="header-phone">
       <a href="tel:+79152772441">+7 915 277 24 41</a>
     </div>
   </div>
 </header>
 
-<div class="controls-bg">
-  <div class="controls">
-    <input id="search" placeholder="🔍 Что ищем? (например: Пила)">
-    <select id="categoryFilter"><option value="all">📁 Все категории</option></select>
-    <button class="cartBtn" onclick="openCart()" style="width: auto; padding: 10px 25px;">🛒 Корзина (<span id="cartCount">0</span>)</button>
+<nav>
+  <a href="#catalog">🛠 Каталог</a>
+  <a href="#terms">📜 Условия</a>
+  <a href="#delivery">🚚 Доставка</a>
+</nav>
+
+<section id="catalog">
+  <h2 class="section-title">Каталог инструмента</h2>
+  <div class="search-bar">
+    <input type="text" id="searchInput" placeholder="Поиск инструмента...">
+    <select id="catSelect"><option value="all">Все категории</option></select>
+    <button class="btn-cart" onclick="showCart()" style="width: auto; padding: 10px 20px;">🛒 Корзина (<span id="count">0</span>)</button>
   </div>
-</div>
+  <div class="grid" id="productGrid"></div>
+</section>
 
-<div class="container" id="products"></div>
-
-<section class="terms-section">
-  <h2>✅ Условия аренды</h2>
-  
-  <div class="term-block">
+<section id="terms">
+  <h2 class="section-title">Условия аренды</h2>
+  <div class="text-content">
     <h3>Вариант 1: Под минимальный обеспечительный платеж</h3>
     <ul>
-      <li><b>Документы:</b> Оригинал паспорта РФ с пропиской (Москва или МО до 250 км).</li>
-      <li><b>Договор:</b> Заключается на месте (нужен действующий телефон).</li>
-      <li><b>Залог:</b> Вносится небольшая фиксированная сумма.</li>
+      <li><b>Документы:</b> Оригинал паспорта РФ (прописка Москва/МО до 250 км).</li>
+      <li><b>Договор:</b> Оформляется на месте за 5 минут.</li>
+      <li><b>Залог:</b> Небольшая фиксированная сумма.</li>
     </ul>
-  </div>
 
-  <div class="term-block">
-    <h3>Вариант 2: Обеспечительный платеж (80%)</h3>
-    <p>Если нет оригинала паспорта РФ или отсутствует прописка Мск/МО. Вносится 80% рыночной стоимости инструмента.</p>
-  </div>
-
-  <div class="highlight-box">
     <h3>🌟 Программа лояльности «Доверие»</h3>
-    <p>Аренда <b>БЕЗ ЗАЛОГА</b> возможна после 3-й успешной аренды при условии возврата вовремя, в чистом виде и наличии прописки Мск/МО.</p>
-  </div>
+    <p>Арендуйте <b>БЕЗ ЗАЛОГА</b>, если вы наш постоянный клиент (более 3-х раз), возвращаете всё вовремя и имеете прописку в Мск/МО.</p>
 
-  <div class="term-block">
-    <h3>✅ Доставка и Возврат</h3>
-    <ul>
-      <li><b>Районы:</b> Текстильщики, Печатники, Кузьминки. Привезем от 30 минут!</li>
-      <li><b>Бонус по времени:</b> Даем +2 часа на дорогу. Взяли в 12:00 — вернуть нужно до 14:00.</li>
-      <li><b>Важно:</b> Инструмент должен быть чистым.</li>
-    </ul>
-  </div>
-
-  <div class="term-block">
-    <h3>💰 Спецтарифы</h3>
-    <p><b>Тариф «Вечерний»:</b> С 17:00 до 10:00 утра — оплата 0.5 суток.</p>
-    <p><b>Тариф «Выходные»:</b> Пятница вечер — Понедельник утро. Оплата за 2 суток вместо 3-х!</p>
-  </div>
-
-  <div style="font-size: 0.8em; color: #888; border-top: 1px solid #eee; pt: 10px;">
-    * Производится проверка по базам ФССП и МВД. В услугах может быть отказано в одностороннем порядке.
+    <div style="background: #fff9c4; padding: 15px; border-radius: 10px; margin-top: 20px;">
+      <b>⚠️ Важно:</b> Мы проверяем клиентов через системы ФССП и МВД на предмет задолженностей и судимостей. В аренде может быть отказано в одностороннем порядке.
+    </div>
   </div>
 </section>
 
-<a href="https://t.me/ArendMSK" class="fab" title="Написать нам">💬</a>
+<section id="delivery">
+  <h2 class="section-title">Доставка и самовывоз</h2>
+  <div class="text-content">
+    <p>📍 <b>Пункт выдачи:</b> Приезжайте к нам, оплачивайте на месте и забирайте инструмент.</p>
+    <p>🚀 <b>Доставка:</b> Текстильщики, Печатники, Кузьминки. Привезем от 30 минут!</p>
+    <p>🎁 <b>Бонус +2 часа:</b> Мы понимаем пробки. Взяли в 12:00 — вернуть нужно до 14:00 в день окончания срока.</p>
+    
+    <h3>💰 Спецтарифы</h3>
+    <ul>
+      <li><b>Тариф «Вечерний» (0.5 суток):</b> Взяли после 17:00 — вернули до 10:00.</li>
+      <li><b>Тариф «Выходные»:</b> Пятница (вечер) — Понедельник (утро). Оплата всего за 2-е суток!</li>
+    </ul>
+  </div>
+</section>
 
-<div id="cartBox">
-  <div id="cart">
-    <h2 style="margin-top:0">Оформление заказа</h2>
+<a href="https://t.me/ArendMSK" class="fab">💬</a>
+
+<div id="cartOverlay">
+  <div id="cartModal">
+    <h3>Оформление заказа</h3>
     <div id="cartItems"></div>
-    <div id="totalPrice" style="font-weight:bold; font-size: 1.2em; margin: 15px 0;"></div>
-    
-    <input id="clientName" placeholder="Ваше имя" style="width:100%; padding:12px; margin-bottom:10px; border-radius:8px; border:1px solid #ddd; box-sizing: border-box;">
-    <input id="clientPhone" placeholder="+7 (___) ___-__-__" style="width:100%; padding:12px; margin-bottom:20px; border-radius:8px; border:1px solid #ddd; box-sizing: border-box;">
-    
-    <button onclick="sendOrder()" style="width:100%; background:var(--tg-blue); color:white; padding:15px;">ОТПРАВИТЬ В TELEGRAM</button>
-    <button onclick="closeCart()" style="width:100%; background:none; color:#999; margin-top:10px;">← Вернуться к покупкам</button>
+    <hr>
+    <p id="totalSum" style="font-weight:bold;"></p>
+    <input type="text" id="userName" placeholder="Ваше имя" style="width:100%; padding:12px; margin-bottom:10px; border-radius:8px; border:1px solid #ddd;">
+    <input type="text" id="userPhone" placeholder="+7 (___) ___-__-__" style="width:100%; padding:12px; margin-bottom:15px; border-radius:8px; border:1px solid #ddd;">
+    <button class="btn-cart" style="background:var(--tg-blue); color:white" onclick="sendToTG()">ОТПРАВИТЬ ЗАКАЗ</button>
+    <button onclick="hideCart()" style="background:none; color: #888;">Закрыть</button>
   </div>
 </div>
 
 <script>
-const TG_TOKEN = "8575516738:AAGomt_lCqq1Uzdqf7D4UrReolJF_NKhYoM"; 
-const TG_CHAT_ID = "8359415363"; 
-const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTOtUQAhnBMNrCPWFj0u6cjQeb0qWscrovHdCWvuBQMaCCirL4ds3i6NtjqwMpcReNsrhrY_X8ICXOL/pub?gid=2109115062&single=true&output=csv";
+const TOKEN = "8575516738:AAGomt_lCqq1Uzdqf7D4UrReolJF_NKhYoM";
+const CHAT_ID = "8359415363";
+const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTOtUQAhnBMNrCPWFj0u6cjQeb0qWscrovHdCWvuBQMaCCirL4ds3i6NtjqwMpcReNsrhrY_X8ICXOL/pub?gid=2109115062&single=true&output=csv";
 
-let products = [];
-let cart = JSON.parse(localStorage.getItem('cart')) || [];
-updateCartBadge();
+let tools = [];
+let cart = [];
 
-// Загрузка данных
-fetch(sheetURL + "&v=" + new Date().getTime())
-  .then(r => r.text())
-  .then(csv => {
-    const rows = csv.split("\n").slice(1).map(r => r.trim()).filter(r => r !== "");
-    products = rows.map(r => {
-      const c = r.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
-      return {
-        cat: c[0].replace(/"/g, '').trim(),
-        name: c[1].replace(/"/g, '').trim(),
-        desc: c[2] ? c[2].replace(/"/g, '').replace(/\n/g, ' ') : 'Описание уточняйте',
-        img: c[3] ? c[3].trim() : 'logo.png',
-        p1: c[4] ? Number(c[4]) : 0
-      };
-    }).filter(p => p.name);
-    
-    const cats = ['all', ...new Set(products.map(p => p.cat))];
-    const select = document.getElementById("categoryFilter");
-    cats.forEach(cat => {
-      if(cat === 'all') return;
-      const o = document.createElement("option"); o.value = cat; o.textContent = cat;
-      select.appendChild(o);
-    });
-
-    render(products);
-  });
-
-function render(list) {
-  const cont = document.getElementById("products");
-  cont.innerHTML = "";
-  list.forEach(i => {
-    const div = document.createElement("div");
-    div.className = "card";
-    div.innerHTML = `
-      <img src="${i.img}" onerror="this.src='logo.png'">
-      <div class="card-content">
-        <h3>${i.name}</h3>
-        <div class="price">${i.p1} ₽/сут.</div>
-        <div class="card-details">${i.desc}</div>
-        <button class="cartBtn" onclick='addCart("${i.name}",${i.p1})'>🛒 В корзину</button>
-        <button class="oneClickBtn" onclick='orderOneClick("${i.name}")'>⚡ Заказать в 1 клик</button>
-      </div>
-    `;
-    div.onclick = (e) => { if(e.target.tagName !== 'BUTTON') div.classList.toggle('open'); };
-    cont.appendChild(div);
-  });
-}
-
-// Фильтры и поиск
-document.getElementById("search").oninput = filter;
-document.getElementById("categoryFilter").onchange = filter;
-function filter() {
-  const s = document.getElementById("search").value.toLowerCase();
-  const c = document.getElementById("categoryFilter").value;
-  let filtered = products.filter(p => p.name.toLowerCase().includes(s));
-  if(c !== 'all') filtered = filtered.filter(p => p.cat === c);
-  render(filtered);
-}
-
-// Корзина и Маска телефона (Пункт 6)
-document.getElementById('clientPhone').oninput = function (e) {
+// Маска телефона
+document.getElementById('userPhone').oninput = function(e){
   let x = e.target.value.replace(/\D/g, '').match(/(\d{0,1})(\d{0,3})(\d{0,3})(\d{0,2})(\d{0,2})/);
   e.target.value = !x[2] ? x[1] : '+7 (' + x[2] + (x[3] ? ') ' + x[3] : '') + (x[4] ? '-' + x[4] : '') + (x[5] ? '-' + x[5] : '');
 };
 
-function addCart(name, price) {
+// Загрузка данных
+fetch(CSV_URL + "&cache=" + Date.now())
+  .then(res => res.text())
+  .then(data => {
+    const rows = data.split('\n').slice(1);
+    tools = rows.map(row => {
+      const cols = row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
+      return {
+        cat: cols[0]?.replace(/"/g,'').trim(),
+        name: cols[1]?.replace(/"/g,'').trim(),
+        desc: cols[2]?.replace(/"/g,'').trim(),
+        img: cols[3]?.trim() || 'logo.png',
+        p1: cols[4]?.trim(), // 1 сутки
+        p2: cols[5]?.trim(), // 2 суток
+        p3: cols[6]?.trim()  // 3+ суток
+      };
+    }).filter(t => t.name);
+    
+    // Категории
+    const cats = [...new Set(tools.map(t => t.cat))];
+    cats.forEach(c => {
+      let opt = document.createElement('option');
+      opt.value = c; opt.textContent = c;
+      document.getElementById('catSelect').appendChild(opt);
+    });
+    
+    render(tools);
+  });
+
+function render(arr) {
+  const grid = document.getElementById('productGrid');
+  grid.innerHTML = '';
+  arr.forEach(t => {
+    const div = document.createElement('div');
+    div.className = 'card';
+    div.innerHTML = `
+      <img src="${t.img}" onerror="this.src='logo.png'">
+      <div class="card-info">
+        <h3>${t.name}</h3>
+        <div class="price-table">
+          <div class="price-row"><span>1 сутки:</span> <span>${t.p1} ₽</span></div>
+          ${t.p2 ? `<div class="price-row"><span>2 суток:</span> <span>${t.p2} ₽</span></div>` : ''}
+          ${t.p3 ? `<div class="price-row"><span>от 3 суток:</span> <span>${t.p3} ₽</span></div>` : ''}
+        </div>
+        <div class="desc-text">${t.desc || 'Описание уточняйте по телефону'}</div>
+        <button class="btn-cart" onclick="addToCart('${t.name}', '${t.p1}')">В корзину</button>
+        <button class="btn-click" onclick="oneClick('${t.name}')">В 1 клик</button>
+      </div>
+    `;
+    div.onclick = (e) => { if(e.target.tagName !== 'BUTTON') div.classList.toggle('open'); };
+    grid.appendChild(div);
+  });
+}
+
+// Фильтры
+document.getElementById('searchInput').oninput = () => {
+  const val = document.getElementById('searchInput').value.toLowerCase();
+  render(tools.filter(t => t.name.toLowerCase().includes(val)));
+};
+document.getElementById('catSelect').onchange = (e) => {
+  const c = e.target.value;
+  render(c === 'all' ? tools : tools.filter(t => t.cat === c));
+};
+
+function addToCart(name, price) {
   cart.push({name, price});
-  localStorage.setItem('cart', JSON.stringify(cart));
-  updateCartBadge();
+  document.getElementById('count').textContent = cart.length;
 }
 
-function updateCartBadge() { document.getElementById("cartCount").textContent = cart.length; }
-function openCart() { document.getElementById("cartBox").style.display="flex"; renderCart(); }
-function closeCart() { document.getElementById("cartBox").style.display="none"; }
-
-function renderCart() {
-  const box = document.getElementById("cartItems");
+function showCart() {
+  document.getElementById('cartOverlay').style.display = 'flex';
+  const list = document.getElementById('cartItems');
+  list.innerHTML = cart.length ? '' : 'Корзина пуста';
   let total = 0;
-  box.innerHTML = cart.length ? "" : "Ваша корзина пока пуста";
-  cart.forEach((i, idx) => {
-    total += i.price;
-    box.innerHTML += `<div class="cartItem"><span>${i.name}</span> <b>${i.price}₽</b> <span onclick="removeFromCart(${idx})" style="color:red; cursor:pointer">✕</span></div>`;
+  cart.forEach((item, i) => {
+    total += parseInt(item.price);
+    list.innerHTML += `<div style="display:flex; justify-content:space-between; margin-bottom:10px;">
+      <span>${item.name}</span> <b>${item.price}₽</b>
+      <span onclick="cart.splice(${i},1); showCart();" style="color:red; cursor:pointer;">✕</span>
+    </div>`;
   });
-  document.getElementById("totalPrice").textContent = `Итого: ${total} ₽/сут.`;
+  document.getElementById('totalSum').textContent = `Итого (1-е сутки): ${total} ₽`;
 }
 
-function removeFromCart(idx) {
-  cart.splice(idx, 1);
-  localStorage.setItem('cart', JSON.stringify(cart));
-  updateCartBadge();
-  renderCart();
-}
+function hideCart() { document.getElementById('cartOverlay').style.display = 'none'; }
 
-// Отправка (Пункт 2: в бот)
-async function sendToTG(txt) {
-  await fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendMessage`, {
+async function sendToTG() {
+  const name = document.getElementById('userName').value;
+  const phone = document.getElementById('userPhone').value;
+  if(!name || phone.length < 10) return alert('Укажите имя и телефон');
+
+  let text = `<b>🛒 ЗАКАЗ С САЙТА</b>\n\n👤 Имя: ${name}\n📞 Тел: ${phone}\n\n<b>Инструменты:</b>\n`;
+  cart.forEach((t, i) => text += `${i+1}. ${t.name} (${t.price}₽)\n`);
+
+  const res = await fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`, {
     method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({ chat_id: TG_CHAT_ID, text: txt, parse_mode: 'HTML' })
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ chat_id: CHAT_ID, text, parse_mode: 'HTML' })
   });
-  alert("✅ Заявка отправлена! Олег свяжется с вами.");
-  cart = []; localStorage.removeItem('cart'); updateCartBadge(); closeCart();
-}
-
-function orderOneClick(name) {
-  const p = prompt("Введите ваш телефон для заказа " + name + ":");
-  if(p) sendToTG(`<b>⚡ ЗАКАЗ В 1 КЛИК</b>\n\n🛠 Инструмент: ${name}\n📞 Телефон: ${p}`);
-}
-
-function sendOrder() {
-  const n = document.getElementById("clientName").value;
-  const p = document.getElementById("clientPhone").value;
-  if(n.length < 2 || p.length < 10) return alert("Пожалуйста, заполните имя и телефон правильно!");
   
-  let m = `<b>🛒 НОВЫЙ ЗАКАЗ С САЙТА</b>\n\n👤 Имя: ${n}\n📞 Тел: ${p}\n\n<b>Список:</b>\n`;
-  let total = 0;
-  cart.forEach((i, idx) => { m += `${idx+1}. ${i.name} (${i.price}₽)\n`; total += i.price; });
-  m += `\n💰 <b>Итого: ${total} ₽/сут.</b>`;
-  sendToTG(m);
+  if(res.ok) {
+    alert('Заявка принята! Олег свяжется с вами.');
+    cart = []; document.getElementById('count').textContent = 0; hideCart();
+  }
+}
+
+function oneClick(name) {
+  const p = prompt('Ваш телефон для заказа ' + name + ':');
+  if(p) {
+    const text = `<b>⚡ ЗАКАЗ В 1 КЛИК</b>\n\n🛠 Инструмент: ${name}\n📞 Тел: ${p}`;
+    fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ chat_id: CHAT_ID, text, parse_mode: 'HTML' })
+    }).then(() => alert('Заявка отправлена!'));
+  }
 }
 </script>
 </body>
