@@ -27,8 +27,10 @@ header img { height: 70px; border-radius: 8px; }
 .slogan { font-size: 0.8em; color: var(--main-yellow); }
 .header-phone { text-align: right; }
 .header-phone a { color: var(--main-yellow); font-size: 1.3em; font-weight: bold; text-decoration: none; }
-.header-address { color: var(--white); font-size: 0.85em; text-decoration: none; display: block; margin-top: 5px; }
-.header-address:hover { text-decoration: underline; }
+
+/* 2. Настройка адреса в шапке: белый цвет и размер как у слогана */
+.header-address { color: var(--white); font-size: 0.8em; text-decoration: none; display: block; margin-top: 5px; transition: 0.3s; }
+.header-address:hover { color: var(--main-yellow); }
 
 /* Навигация */
 nav { background: #2c2c2c; position: sticky; top: 0; z-index: 1000; display: flex; justify-content: center; gap: 20px; padding: 12px; flex-wrap: wrap;}
@@ -69,6 +71,9 @@ button { width: 100%; padding: 12px; border: none; border-radius: 8px; font-weig
 .text-content h3 { color: var(--tg-blue); margin-top: 25px; border-bottom: 1px solid #eee; padding-bottom: 5px; }
 .text-content li { margin-bottom: 10px; }
 
+/* Карта */
+.map-container { margin-top: 20px; border-radius: 15px; overflow: hidden; height: 400px; border: 1px solid #ddd; }
+
 /* Плавающая кнопка */
 .fab { position: fixed; bottom: 20px; right: 20px; background: #25D366; color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 30px; text-decoration: none; box-shadow: 0 4px 15px rgba(0,0,0,0.3); z-index: 1000; }
 
@@ -96,7 +101,7 @@ button { width: 100%; padding: 12px; border: none; border-radius: 8px; font-weig
     </a>
     <div class="header-phone">
       <a href="tel:+79152772441">+7 915 277 24 41</a>
-      <a href="https://yandex.ru/maps/?text=Москва, ул. Люблинская д.7/2 к.1" target="_blank" class="header-address">Москва, ул. Люблинская д.7/2 к.1(м. Текстильщики)</a>
+      <a href="https://yandex.ru/maps/?text=Москва, ул. Люблинская д.7/2 к.1" target="_blank" class="header-address">Москва, ул. Люблинская д.7/2 к.1 (м. Текстильщики)</a>
     </div>
   </div>
 </header>
@@ -168,6 +173,10 @@ button { width: 100%; padding: 12px; border: none; border-radius: 8px; font-weig
     Пн-Пят: 09-00 до 19-00<br>
     Суб: 10-00 до 17-00</p>
     <p>📞 <b>Телефон:</b> <a href="tel:+79152772441" style="color: inherit; font-weight: bold;">+7 915 277 24 41</a></p>
+
+    <div class="map-container">
+      <iframe src="https://yandex.ru/map-widget/v1/?ll=37.734892%2C55.706730&mode=search&ol=geo&ouri=ymapsbm1%3A%2F%2Fgeo%3Fdata%3DCgg1NjY2NTM1NBJB0KDQvtGB0YHQuNGPLCDQnNC-0YHQutCy0LAsINCb0Y7QsdC70LjQvdGB0LrQsNGPINGD0LvQuNGG0LAsIDcvMtC6MSIKDXvPFkIV3P9fQg%3D%3D&z=16" width="100%" height="400" frameborder="1" allowfullscreen="true" style="position:relative; border:none;"></iframe>
+    </div>
   </div>
 </section>
 
@@ -200,7 +209,7 @@ document.getElementById('userPhone').oninput = function(e){
   e.target.value = !x[2] ? x[1] : '+7 (' + x[2] + (x[3] ? ') ' + x[3] : '') + (x[4] ? '-' + x[4] : '') + (x[5] ? '-' + x[5] : '');
 };
 
-// Загрузка
+// Загрузка данных
 fetch(CSV_URL + "&v=" + Date.now())
   .then(res => res.text())
   .then(data => {
