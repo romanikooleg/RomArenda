@@ -21,11 +21,14 @@ body { margin:0; font-family: 'Segoe UI', Arial, sans-serif; background: var(--l
 /* Шапка */
 header { background: var(--main-black); color: var(--white); padding: 15px 20px; }
 .header-top { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; }
-.logo-box { display: flex; align-items: center; gap: 15px; }
+.logo-box { display: flex; align-items: center; gap: 15px; text-decoration: none; color: inherit; }
 header img { height: 70px; border-radius: 8px; }
-.title-block h1 { margin: 0; font-size: 1.6em; }
+.title-block h1 { margin: 0; font-size: 1.6em; color: var(--white); }
 .slogan { font-size: 0.8em; color: var(--main-yellow); }
+.header-phone { text-align: right; }
 .header-phone a { color: var(--main-yellow); font-size: 1.3em; font-weight: bold; text-decoration: none; }
+.header-address { color: var(--white); font-size: 0.85em; text-decoration: none; display: block; margin-top: 5px; }
+.header-address:hover { text-decoration: underline; }
 
 /* Навигация */
 nav { background: #2c2c2c; position: sticky; top: 0; z-index: 1000; display: flex; justify-content: center; gap: 20px; padding: 12px; flex-wrap: wrap;}
@@ -75,6 +78,7 @@ button { width: 100%; padding: 12px; border: none; border-radius: 8px; font-weig
 
 @media (max-width: 600px) {
   .header-top { flex-direction: column; text-align: center; gap: 15px; }
+  .header-phone { text-align: center; }
   nav a { font-size: 0.75em; }
 }
 </style>
@@ -83,15 +87,16 @@ button { width: 100%; padding: 12px; border: none; border-radius: 8px; font-weig
 
 <header>
   <div class="header-top">
-    <div class="logo-box">
+    <a href="https://romarenda.ru/" class="logo-box">
       <img src="logo.png" alt="РомАренда">
       <div class="title-block">
         <h1>РомАренда</h1>
         <div class="slogan">Аренда строительного инструмента • Быстро • Без залога • Заказ в 1 клик</div>
       </div>
-    </div>
+    </a>
     <div class="header-phone">
       <a href="tel:+79152772441">+7 915 277 24 41</a>
+      <a href="https://yandex.ru/maps/?text=Москва, ул. Люблинская д.7/2 к.1" target="_blank" class="header-address">Москва, ул. Люблинская д.7/2 к.1(м. Текстильщики)</a>
     </div>
   </div>
 </header>
@@ -100,6 +105,7 @@ button { width: 100%; padding: 12px; border: none; border-radius: 8px; font-weig
   <a href="#catalog">🛠 Каталог</a>
   <a href="#terms">📜 Условия</a>
   <a href="#delivery">🚚 Доставка</a>
+  <a href="#contacts">📍 Контакты</a>
 </nav>
 
 <section id="catalog">
@@ -150,6 +156,18 @@ button { width: 100%; padding: 12px; border: none; border-radius: 8px; font-weig
       <li><b>Тариф «Вечерний» (0.5 суток):</b> Взяли после 17:00, вернули до 10:00.</li>
       <li><b>Тариф «Выходные»:</b> Пятница вечер — Понедельник утро (оплата за 2 суток вместо 3-х).</li>
     </ul>
+  </div>
+</section>
+
+<section id="contacts">
+  <h2 class="section-title">Контакты</h2>
+  <div class="text-content">
+    <p>📍 <b>Адрес пункта аренды:</b><br>
+    Москва, ул. Люблинская д.7/2 к.1 (м. Текстильщики)</p>
+    <p>⏰ <b>Время работы:</b><br>
+    Пн-Пят: 09-00 до 19-00<br>
+    Суб: 10-00 до 17-00</p>
+    <p>📞 <b>Телефон:</b> <a href="tel:+79152772441" style="color: inherit; font-weight: bold;">+7 915 277 24 41</a></p>
   </div>
 </section>
 
