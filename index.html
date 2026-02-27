@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<title>РомАренда — Аренда инструмента в Текстильщиках</title>
+<title>РомАренда — Аренда и доставка инструмента</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/png" href="logo.png">
 
@@ -87,7 +87,7 @@ header img { height: 60px; border-radius: 8px; }
 .bonus-card p { margin: 5px 0 0; font-size: 0.9em; color: #666; }
 
 /* Навигация */
-nav { background: var(--main-black); position: sticky; top: 0; z-index: 1000; display: flex; justify-content: center; gap: 25px; padding: 15px; border-top: 1px solid #333; }
+nav { background: var(--main-black); position: sticky; top: 0; z-index: 1000; display: flex; justify-content: center; gap: 20px; padding: 15px; border-top: 1px solid #333; flex-wrap: wrap; }
 nav a { color: white; text-decoration: none; font-size: 0.85em; font-weight: 700; text-transform: uppercase; transition: 0.3s; }
 nav a:hover { color: var(--main-yellow); }
 
@@ -96,6 +96,11 @@ section { max-width: 1200px; margin: 60px auto; padding: 0 20px; }
 .section-title { font-size: 2em; font-weight: 900; margin-bottom: 30px; text-transform: uppercase; border-left: 6px solid var(--main-yellow); padding-left: 15px; }
 
 .text-block { background: white; padding: 30px; border-radius: var(--radius); box-shadow: 0 5px 15px rgba(0,0,0,0.05); margin-bottom: 30px; }
+
+/* Доставка */
+.delivery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+.delivery-card { background: #fdfdfd; padding: 20px; border-radius: 10px; border: 1px dashed #ddd; }
+.delivery-card h4 { margin-top: 0; color: var(--main-black); border-bottom: 2px solid var(--main-yellow); display: inline-block; margin-bottom: 15px; }
 
 /* Каталог */
 .search-bar { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 30px; }
@@ -144,7 +149,7 @@ button { width: 100%; padding: 14px; border: none; border-radius: 8px; font-weig
 
 /* Условия (список) */
 .terms-list { list-style: none; padding: 0; }
-.terms-list li { margin-bottom: 15px; padding-left: 30px; position: relative; }
+.terms-list li { margin-bottom: 12px; padding-left: 30px; position: relative; font-size: 0.95em; }
 .terms-list li::before { content: "✅"; position: absolute; left: 0; }
 
 /* Плавающие элементы */
@@ -184,7 +189,7 @@ button { width: 100%; padding: 14px; border: none; border-radius: 8px; font-weig
     <div class="hero-content">
         <h2>АРЕНДА ИНСТРУМЕНТА <span>БЕЗ ЗАЛОГА</span></h2>
         <p>Работаем в Текстильщиках. Выдаем за 10 минут по паспорту РФ.</p>
-        <button onclick="document.getElementById('catalog').scrollIntoView()" style="width: auto; padding: 16px 45px; font-size: 1em; background: var(--main-yellow); color: #000; border-radius: 50px;">Перейти в каталог</button>
+        <button onclick="document.getElementById('catalog').scrollIntoView()" style="width: auto; padding: 16px 45px; font-size: 1em; background: var(--main-yellow); color: #000; border-radius: 50px;">Выбрать оборудование</button>
     </div>
 </section>
 
@@ -215,13 +220,14 @@ button { width: 100%; padding: 14px; border: none; border-radius: 8px; font-weig
 <nav>
   <a href="#catalog">Каталог</a>
   <a href="#terms">Условия</a>
+  <a href="#delivery">Доставка</a>
   <a href="#contacts">Контакты</a>
 </nav>
 
 <section id="catalog">
   <h2 class="section-title">Каталог оборудования</h2>
   <div class="search-bar">
-    <input type="text" id="searchInput" placeholder="Что вы ищете?">
+    <input type="text" id="searchInput" placeholder="Поиск по названию...">
     <select id="catSelect"><option value="all">Все категории</option></select>
     <button onclick="showCart()" style="width: auto; background: var(--main-black); color: white; padding: 0 25px; border-radius: 50px;">🛒 (<span id="count">0</span>)</button>
   </div>
@@ -229,17 +235,39 @@ button { width: 100%; padding: 14px; border: none; border-radius: 8px; font-weig
 </section>
 
 <section id="terms">
-    <h2 class="section-title">Развернутые условия аренды</h2>
+    <h2 class="section-title">Условия аренды</h2>
     <div class="text-block">
         <ul class="terms-list">
-            <li><b>Как взять инструмент:</b> Для оформления договора необходим только оригинал паспорта РФ. Процедура занимает не более 10 минут. Мы работаем как с физическими, так и с юридическими лицами.</li>
-            <li><b>Условия «Без залога»:</b> Инструмент выдается без денежного залога гражданам РФ с постоянной регистрацией в Москве или Московской области.</li>
-            <li><b>Если нет местной прописки:</b> В таком случае предусмотрен минимальный страховой депозит, который возвращается сразу после сдачи исправного инструмента.</li>
-            <li><b>Бонусное время (+2 часа):</b> Мы ценим ваше время и дорожную ситуацию. К оплаченным суткам (24 часа) мы автоматически добавляем 2 часа на дорогу.</li>
-            <li><b>Продление аренды:</b> Если инструмент нужен на дольше — просто позвоните нам. Продление оформляется дистанционно, а оплата вносится при возврате.</li>
-            <li><b>Минимальный срок:</b> Аренда возможна от 1 суток. При длительной аренде действуют прогрессивные скидки (указаны в карточке каждого товара).</li>
-            <li><b>Возврат:</b> Инструмент должен быть возвращен в чистом и исправном виде. Пожалуйста, проверяйте комплектацию при получении.</li>
+            <li><b>Оформление:</b> По оригиналу паспорта РФ за 10 минут.</li>
+            <li><b>Без залога:</b> Для граждан РФ с пропиской в Москве или Московской области.</li>
+            <li><b>С залогом:</b> Для граждан без местной прописки предусмотрен страховой депозит.</li>
+            <li><b>Бонус:</b> К сроку аренды автоматически добавляем <b>2 часа</b> бесплатно.</li>
+            <li><b>Продление:</b> Дистанционно по звонку, оплата при возврате.</li>
         </ul>
+    </div>
+</section>
+
+<section id="delivery">
+    <h2 class="section-title">Доставка и вывоз</h2>
+    <div class="text-block delivery-grid">
+        <div class="delivery-card">
+            <h4>🚚 Доставка к Вам</h4>
+            <ul style="padding-left: 20px; font-size: 0.9em;">
+                <li><b>В день заказа:</b> в течение 4 часов.</li>
+                <li><b>География:</b> вся Москва и Московская область.</li>
+                <li><b>Стоимость:</b> от <b>153₽</b>.</li>
+                <li style="color: #666; font-style: italic; list-style: none; margin-top: 10px;">* Итоговая сумма зависит от района и суммы заказа, рассчитывается менеджером.</li>
+            </ul>
+        </div>
+        <div class="delivery-card">
+            <h4>📦 Вывоз от Вас</h4>
+            <ul style="padding-left: 20px; font-size: 0.9em;">
+                <li><b>Время:</b> согласовывается заранее (может сдвигаться).</li>
+                <li><b>Режим:</b> производится до 18:00.</li>
+                <li><b>Нюанс:</b> если доставка была позже 18:00, вывоз будет утром следующего дня.</li>
+                <li><b>Стоимость:</b> от <b>153₽</b>.</li>
+            </ul>
+        </div>
     </div>
 </section>
 
@@ -247,18 +275,18 @@ button { width: 100%; padding: 14px; border: none; border-radius: 8px; font-weig
   <h2 class="section-title">Контакты</h2>
   <div class="text-block" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px;">
     <div>
-        <p><b>📍 Адрес пункта выдачи:</b><br>
-        <a href="https://yandex.ru/maps/?text=Москва, ул. Люблинская д.7/2 к.1" target="_blank" class="map-link">
+        <p><b>📍 Адрес:</b><br>
+        <a href="https://yandex.ru/maps/?text=Москва, ул. Люблинская д.7/2 к.1" target="_blank" style="color: var(--tg-blue); font-weight: 700;">
             Москва, ул. Люблинская д.7/2 к.1 (м. Текстильщики)
         </a></p>
-        <p><b>📞 Телефон для связи:</b><br>
+        <p><b>📞 Телефон:</b><br>
         <a href="tel:+79152772441" style="text-decoration: none; color: inherit; font-weight: 700; font-size: 1.2em;">+7 915 277 24 41</a></p>
     </div>
     <div>
-        <p><b>⏰ График работы:</b><br>
-        Понедельник — Пятница: 09:00 - 19:00<br>
-        Суббота: 10:00 - 17:00<br>
-        Воскресенье: по предварительной договоренности</p>
+        <p><b>⏰ График:</b><br>
+        Пн — Пт: 09:00 - 19:00<br>
+        Сб: 10:00 - 17:00<br>
+        Вс: по договоренности</p>
     </div>
   </div>
 </section>
@@ -267,13 +295,13 @@ button { width: 100%; padding: 14px; border: none; border-radius: 8px; font-weig
 
 <div id="cartOverlay" style="position: fixed; inset: 0; background: rgba(0,0,0,0.85); display: none; justify-content: center; align-items: center; z-index: 2000; padding: 15px;">
   <div id="cartModal" style="background: white; width: 100%; max-width: 450px; padding: 30px; border-radius: 20px;">
-    <h3 style="font-weight: 900; text-transform: uppercase;">Оформление</h3>
+    <h3 style="font-weight: 900; text-transform: uppercase;">Ваш заказ</h3>
     <div id="cartItems" style="max-height: 200px; overflow-y: auto;"></div>
     <div id="totalSum" style="font-weight:900; margin: 15px 0;"></div>
-    <input type="text" id="userName" placeholder="Имя" style="width:100%; padding:12px; margin-bottom:10px; border-radius:8px; border:1px solid #ddd; font-family: inherit;">
+    <input type="text" id="userName" placeholder="Ваше имя" style="width:100%; padding:12px; margin-bottom:10px; border-radius:8px; border:1px solid #ddd; font-family: inherit;">
     <input type="text" id="userPhone" placeholder="+7 (___) ___-__-__" style="width:100%; padding:12px; margin-bottom:20px; border-radius:8px; border:1px solid #ddd; font-family: inherit;">
     <button class="btn-cart" onclick="sendToTG()">Заказать аренду</button>
-    <button onclick="hideCart()" style="background:none; color: #999;">← Назад</button>
+    <button onclick="hideCart()" style="background:none; color: #999;">← Закрыть</button>
   </div>
 </div>
 
@@ -322,7 +350,7 @@ async function loadData() {
       select.appendChild(opt);
     });
     render(tools);
-  } catch(e) { console.error("Ошибка загрузки"); }
+  } catch(e) { console.error("Ошибка загрузки данных"); }
 }
 
 function render(arr) {
@@ -394,7 +422,7 @@ async function sendToTG() {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ chat_id: CHAT_ID, text, parse_mode: 'HTML' })
   });
-  alert('Заявка принята!');
+  alert('Заявка принята! Менеджер скоро свяжется.');
   cart = []; updateCount(); hideCart();
 }
 
