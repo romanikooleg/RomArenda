@@ -17,6 +17,8 @@
   --white: #FFFFFF;
   --tg-blue: #0088cc;
   --radius: 12px;
+  --danger-red: #fff3f3;
+  --danger-border: #dc3545;
 }
 
 * { box-sizing: border-box; scroll-behavior: smooth; }
@@ -97,6 +99,19 @@ section { max-width: 1200px; margin: 60px auto; padding: 0 20px; }
 
 .text-block { background: white; padding: 30px; border-radius: var(--radius); box-shadow: 0 5px 15px rgba(0,0,0,0.05); margin-bottom: 30px; }
 
+/* Важное уведомление */
+.important-box {
+    background: var(--danger-red);
+    border: 2px solid var(--danger-border);
+    border-radius: 8px;
+    padding: 20px;
+    margin-top: 25px;
+    display: flex;
+    gap: 15px;
+    align-items: flex-start;
+}
+.important-box b { color: #dc3545; text-transform: uppercase; font-size: 0.9em; }
+
 /* Доставка */
 .delivery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
 .delivery-card { background: #fdfdfd; padding: 20px; border-radius: 10px; border: 1px dashed #ddd; }
@@ -137,6 +152,11 @@ section { max-width: 1200px; margin: 60px auto; padding: 0 20px; }
 .card-info { padding: 20px; }
 .card h3 { margin: 0 0 15px; font-size: 1.1em; font-weight: 700; height: 2.6em; overflow: hidden; line-height: 1.3; }
 
+/* Условия (список) */
+.terms-list { list-style: none; padding: 0; margin: 0; }
+.terms-list li { margin-bottom: 12px; padding-left: 30px; position: relative; font-size: 0.95em; }
+.terms-list li::before { content: "✅"; position: absolute; left: 0; }
+
 .price-table { background: #F9F9F9; border-radius: 8px; padding: 12px; margin-bottom: 15px; }
 .price-row { display: flex; justify-content: space-between; font-size: 0.85em; padding: 4px 0; border-bottom: 1px solid #eee; }
 .price-row:last-child { border: none; font-weight: 900; color: #000; font-size: 1em; padding-top: 8px; }
@@ -147,19 +167,12 @@ button { width: 100%; padding: 14px; border: none; border-radius: 8px; font-weig
 .btn-cart:hover { background: var(--dark-yellow); }
 .btn-click { background: var(--main-black); color: white; }
 
-/* Условия (список) */
-.terms-list { list-style: none; padding: 0; }
-.terms-list li { margin-bottom: 12px; padding-left: 30px; position: relative; font-size: 0.95em; }
-.terms-list li::before { content: "✅"; position: absolute; left: 0; }
-
 /* Плавающие элементы */
 .fab { position: fixed; bottom: 25px; right: 25px; background: #25D366; color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 30px; text-decoration: none; box-shadow: 0 5px 20px rgba(0,0,0,0.3); z-index: 1000; }
 .btn-up { position: fixed; bottom: 100px; right: 30px; background: white; color: black; width: 50px; height: 50px; border-radius: 50%; display: none; align-items: center; justify-content: center; cursor: pointer; z-index: 1000; box-shadow: 0 5px 15px rgba(0,0,0,0.1); border: 1px solid #ddd; font-weight: bold; }
 
 @media (max-width: 768px) {
     .hero h2 { font-size: 1.8em; }
-    .header-top { justify-content: center; text-align: center; }
-    .header-phone { text-align: center; width: 100%; margin-top: 10px; }
 }
 </style>
 </head>
@@ -244,6 +257,14 @@ button { width: 100%; padding: 14px; border: none; border-radius: 8px; font-weig
             <li><b>Бонус:</b> К сроку аренды автоматически добавляем <b>2 часа</b> бесплатно.</li>
             <li><b>Продление:</b> Дистанционно по звонку, оплата при возврате.</li>
         </ul>
+        
+        <div class="important-box">
+            <span style="font-size: 2em;">⚠️</span>
+            <div>
+                <b>Важно:</b>
+                <p style="margin: 5px 0 0; font-size: 0.9em; color: #555;">Мы проверяем клиентов через системы ФССП и МВД на предмет задолженностей и судимостей. В связи с этим в услугах проката может быть отказано в одностороннем порядке. Проверка производится по единой системе МВД.</p>
+            </div>
+        </div>
     </div>
 </section>
 
@@ -295,7 +316,7 @@ button { width: 100%; padding: 14px; border: none; border-radius: 8px; font-weig
 
 <div id="cartOverlay" style="position: fixed; inset: 0; background: rgba(0,0,0,0.85); display: none; justify-content: center; align-items: center; z-index: 2000; padding: 15px;">
   <div id="cartModal" style="background: white; width: 100%; max-width: 450px; padding: 30px; border-radius: 20px;">
-    <h3 style="font-weight: 900; text-transform: uppercase;">Ваш заказ</h3>
+    <h3 style="font-weight: 900; text-transform: uppercase;">Оформление</h3>
     <div id="cartItems" style="max-height: 200px; overflow-y: auto;"></div>
     <div id="totalSum" style="font-weight:900; margin: 15px 0;"></div>
     <input type="text" id="userName" placeholder="Ваше имя" style="width:100%; padding:12px; margin-bottom:10px; border-radius:8px; border:1px solid #ddd; font-family: inherit;">
@@ -350,7 +371,7 @@ async function loadData() {
       select.appendChild(opt);
     });
     render(tools);
-  } catch(e) { console.error("Ошибка загрузки данных"); }
+  } catch(e) { console.error("Ошибка загрузки"); }
 }
 
 function render(arr) {
@@ -405,7 +426,7 @@ function showCart() {
       <span onclick="cart.splice(${i},1); showCart(); updateCount();" style="color:red; cursor:pointer;">✕</span>
     </div>`;
   });
-  document.getElementById('totalSum').textContent = `Итого: ${total} ₽`;
+  document.getElementById('totalSum').textContent = `Итого за 1-е сутки: ${total} ₽`;
 }
 
 function updateCount() { document.getElementById('count').textContent = cart.length; }
@@ -415,21 +436,21 @@ async function sendToTG() {
   const name = document.getElementById('userName').value;
   const phone = document.getElementById('userPhone').value;
   if(!name || phone.length < 16) return alert('Заполните данные');
-  let text = `<b>🛒 ЗАКАЗ</b>\n👤 ${name}\n📞 ${phone}\n\n`;
+  let text = `<b>🛒 НОВЫЙ ЗАКАЗ</b>\n👤 ${name}\n📞 ${phone}\n\n`;
   cart.forEach((t, i) => text += `${i+1}. ${t.name}\n`);
   await fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ chat_id: CHAT_ID, text, parse_mode: 'HTML' })
   });
-  alert('Заявка принята! Менеджер скоро свяжется.');
+  alert('Заявка принята! Мы скоро перезвоним.');
   cart = []; updateCount(); hideCart();
 }
 
 function oneClick(name) {
   const p = prompt('Ваш телефон для заказа ' + name + ':');
   if(p && p.length > 5) {
-    const text = `<b>⚡ 1 КЛИК</b>\n🛠 ${name}\n📞 ${p}`;
+    const text = `<b>⚡ ЗАКАЗ В 1 КЛИК</b>\n🛠 ${name}\n📞 ${p}`;
     fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
