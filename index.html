@@ -95,10 +95,6 @@ button { width: 100%; padding: 12px; border: none; border-radius: 8px; font-weig
 .btn-cart { background: var(--main-yellow); color: #000; }
 .btn-click { background: var(--main-black); color: #fff; }
 
-/* Блоки текста */
-.text-content { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); line-height: 1.7; }
-.text-content h3 { color: var(--tg-blue); margin-top: 25px; border-bottom: 1px solid #eee; padding-bottom: 5px; }
-
 /* Ссылка на карту внизу */
 .map-link { color: #0088cc; text-decoration: none; font-weight: 600; }
 .map-link:hover { text-decoration: underline; }
@@ -160,33 +156,6 @@ button { width: 100%; padding: 12px; border: none; border-radius: 8px; font-weig
   <div class="grid" id="productGrid"></div>
 </section>
 
-<section id="terms">
-  <h2 class="section-title">Условия аренды</h2>
-  <div class="text-content">
-    <h3>Вариант 1: Без залога</h3>
-    <p>При наличии Московской прописки и Московской области.</p>
-    <ul>
-      <li><b>Документы:</b> Оригинал паспорта РФ (прописка Москва/МО до 250 км).</li>
-    </ul>
-
-    <h3>Вариант 2: Под обеспечительный платеж</h3>
-    <p>Для клиентов без Московской прописки и Московской области.</p>
-    <ul>
-      <li><b>Документы:</b> Оригинал паспорта РФ.</li>
-      <li><b>Договор:</b> Оформляется на месте за 5 минут.</li>
-      <li><b>Залог:</b> Небольшая фиксированная сумма.</li>
-    </ul>
-  </div>
-</section>
-
-<section id="delivery">
-  <h2 class="section-title">Доставка и самовывоз</h2>
-  <div class="text-content">
-    <p>🚀 <b>ДОСТАВКА:</b> Текстильщики, Печатники, Кузьминки. Привезем инструмент от 30 минут!</p>
-    <p><b>Правила:</b> Инструмент должен быть чистым. Продление возможно по звонку или через Telegram.</p>
-  </div>
-</section>
-
 <section id="contacts">
   <h2 class="section-title">Контакты</h2>
   <div class="text-content">
@@ -196,8 +165,7 @@ button { width: 100%; padding: 12px; border: none; border-radius: 8px; font-weig
       </a>
     </p>
     <p>⏰ <b>Время работы:</b><br>
-    Пн-Пт: 09:00 до 19:00<br>
-    Суб: 10:00 до 17:00</p>
+    Пн-Пт: 09:00 до 19:00, Суб: 10:00 до 17:00</p>
     <p>📞 <b>Телефон:</b> <a href="tel:+79152772441" style="color: inherit; font-weight: bold;">+7 915 277 24 41</a></p>
   </div>
 </section>
@@ -234,6 +202,124 @@ window.onscroll = function() {
   }
 };
 
+// Исправленная функция маски телефона
 document.getElementById('userPhone').oninput = function(e){
-  let x = e.target.value.replace(/\D/g
+  let x = e.target.value.replace(/\D/g, '').match(/(\d{0,1})(\d{0,3})(\d{0,3})(\d{0,2})(\d{0,2})/);
+  e.target.value = !x[2] ? x[1] : '+7 (' + x[2] + (x[3] ? ') ' + x[3] : '') + (x[4] ? '-' + x[4] : '') + (x[5] ? '-' + x[5] : '');
+};
 
+fetch(CSV_URL + "&v=" + Date.now())
+  .then(res => res.text())
+  .then(data => {
+    const rows = data.split('\n').slice(1);
+    tools = rows.map(row => {
+      const cols = row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
+      if(!cols[1]) return null;
+      return {
+        cat: cols[0]?.replace(/"/g,'').trim(),
+        name: cols[1]?.replace(/"/g,'').trim(),
+        desc: cols[2]?.replace(/"/g,'').trim(),
+        img: cols[3]?.trim() || 'logo.png',
+        p1: cols[4]?.trim() || '0',
+        p2: cols[5]?.trim(),
+        p3: cols[6]?.trim()
+      };
+    }).filter(t => t !== null);
+    
+    const cats = [...new Set(tools.map(t => t.cat))];
+    cats.forEach(c => {
+      let opt = document.createElement('option');
+      opt.value = c; opt.textContent = c;
+      document.getElementById('catSelect').appendChild(opt);
+    });
+    
+    render(tools);
+  });
+
+function render(arr) {
+  const grid = document.getElementById('productGrid');
+  grid.innerHTML = '';
+  arr.forEach(t => {
+    const div = document.createElement('div');
+    div.className = 'card';
+    div.innerHTML = `
+      <img src="${t.img}" onerror="this.src='logo.png'">
+      <div class="card-info">
+        <h3>${t.name}</h3>
+        <div class="price-table">
+          <div class="price-row"><span>1 сутки:</span> <span>${t.p1} ₽</span></div>
+          ${t.p2 ? `<div class="price-row"><span>2 суток:</span> <span>${t.p2} ₽</span></div>` : ''}
+          ${t.p3 ? `<div class="price-row"><span>от 3 суток:</span> <span>${t.p3} ₽</span></div>` : ''}
+        </div>
+        <div class="desc-text">${t.desc || 'Характеристики уточняйте у менеджера.'}</div>
+        <button class="btn-cart" onclick="addToCart('${t.name}', '${t.p1}')">В корзину</button>
+        <button class="btn-click" onclick="oneClick('${t.name}')">В 1 клик</button>
+      </div>
+    `;
+    div.onclick = (e) => { if(e.target.tagName !== 'BUTTON') div.classList.toggle('open'); };
+    grid.appendChild(div);
+  });
+}
+
+document.getElementById('searchInput').oninput = () => {
+  const val = document.getElementById('searchInput').value.toLowerCase();
+  render(tools.filter(t => t.name.toLowerCase().includes(val)));
+};
+
+document.getElementById('catSelect').onchange = (e) => {
+  const c = e.target.value;
+  render(c === 'all' ? tools : tools.filter(t => t.cat === c));
+};
+
+function addToCart(name, price) {
+  cart.push({name, price});
+  document.getElementById('count').textContent = cart.length;
+}
+
+function showCart() {
+  document.getElementById('cartOverlay').style.display = 'flex';
+  const list = document.getElementById('cartItems');
+  list.innerHTML = cart.length ? '' : 'Корзина пока пуста';
+  let total = 0;
+  cart.forEach((item, i) => {
+    total += parseInt(item.price.replace(/\s/g, ''));
+    list.innerHTML += `<div style="display:flex; justify-content:space-between; margin-bottom:10px; font-size:0.9em;">
+      <span style="max-width:70%">${item.name}</span> <b>${item.price}₽</b>
+      <span onclick="cart.splice(${i},1); showCart(); updateCount();" style="color:red; cursor:pointer; font-weight:bold; padding:0 5px;">✕</span>
+    </div>`;
+  });
+  document.getElementById('totalSum').textContent = `Итого за 1-е сутки: ${total} ₽`;
+}
+
+function updateCount() { document.getElementById('count').textContent = cart.length; }
+function hideCart() { document.getElementById('cartOverlay').style.display = 'none'; }
+
+async function sendToTG() {
+  const name = document.getElementById('userName').value;
+  const phone = document.getElementById('userPhone').value;
+  if(!name || phone.length < 16) return alert('Пожалуйста, введите имя и полный номер телефона');
+  let text = `<b>🛒 ЗАКАЗ (КОРЗИНА)</b>\n👤 ${name}\n📞 ${phone}\n\n`;
+  cart.forEach((t, i) => text += `${i+1}. ${t.name} (${t.p1}₽)\n`);
+  await fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ chat_id: CHAT_ID, text, parse_mode: 'HTML' })
+  });
+  alert('Заявка отправлена!');
+  cart = []; updateCount(); hideCart();
+}
+
+function oneClick(name) {
+  const p = prompt('Ваш номер телефона для заказа ' + name + ':');
+  if(p && p.length > 5) {
+    const text = `<b>⚡ 1 КЛИК</b>\n🛠 ${name}\n📞 ${p}`;
+    fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ chat_id: CHAT_ID, text, parse_mode: 'HTML' })
+    }).then(() => alert('Заявка отправлена!'));
+  }
+}
+</script>
+</body>
+</html>
