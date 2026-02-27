@@ -28,9 +28,9 @@ header img { height: 70px; border-radius: 8px; }
 .header-phone { text-align: right; }
 .header-phone a { color: var(--main-yellow); font-size: 1.3em; font-weight: bold; text-decoration: none; }
 
-/* 2. Настройка адреса в шапке: белый цвет, размер 0.8em (как у слогана) */
-.header-address { color: var(--white); font-size: 0.8em; text-decoration: none; display: block; margin-top: 5px; transition: 0.3s; }
-.header-address:hover { color: var(--main-yellow); text-decoration: underline; }
+/* АДРЕС: уменьшен в два раза (с 0.85em до 0.42em) */
+.header-address { color: var(--white); font-size: 0.42em; text-decoration: none; display: block; margin-top: 5px; }
+.header-address:hover { text-decoration: underline; }
 
 /* Навигация */
 nav { background: #2c2c2c; position: sticky; top: 0; z-index: 1000; display: flex; justify-content: center; gap: 20px; padding: 12px; flex-wrap: wrap;}
@@ -71,11 +71,12 @@ button { width: 100%; padding: 12px; border: none; border-radius: 8px; font-weig
 .text-content h3 { color: var(--tg-blue); margin-top: 25px; border-bottom: 1px solid #eee; padding-bottom: 5px; }
 .text-content li { margin-bottom: 10px; }
 
-/* Карта */
-.map-container { margin-top: 20px; border-radius: 15px; overflow: hidden; height: 400px; border: 1px solid #ddd; }
-
-/* Плавающая кнопка */
+/* Плавающие кнопки */
 .fab { position: fixed; bottom: 20px; right: 20px; background: #25D366; color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 30px; text-decoration: none; box-shadow: 0 4px 15px rgba(0,0,0,0.3); z-index: 1000; }
+
+/* Кнопка ВВЕРХ */
+.btn-up { position: fixed; bottom: 90px; right: 25px; background: var(--main-black); color: white; width: 50px; height: 50px; border-radius: 50%; display: none; align-items: center; justify-content: center; font-size: 24px; cursor: pointer; z-index: 1000; opacity: 0.7; transition: 0.3s; border: 1px solid var(--white); }
+.btn-up:hover { opacity: 1; background: var(--main-yellow); color: black; }
 
 /* Корзина */
 #cartOverlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); display: none; justify-content: center; align-items: center; z-index: 2000; padding: 15px; }
@@ -90,6 +91,8 @@ button { width: 100%; padding: 12px; border: none; border-radius: 8px; font-weig
 </head>
 <body>
 
+<button class="btn-up" id="btnUp" onclick="window.scrollTo(0,0)">↑</button>
+
 <header>
   <div class="header-top">
     <a href="https://romarenda.ru/" class="logo-box">
@@ -101,7 +104,7 @@ button { width: 100%; padding: 12px; border: none; border-radius: 8px; font-weig
     </a>
     <div class="header-phone">
       <a href="tel:+79152772441">+7 915 277 24 41</a>
-      <a href="https://yandex.ru/maps/?text=Москва, ул. Люблинская д.7/2 к.1" target="_blank" class="header-address">Москва, ул. Люблинская д.7/2 к.1 (м. Текстильщики)</a>
+      <a href="https://yandex.ru/maps/?text=Москва, ул. Люблинская д.7/2 к.1" target="_blank" class="header-address">Москва, ул. Люблинская д.7/2 к.1(м. Текстильщики)</a>
     </div>
   </div>
 </header>
@@ -173,10 +176,6 @@ button { width: 100%; padding: 12px; border: none; border-radius: 8px; font-weig
     Пн-Пят: 09-00 до 19-00<br>
     Суб: 10-00 до 17-00</p>
     <p>📞 <b>Телефон:</b> <a href="tel:+79152772441" style="color: inherit; font-weight: bold;">+7 915 277 24 41</a></p>
-
-    <div class="map-container">
-      <iframe src="https://yandex.ru/map-widget/v1/?ll=37.731133%2C55.712266&z=17&pt=37.731133%2C55.712266,pm2rdl&text=РомАренда" width="100%" height="400" frameborder="0" allowfullscreen="true" style="position:relative;"></iframe>
-    </div>
   </div>
 </section>
 
@@ -203,11 +202,23 @@ const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTOtUQAhnBMNrCP
 let tools = [];
 let cart = [];
 
+// Появление кнопки "Вверх" при скролле
+window.onscroll = function() {
+  const btn = document.getElementById("btnUp");
+  if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+    btn.style.display = "flex";
+  } else {
+    btn.style.display = "none";
+  }
+};
+
+// Маска телефона
 document.getElementById('userPhone').oninput = function(e){
   let x = e.target.value.replace(/\D/g, '').match(/(\d{0,1})(\d{0,3})(\d{0,3})(\d{0,2})(\d{0,2})/);
   e.target.value = !x[2] ? x[1] : '+7 (' + x[2] + (x[3] ? ') ' + x[3] : '') + (x[4] ? '-' + x[4] : '') + (x[5] ? '-' + x[5] : '');
 };
 
+// Загрузка
 fetch(CSV_URL + "&v=" + Date.now())
   .then(res => res.text())
   .then(data => {
