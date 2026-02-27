@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<title>РомАренда — Аренда инструмента без залога</title>
+<title>РомАренда — Аренда инструмента в Текстильщиках</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/png" href="logo.png">
 
@@ -42,7 +42,7 @@ header img { height: 60px; border-radius: 8px; }
 /* Hero Баннер */
 .hero {
     position: relative;
-    height: 500px;
+    height: 450px;
     background: url('https://media.istockphoto.com/id/1335440179/ru/%D1%84%D0%BE%D1%82%D0%BE/%D1%8D%D0%BB%D0%B5%D0%BA%D1%82%D1%80%D0%BE%D0%B8%D0%BD%D1%81%D1%82%D1%80%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D1%8B-%D0%BD%D0%B0-%D0%B4%D0%B5%D1%80%D0%B5%D0%B2%D1%8F%D0%BD%D0%BD%D0%BE%D0%BC-%D1%81%D1%82%D0%BE%D0%BB%D0%B5.jpg?s=612x612&w=0&k=20&c=NVcrUilfIDCBgw6Jc7d9EXugULlptYZvFpgK3g9BG18=') no-repeat center center/cover;
     display: flex;
     align-items: center;
@@ -142,9 +142,10 @@ button { width: 100%; padding: 14px; border: none; border-radius: 8px; font-weig
 .btn-cart:hover { background: var(--dark-yellow); }
 .btn-click { background: var(--main-black); color: white; }
 
-/* Контакты */
-.contacts-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
-.map-link { color: var(--tg-blue); text-decoration: none; font-weight: 700; }
+/* Условия (список) */
+.terms-list { list-style: none; padding: 0; }
+.terms-list li { margin-bottom: 15px; padding-left: 30px; position: relative; }
+.terms-list li::before { content: "✅"; position: absolute; left: 0; }
 
 /* Плавающие элементы */
 .fab { position: fixed; bottom: 25px; right: 25px; background: #25D366; color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 30px; text-decoration: none; box-shadow: 0 5px 20px rgba(0,0,0,0.3); z-index: 1000; }
@@ -152,7 +153,6 @@ button { width: 100%; padding: 14px; border: none; border-radius: 8px; font-weig
 
 @media (max-width: 768px) {
     .hero h2 { font-size: 1.8em; }
-    .hero-content { padding: 15px; }
     .header-top { justify-content: center; text-align: center; }
     .header-phone { text-align: center; width: 100%; margin-top: 10px; }
 }
@@ -184,7 +184,7 @@ button { width: 100%; padding: 14px; border: none; border-radius: 8px; font-weig
     <div class="hero-content">
         <h2>АРЕНДА ИНСТРУМЕНТА <span>БЕЗ ЗАЛОГА</span></h2>
         <p>Работаем в Текстильщиках. Выдаем за 10 минут по паспорту РФ.</p>
-        <button onclick="document.getElementById('catalog').scrollIntoView()" style="width: auto; padding: 16px 45px; font-size: 1em; background: var(--main-yellow); color: #000; border-radius: 50px;">Выбрать инструмент</button>
+        <button onclick="document.getElementById('catalog').scrollIntoView()" style="width: auto; padding: 16px 45px; font-size: 1em; background: var(--main-yellow); color: #000; border-radius: 50px;">Перейти в каталог</button>
     </div>
 </section>
 
@@ -221,7 +221,7 @@ button { width: 100%; padding: 14px; border: none; border-radius: 8px; font-weig
 <section id="catalog">
   <h2 class="section-title">Каталог оборудования</h2>
   <div class="search-bar">
-    <input type="text" id="searchInput" placeholder="Поиск по названию...">
+    <input type="text" id="searchInput" placeholder="Что вы ищете?">
     <select id="catSelect"><option value="all">Все категории</option></select>
     <button onclick="showCart()" style="width: auto; background: var(--main-black); color: white; padding: 0 25px; border-radius: 50px;">🛒 (<span id="count">0</span>)</button>
   </div>
@@ -229,45 +229,51 @@ button { width: 100%; padding: 14px; border: none; border-radius: 8px; font-weig
 </section>
 
 <section id="terms">
-    <h2 class="section-title">Условия аренды</h2>
+    <h2 class="section-title">Развернутые условия аренды</h2>
     <div class="text-block">
-        <p>✅ <b>Без залога:</b> Для граждан РФ с постоянной пропиской в Москве или Московской области.</p>
-        <p>✅ <b>С залогом:</b> Для граждан без местной прописки предусмотрен минимальный страховой депозит.</p>
-        <p>✅ <b>Бонус:</b> Мы понимаем дорожную ситуацию, поэтому всегда даем дополнительные <b>2 часа</b> к сроку аренды на дорогу!</p>
+        <ul class="terms-list">
+            <li><b>Как взять инструмент:</b> Для оформления договора необходим только оригинал паспорта РФ. Процедура занимает не более 10 минут. Мы работаем как с физическими, так и с юридическими лицами.</li>
+            <li><b>Условия «Без залога»:</b> Инструмент выдается без денежного залога гражданам РФ с постоянной регистрацией в Москве или Московской области.</li>
+            <li><b>Если нет местной прописки:</b> В таком случае предусмотрен минимальный страховой депозит, который возвращается сразу после сдачи исправного инструмента.</li>
+            <li><b>Бонусное время (+2 часа):</b> Мы ценим ваше время и дорожную ситуацию. К оплаченным суткам (24 часа) мы автоматически добавляем 2 часа на дорогу.</li>
+            <li><b>Продление аренды:</b> Если инструмент нужен на дольше — просто позвоните нам. Продление оформляется дистанционно, а оплата вносится при возврате.</li>
+            <li><b>Минимальный срок:</b> Аренда возможна от 1 суток. При длительной аренде действуют прогрессивные скидки (указаны в карточке каждого товара).</li>
+            <li><b>Возврат:</b> Инструмент должен быть возвращен в чистом и исправном виде. Пожалуйста, проверяйте комплектацию при получении.</li>
+        </ul>
     </div>
 </section>
 
 <section id="contacts" style="margin-bottom: 80px;">
-  <h2 class="section-title">Наши контакты</h2>
-  <div class="text-block contacts-grid">
+  <h2 class="section-title">Контакты</h2>
+  <div class="text-block" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px;">
     <div>
         <p><b>📍 Адрес пункта выдачи:</b><br>
         <a href="https://yandex.ru/maps/?text=Москва, ул. Люблинская д.7/2 к.1" target="_blank" class="map-link">
             Москва, ул. Люблинская д.7/2 к.1 (м. Текстильщики)
         </a></p>
-        <p><b>📞 Контактный телефон:</b><br>
+        <p><b>📞 Телефон для связи:</b><br>
         <a href="tel:+79152772441" style="text-decoration: none; color: inherit; font-weight: 700; font-size: 1.2em;">+7 915 277 24 41</a></p>
     </div>
     <div>
-        <p><b>⏰ Время работы:</b><br>
+        <p><b>⏰ График работы:</b><br>
         Понедельник — Пятница: 09:00 - 19:00<br>
         Суббота: 10:00 - 17:00<br>
-        Воскресенье: по договоренности</p>
+        Воскресенье: по предварительной договоренности</p>
     </div>
   </div>
 </section>
 
-<a href="https://t.me/ArendMSK" class="fab" title="Написать в Telegram">💬</a>
+<a href="https://t.me/ArendMSK" class="fab">💬</a>
 
 <div id="cartOverlay" style="position: fixed; inset: 0; background: rgba(0,0,0,0.85); display: none; justify-content: center; align-items: center; z-index: 2000; padding: 15px;">
-  <div id="cartModal" style="background: white; width: 100%; max-width: 450px; padding: 30px; border-radius: 20px; position: relative;">
-    <h3 style="font-weight: 900; text-transform: uppercase; margin-top: 0;">Ваш заказ</h3>
-    <div id="cartItems" style="max-height: 250px; overflow-y: auto; margin-bottom: 20px;"></div>
-    <div id="totalSum" style="font-weight:900; font-size: 1.2em; border-top: 2px solid #eee; padding-top: 15px; margin-bottom: 20px;"></div>
-    <input type="text" id="userName" placeholder="Как вас зовут?" style="width:100%; padding:14px; margin-bottom:12px; border-radius:8px; border:1px solid #ddd; font-family: inherit;">
-    <input type="text" id="userPhone" placeholder="+7 (___) ___-__-__" style="width:100%; padding:14px; margin-bottom:20px; border-radius:8px; border:1px solid #ddd; font-family: inherit;">
-    <button class="btn-cart" onclick="sendToTG()">Отправить заявку</button>
-    <button onclick="hideCart()" style="background:none; color: #999; margin-top: 10px; font-size: 0.9em;">← Продолжить покупки</button>
+  <div id="cartModal" style="background: white; width: 100%; max-width: 450px; padding: 30px; border-radius: 20px;">
+    <h3 style="font-weight: 900; text-transform: uppercase;">Оформление</h3>
+    <div id="cartItems" style="max-height: 200px; overflow-y: auto;"></div>
+    <div id="totalSum" style="font-weight:900; margin: 15px 0;"></div>
+    <input type="text" id="userName" placeholder="Имя" style="width:100%; padding:12px; margin-bottom:10px; border-radius:8px; border:1px solid #ddd; font-family: inherit;">
+    <input type="text" id="userPhone" placeholder="+7 (___) ___-__-__" style="width:100%; padding:12px; margin-bottom:20px; border-radius:8px; border:1px solid #ddd; font-family: inherit;">
+    <button class="btn-cart" onclick="sendToTG()">Заказать аренду</button>
+    <button onclick="hideCart()" style="background:none; color: #999;">← Назад</button>
   </div>
 </div>
 
@@ -316,7 +322,7 @@ async function loadData() {
       select.appendChild(opt);
     });
     render(tools);
-  } catch(e) { console.error("Ошибка загрузки данных"); }
+  } catch(e) { console.error("Ошибка загрузки"); }
 }
 
 function render(arr) {
@@ -362,19 +368,16 @@ function addToCart(name, price) {
 function showCart() {
   document.getElementById('cartOverlay').style.display = 'flex';
   const list = document.getElementById('cartItems');
-  list.innerHTML = cart.length ? '' : '<p style="text-align:center; color:#888;">Корзина пуста</p>';
+  list.innerHTML = cart.length ? '' : 'Корзина пуста';
   let total = 0;
   cart.forEach((item, i) => {
     total += parseInt(item.price.replace(/\s/g, '')) || 0;
-    list.innerHTML += `<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; font-size:0.9em; background:#f9f9f9; padding:10px; border-radius:8px;">
-      <span style="font-weight:700;">${item.name}</span>
-      <div>
-        <span style="margin-right:10px;">${item.price}₽</span>
-        <span onclick="cart.splice(${i},1); showCart(); updateCount();" style="color:red; cursor:pointer; font-weight:900;">✕</span>
-      </div>
+    list.innerHTML += `<div style="display:flex; justify-content:space-between; margin-bottom:10px; font-size:0.85em;">
+      <span>${item.name}</span>
+      <span onclick="cart.splice(${i},1); showCart(); updateCount();" style="color:red; cursor:pointer;">✕</span>
     </div>`;
   });
-  document.getElementById('totalSum').textContent = `Итого за 1-е сутки: ${total} ₽`;
+  document.getElementById('totalSum').textContent = `Итого: ${total} ₽`;
 }
 
 function updateCount() { document.getElementById('count').textContent = cart.length; }
@@ -383,32 +386,27 @@ function hideCart() { document.getElementById('cartOverlay').style.display = 'no
 async function sendToTG() {
   const name = document.getElementById('userName').value;
   const phone = document.getElementById('userPhone').value;
-  if(!name || phone.length < 16) return alert('Пожалуйста, заполните имя и телефон');
-  
-  let text = `<b>🛒 НОВЫЙ ЗАКАЗ</b>\n👤 Клиент: ${name}\n📞 Тел: ${phone}\n\n<b>Инструменты:</b>\n`;
-  cart.forEach((t, i) => text += `${i+1}. ${t.name} — ${t.p1}₽\n`);
-  
-  const res = await fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`, {
+  if(!name || phone.length < 16) return alert('Заполните данные');
+  let text = `<b>🛒 ЗАКАЗ</b>\n👤 ${name}\n📞 ${phone}\n\n`;
+  cart.forEach((t, i) => text += `${i+1}. ${t.name}\n`);
+  await fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ chat_id: CHAT_ID, text, parse_mode: 'HTML' })
   });
-  
-  if(res.ok) {
-    alert('Спасибо! Мы свяжемся с вами в течение 10 минут.');
-    cart = []; updateCount(); hideCart();
-  }
+  alert('Заявка принята!');
+  cart = []; updateCount(); hideCart();
 }
 
 function oneClick(name) {
-  const p = prompt('Введите ваш телефон для заказа ' + name + ':');
+  const p = prompt('Ваш телефон для заказа ' + name + ':');
   if(p && p.length > 5) {
-    const text = `<b>⚡ ЗАКАЗ В 1 КЛИК</b>\n🛠 Товар: ${name}\n📞 Тел: ${p}`;
+    const text = `<b>⚡ 1 КЛИК</b>\n🛠 ${name}\n📞 ${p}`;
     fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ chat_id: CHAT_ID, text, parse_mode: 'HTML' })
-    }).then(() => alert('Заявка отправлена! Менеджер скоро позвонит.'));
+    }).then(() => alert('Заявка отправлена!'));
   }
 }
 
