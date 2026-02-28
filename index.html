@@ -99,38 +99,28 @@ section { max-width: 1200px; margin: 60px auto; padding: 0 20px; }
 
 .text-block { background: white; padding: 30px; border-radius: var(--radius); box-shadow: 0 5px 15px rgba(0,0,0,0.05); margin-bottom: 30px; }
 
-/* Важное уведомление */
-.important-box {
-    background: var(--danger-red);
-    border: 2px solid var(--danger-border);
-    border-radius: 8px;
-    padding: 20px;
-    margin-top: 25px;
-    display: flex;
-    gap: 15px;
-    align-items: flex-start;
-}
-.important-box b { color: #dc3545; text-transform: uppercase; font-size: 0.9em; }
-
 /* Каталог */
 .search-bar { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 30px; }
 .search-bar input, .search-bar select { flex: 1; padding: 15px; border: 1px solid #ddd; border-radius: var(--radius); font-family: inherit; outline: none; min-width: 200px; }
 
 .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; }
+
+/* Карточка товара с эффектом раскрытия */
 .card { 
     background: var(--white); 
     border-radius: var(--radius); 
     overflow: hidden; 
     box-shadow: 0 5px 15px rgba(0,0,0,0.05); 
-    transition: 0.3s; 
+    transition: all 0.3s ease; 
     position: relative;
     border: 1px solid #eee;
     display: flex;
     flex-direction: column;
+    cursor: pointer; /* Указываем, что на карточку можно нажать */
 }
-.card:hover { transform: translateY(-8px); box-shadow: 0 15px 35px rgba(0,0,0,0.1); border-color: var(--main-yellow); }
+.card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); border-color: var(--main-yellow); }
 
-.photo-wrapper { position: relative; width: 100%; height: 220px; overflow: hidden; background: #f0f0f0; }
+.photo-wrapper { position: relative; width: 100%; height: 200px; overflow: hidden; background: #f0f0f0; flex-shrink: 0; }
 .card img { width: 100%; height: 100%; object-fit: cover; }
 .badge-no-deposit {
     position: absolute;
@@ -149,17 +139,23 @@ section { max-width: 1200px; margin: 60px auto; padding: 0 20px; }
 .card-info { padding: 20px; flex-grow: 1; display: flex; flex-direction: column; }
 .card h3 { margin: 0 0 10px; font-size: 1.1em; font-weight: 700; min-height: 2.6em; line-height: 1.3; }
 
-/* Описание товара */
+/* Стили описания */
 .card-desc {
     font-size: 0.85em;
     color: #666;
     margin-bottom: 15px;
     display: -webkit-box;
-    -webkit-line-clamp: 3;
+    -webkit-line-clamp: 3; /* По умолчанию 3 строки */
     -webkit-box-orient: vertical;
     overflow: hidden;
-    height: 3.8em;
-    line-height: 1.3;
+    line-height: 1.4;
+    transition: all 0.3s ease;
+}
+
+/* Состояние при раскрытии */
+.card.expanded .card-desc {
+    -webkit-line-clamp: unset; /* Убираем ограничение строк */
+    display: block;
 }
 
 .price-table { background: #F9F9F9; border-radius: 8px; padding: 12px; margin-bottom: 15px; margin-top: auto; }
@@ -167,8 +163,9 @@ section { max-width: 1200px; margin: 60px auto; padding: 0 20px; }
 .price-row:last-child { border: none; font-weight: 900; color: #000; font-size: 1em; padding-top: 8px; }
 
 /* Кнопки */
+.card-buttons { display: flex; flex-direction: column; gap: 8px; }
 button { width: 100%; padding: 14px; border: none; border-radius: 8px; font-weight: 900; cursor: pointer; transition: 0.2s; font-family: inherit; text-transform: uppercase; font-size: 0.85em; }
-.btn-cart { background: var(--main-yellow); color: black; margin-bottom: 8px; }
+.btn-cart { background: var(--main-yellow); color: black; }
 .btn-cart:hover { background: var(--dark-yellow); }
 .btn-click { background: var(--main-black); color: white; }
 
@@ -247,7 +244,7 @@ button { width: 100%; padding: 14px; border: none; border-radius: 8px; font-weig
   <div class="search-bar">
     <input type="text" id="searchInput" placeholder="Поиск по названию...">
     <select id="catSelect"><option value="all">Все категории</option></select>
-    <button onclick="showCart()" style="width: auto; background: var(--main-black); color: white; padding: 0 25px; border-radius: 50px;">🛒 (<span id="count">0</span>)</button>
+    <button onclick="showCart(); event.stopPropagation();" style="width: auto; background: var(--main-black); color: white; padding: 0 25px; border-radius: 50px;">🛒 (<span id="count">0</span>)</button>
   </div>
   <div class="grid" id="productGrid"></div>
 </section>
@@ -255,19 +252,11 @@ button { width: 100%; padding: 14px; border: none; border-radius: 8px; font-weig
 <section id="terms">
     <h2 class="section-title">Условия аренды</h2>
     <div class="text-block">
-        <ul class="terms-list" style="list-style: none; padding: 0;">
-            <li style="margin-bottom: 12px; padding-left: 30px; position: relative;">✅ <b>Оформление:</b> По оригиналу паспорта РФ за 10 минут.</li>
-            <li style="margin-bottom: 12px; padding-left: 30px; position: relative;">✅ <b>Без залога:</b> Для граждан РФ с пропиской в Москве или Московской области.</li>
-            <li style="margin-bottom: 12px; padding-left: 30px; position: relative;">✅ <b>С залогом:</b> Для граждан без местной прописки предусмотрен страховой депозит.</li>
-            <li style="margin-bottom: 12px; padding-left: 30px; position: relative;">✅ <b>Бонус:</b> К сроку аренды автоматически добавляем <b>2 часа</b> бесплатно.</li>
+        <ul style="list-style: none; padding: 0;">
+            <li style="margin-bottom: 12px;">✅ <b>Оформление:</b> По оригиналу паспорта РФ за 10 минут.</li>
+            <li style="margin-bottom: 12px;">✅ <b>Без залога:</b> Для граждан РФ с пропиской в Москве или МО.</li>
+            <li style="margin-bottom: 12px;">✅ <b>С залогом:</b> Для граждан без местной прописки предусмотрен страховой депозит.</li>
         </ul>
-        <div class="important-box">
-            <span style="font-size: 2em;">⚠️</span>
-            <div>
-                <b>Важно:</b>
-                <p style="margin: 5px 0 0; font-size: 0.9em; color: #555;">Мы проверяем клиентов через системы ФССП и МВД. В услугах проката может быть отказано в одностороннем порядке.</p>
-            </div>
-        </div>
     </div>
 </section>
 
@@ -281,14 +270,13 @@ button { width: 100%; padding: 14px; border: none; border-radius: 8px; font-weig
     <input type="text" id="userName" placeholder="Ваше имя" style="width:100%; padding:12px; margin-bottom:10px; border-radius:8px; border:1px solid #ddd; font-family: inherit;">
     <input type="text" id="userPhone" placeholder="+7 (___) ___-__-__" style="width:100%; padding:12px; margin-bottom:20px; border-radius:8px; border:1px solid #ddd; font-family: inherit;">
     <button class="btn-cart" onclick="sendToTG()">Заказать аренду</button>
-    <button onclick="hideCart()" style="background:none; color: #999;">← Закрыть</button>
+    <button onclick="hideCart()" style="background:none; color: #999; margin-top: 10px;">← Закрыть</button>
   </div>
 </div>
 
 <script>
 const TOKEN = "8575516738:AAGomt_lCqq1Uzdqf7D4UrReolJF_NKhYoM";
 const CHAT_ID = "8359415363";
-// Ссылка на экспорт твоей таблицы в CSV
 const CSV_URL = "https://docs.google.com/spreadsheets/d/1DvUxIzOd4Eld-VmTkBR3y-XzZ0JekjgDQTx0b_aTOxA/export?format=csv&gid=2109115062";
 
 let tools = [];
@@ -315,7 +303,7 @@ async function loadData() {
       return {
         cat: cols[0]?.replace(/"/g,'').trim(),
         name: cols[1]?.replace(/"/g,'').trim(),
-        desc: cols[2]?.replace(/"/g,'').trim(), // Описание здесь
+        desc: cols[2]?.replace(/"/g,'').trim(),
         img: cols[3]?.trim() || 'logo.png',
         p1: cols[4]?.trim() || '0',
         p2: cols[5]?.trim(),
@@ -342,6 +330,15 @@ function render(arr) {
   arr.forEach(t => {
     const div = document.createElement('div');
     div.className = 'card';
+    
+    // Логика переключения описания при клике на карточку
+    div.onclick = (e) => {
+        // Если кликнули на кнопку, не сворачиваем карточку
+        if (e.target.tagName !== 'BUTTON') {
+            div.classList.toggle('expanded');
+        }
+    };
+
     div.innerHTML = `
       <div class="photo-wrapper">
         <div class="badge-no-deposit">Без залога</div>
@@ -349,14 +346,16 @@ function render(arr) {
       </div>
       <div class="card-info">
         <h3>${t.name}</h3>
-        <p class="card-desc">${t.desc ? t.desc : 'Отличный инструмент для профессиональных работ.'}</p>
+        <div class="card-desc">${t.desc ? t.desc : 'Профессиональное оборудование для строительных и ремонтных работ. Высокая надежность и производительность.'}</div>
         <div class="price-table">
           <div class="price-row"><span>1 сутки:</span> <span>${t.p1} ₽</span></div>
           ${t.p2 ? `<div class="price-row"><span>2 суток:</span> <span>${t.p2} ₽</span></div>` : ''}
           ${t.p3 ? `<div class="price-row"><span>от 3 суток:</span> <span>${t.p3} ₽</span></div>` : ''}
         </div>
-        <button class="btn-cart" onclick="addToCart('${t.name}', '${t.p1}')">В корзину</button>
-        <button class="btn-click" onclick="oneClick('${t.name}')">В 1 клик</button>
+        <div class="card-buttons">
+            <button class="btn-cart" onclick="addToCart('${t.name}', '${t.p1}'); event.stopPropagation();">В корзину</button>
+            <button class="btn-click" onclick="oneClick('${t.name}'); event.stopPropagation();">В 1 клик</button>
+        </div>
       </div>
     `;
     grid.appendChild(div);
@@ -374,7 +373,7 @@ document.getElementById('catSelect').onchange = (e) => {
 
 function addToCart(name, price) {
   cart.push({name, price});
-  document.getElementById('count').textContent = cart.length;
+  updateCount();
 }
 
 function showCart() {
