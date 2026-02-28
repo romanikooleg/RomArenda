@@ -130,10 +130,13 @@ section { max-width: 1200px; margin: 60px auto; padding: 0 20px; }
     transition: 0.3s; 
     position: relative;
     border: 1px solid #eee;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
 }
 .card:hover { transform: translateY(-8px); box-shadow: 0 15px 35px rgba(0,0,0,0.1); border-color: var(--main-yellow); }
 
-.photo-wrapper { position: relative; width: 100%; height: 220px; overflow: hidden; background: #f0f0f0; }
+.photo-wrapper { position: relative; width: 100%; height: 220px; overflow: hidden; background: #f0f0f0; flex-shrink: 0; }
 .card img { width: 100%; height: 100%; object-fit: cover; }
 .badge-no-deposit {
     position: absolute;
@@ -149,15 +152,32 @@ section { max-width: 1200px; margin: 60px auto; padding: 0 20px; }
     z-index: 5;
 }
 
-.card-info { padding: 20px; }
-.card h3 { margin: 0 0 15px; font-size: 1.1em; font-weight: 700; height: 2.6em; overflow: hidden; line-height: 1.3; }
+.card-info { padding: 20px; flex-grow: 1; display: flex; flex-direction: column; }
+.card h3 { margin: 0 0 10px; font-size: 1.1em; font-weight: 700; min-height: 2.6em; line-height: 1.3; overflow: hidden; }
+
+/* Описание */
+.card-desc {
+    font-size: 0.85em;
+    color: #666;
+    margin-bottom: 15px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    line-height: 1.4;
+    transition: all 0.3s ease;
+}
+.card.expanded .card-desc {
+    -webkit-line-clamp: unset;
+    display: block;
+}
 
 /* Условия (список) */
 .terms-list { list-style: none; padding: 0; margin: 0; }
 .terms-list li { margin-bottom: 12px; padding-left: 30px; position: relative; font-size: 0.95em; }
 .terms-list li::before { content: "✅"; position: absolute; left: 0; }
 
-.price-table { background: #F9F9F9; border-radius: 8px; padding: 12px; margin-bottom: 15px; }
+.price-table { background: #F9F9F9; border-radius: 8px; padding: 12px; margin-bottom: 15px; margin-top: auto; }
 .price-row { display: flex; justify-content: space-between; font-size: 0.85em; padding: 4px 0; border-bottom: 1px solid #eee; }
 .price-row:last-child { border: none; font-weight: 900; color: #000; font-size: 1em; padding-top: 8px; }
 
@@ -363,8 +383,10 @@ async function loadData() {
       };
     }).filter(t => t !== null);
     
-    const cats = [...new Set(tools.map(t => t.cat))];
+    // Исправленное заполнение категорий
+    const cats = [...new Set(tools.map(t => t.cat).filter(c => c && c.length > 0))];
     const select = document.getElementById('catSelect');
+    select.innerHTML = '<option value="all">Все категории</option>'; // Очищаем старые
     cats.forEach(c => {
       let opt = document.createElement('option');
       opt.value = c; opt.textContent = c;
@@ -380,6 +402,14 @@ function render(arr) {
   arr.forEach(t => {
     const div = document.createElement('div');
     div.className = 'card';
+    
+    // Логика раскрытия описания
+    div.onclick = (e) => {
+        if(e.target.tagName !== 'BUTTON') {
+            div.classList.toggle('expanded');
+        }
+    };
+
     div.innerHTML = `
       <div class="photo-wrapper">
         <div class="badge-no-deposit">Без залога</div>
@@ -387,6 +417,7 @@ function render(arr) {
       </div>
       <div class="card-info">
         <h3>${t.name}</h3>
+        <div class="card-desc">${t.desc ? t.desc : 'Профессиональный инструмент для качественного выполнения работ.'}</div>
         <div class="price-table">
           <div class="price-row"><span>1 сутки:</span> <span>${t.p1} ₽</span></div>
           ${t.p2 ? `<div class="price-row"><span>2 суток:</span> <span>${t.p2} ₽</span></div>` : ''}
