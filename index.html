@@ -112,11 +112,6 @@ section { max-width: 1200px; margin: 60px auto; padding: 0 20px; }
 }
 .important-box b { color: #dc3545; text-transform: uppercase; font-size: 0.9em; }
 
-/* Доставка */
-.delivery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
-.delivery-card { background: #fdfdfd; padding: 20px; border-radius: 10px; border: 1px dashed #ddd; }
-.delivery-card h4 { margin-top: 0; color: var(--main-black); border-bottom: 2px solid var(--main-yellow); display: inline-block; margin-bottom: 15px; }
-
 /* Каталог */
 .search-bar { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 30px; }
 .search-bar input, .search-bar select { flex: 1; padding: 15px; border: 1px solid #ddd; border-radius: var(--radius); font-family: inherit; outline: none; min-width: 200px; }
@@ -130,6 +125,8 @@ section { max-width: 1200px; margin: 60px auto; padding: 0 20px; }
     transition: 0.3s; 
     position: relative;
     border: 1px solid #eee;
+    display: flex;
+    flex-direction: column;
 }
 .card:hover { transform: translateY(-8px); box-shadow: 0 15px 35px rgba(0,0,0,0.1); border-color: var(--main-yellow); }
 
@@ -149,15 +146,23 @@ section { max-width: 1200px; margin: 60px auto; padding: 0 20px; }
     z-index: 5;
 }
 
-.card-info { padding: 20px; }
-.card h3 { margin: 0 0 15px; font-size: 1.1em; font-weight: 700; height: 2.6em; overflow: hidden; line-height: 1.3; }
+.card-info { padding: 20px; flex-grow: 1; display: flex; flex-direction: column; }
+.card h3 { margin: 0 0 10px; font-size: 1.1em; font-weight: 700; min-height: 2.6em; line-height: 1.3; }
 
-/* Условия (список) */
-.terms-list { list-style: none; padding: 0; margin: 0; }
-.terms-list li { margin-bottom: 12px; padding-left: 30px; position: relative; font-size: 0.95em; }
-.terms-list li::before { content: "✅"; position: absolute; left: 0; }
+/* Описание товара */
+.card-desc {
+    font-size: 0.85em;
+    color: #666;
+    margin-bottom: 15px;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    height: 3.8em;
+    line-height: 1.3;
+}
 
-.price-table { background: #F9F9F9; border-radius: 8px; padding: 12px; margin-bottom: 15px; }
+.price-table { background: #F9F9F9; border-radius: 8px; padding: 12px; margin-bottom: 15px; margin-top: auto; }
 .price-row { display: flex; justify-content: space-between; font-size: 0.85em; padding: 4px 0; border-bottom: 1px solid #eee; }
 .price-row:last-child { border: none; font-weight: 900; color: #000; font-size: 1em; padding-top: 8px; }
 
@@ -250,66 +255,20 @@ button { width: 100%; padding: 14px; border: none; border-radius: 8px; font-weig
 <section id="terms">
     <h2 class="section-title">Условия аренды</h2>
     <div class="text-block">
-        <ul class="terms-list">
-            <li><b>Оформление:</b> По оригиналу паспорта РФ за 10 минут.</li>
-            <li><b>Без залога:</b> Для граждан РФ с пропиской в Москве или Московской области.</li>
-            <li><b>С залогом:</b> Для граждан без местной прописки предусмотрен страховой депозит.</li>
-            <li><b>Бонус:</b> К сроку аренды автоматически добавляем <b>2 часа</b> бесплатно.</li>
-            <li><b>Продление:</b> Дистанционно по звонку, оплата при возврате.</li>
+        <ul class="terms-list" style="list-style: none; padding: 0;">
+            <li style="margin-bottom: 12px; padding-left: 30px; position: relative;">✅ <b>Оформление:</b> По оригиналу паспорта РФ за 10 минут.</li>
+            <li style="margin-bottom: 12px; padding-left: 30px; position: relative;">✅ <b>Без залога:</b> Для граждан РФ с пропиской в Москве или Московской области.</li>
+            <li style="margin-bottom: 12px; padding-left: 30px; position: relative;">✅ <b>С залогом:</b> Для граждан без местной прописки предусмотрен страховой депозит.</li>
+            <li style="margin-bottom: 12px; padding-left: 30px; position: relative;">✅ <b>Бонус:</b> К сроку аренды автоматически добавляем <b>2 часа</b> бесплатно.</li>
         </ul>
-        
         <div class="important-box">
             <span style="font-size: 2em;">⚠️</span>
             <div>
                 <b>Важно:</b>
-                <p style="margin: 5px 0 0; font-size: 0.9em; color: #555;">Мы проверяем клиентов через системы ФССП и МВД на предмет задолженностей и судимостей. В связи с этим в услугах проката может быть отказано в одностороннем порядке. Проверка производится по единой системе МВД.</p>
+                <p style="margin: 5px 0 0; font-size: 0.9em; color: #555;">Мы проверяем клиентов через системы ФССП и МВД. В услугах проката может быть отказано в одностороннем порядке.</p>
             </div>
         </div>
     </div>
-</section>
-
-<section id="delivery">
-    <h2 class="section-title">Доставка и вывоз</h2>
-    <div class="text-block delivery-grid">
-        <div class="delivery-card">
-            <h4>🚚 Доставка к Вам</h4>
-            <ul style="padding-left: 20px; font-size: 0.9em;">
-                <li><b>В день заказа:</b> в течение 4 часов.</li>
-                <li><b>География:</b> вся Москва и Московская область.</li>
-                <li><b>Стоимость:</b> от <b>153₽</b>.</li>
-                <li style="color: #666; font-style: italic; list-style: none; margin-top: 10px;">* Итоговая сумма зависит от района и суммы заказа, рассчитывается менеджером.</li>
-            </ul>
-        </div>
-        <div class="delivery-card">
-            <h4>📦 Вывоз от Вас</h4>
-            <ul style="padding-left: 20px; font-size: 0.9em;">
-                <li><b>Время:</b> согласовывается заранее (может сдвигаться).</li>
-                <li><b>Режим:</b> производится до 18:00.</li>
-                <li><b>Нюанс:</b> если доставка была позже 18:00, вывоз будет утром следующего дня.</li>
-                <li><b>Стоимость:</b> от <b>153₽</b>.</li>
-            </ul>
-        </div>
-    </div>
-</section>
-
-<section id="contacts" style="margin-bottom: 80px;">
-  <h2 class="section-title">Контакты</h2>
-  <div class="text-block" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px;">
-    <div>
-        <p><b>📍 Адрес:</b><br>
-        <a href="https://yandex.ru/maps/?text=Москва, ул. Люблинская д.7/2 к.1" target="_blank" style="color: var(--tg-blue); font-weight: 700;">
-            Москва, ул. Люблинская д.7/2 к.1 (м. Текстильщики)
-        </a></p>
-        <p><b>📞 Телефон:</b><br>
-        <a href="tel:+79152772441" style="text-decoration: none; color: inherit; font-weight: 700; font-size: 1.2em;">+7 915 277 24 41</a></p>
-    </div>
-    <div>
-        <p><b>⏰ График:</b><br>
-        Пн — Пт: 09:00 - 19:00<br>
-        Сб: 10:00 - 17:00<br>
-        Вс: по договоренности</p>
-    </div>
-  </div>
 </section>
 
 <a href="https://t.me/ArendMSK" class="fab">💬</a>
@@ -329,14 +288,15 @@ button { width: 100%; padding: 14px; border: none; border-radius: 8px; font-weig
 <script>
 const TOKEN = "8575516738:AAGomt_lCqq1Uzdqf7D4UrReolJF_NKhYoM";
 const CHAT_ID = "8359415363";
-const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTOtUQAhnBMNrCPWFj0u6cjQeb0qWscrovHdCWvuBQMaCCirL4ds3i6NtjqwMpcReNsrhrY_X8ICXOL/pub?gid=2109115062&single=true&output=csv";
+// Ссылка на экспорт твоей таблицы в CSV
+const CSV_URL = "https://docs.google.com/spreadsheets/d/1DvUxIzOd4Eld-VmTkBR3y-XzZ0JekjgDQTx0b_aTOxA/export?format=csv&gid=2109115062";
 
 let tools = [];
 let cart = [];
 
 window.onscroll = function() {
   const btn = document.getElementById("btnUp");
-  btn.style.display = (window.scrollY > 500) ? "flex" : "none";
+  if(btn) btn.style.display = (window.scrollY > 500) ? "flex" : "none";
 };
 
 document.getElementById('userPhone').oninput = function(e){
@@ -355,7 +315,7 @@ async function loadData() {
       return {
         cat: cols[0]?.replace(/"/g,'').trim(),
         name: cols[1]?.replace(/"/g,'').trim(),
-        desc: cols[2]?.replace(/"/g,'').trim(),
+        desc: cols[2]?.replace(/"/g,'').trim(), // Описание здесь
         img: cols[3]?.trim() || 'logo.png',
         p1: cols[4]?.trim() || '0',
         p2: cols[5]?.trim(),
@@ -366,12 +326,14 @@ async function loadData() {
     const cats = [...new Set(tools.map(t => t.cat))];
     const select = document.getElementById('catSelect');
     cats.forEach(c => {
-      let opt = document.createElement('option');
-      opt.value = c; opt.textContent = c;
-      select.appendChild(opt);
+      if(c) {
+        let opt = document.createElement('option');
+        opt.value = c; opt.textContent = c;
+        select.appendChild(opt);
+      }
     });
     render(tools);
-  } catch(e) { console.error("Ошибка загрузки"); }
+  } catch(e) { console.error("Ошибка загрузки данных"); }
 }
 
 function render(arr) {
@@ -387,6 +349,7 @@ function render(arr) {
       </div>
       <div class="card-info">
         <h3>${t.name}</h3>
+        <p class="card-desc">${t.desc ? t.desc : 'Отличный инструмент для профессиональных работ.'}</p>
         <div class="price-table">
           <div class="price-row"><span>1 сутки:</span> <span>${t.p1} ₽</span></div>
           ${t.p2 ? `<div class="price-row"><span>2 суток:</span> <span>${t.p2} ₽</span></div>` : ''}
