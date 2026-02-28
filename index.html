@@ -15,13 +15,11 @@
   --main-black: #1F1F1F;
   --light-gray: #F8F9FA;
   --white: #FFFFFF;
-  --tg-blue: #0088cc;
   --radius: 12px;
-  --danger-red: #fff3f3;
-  --danger-border: #dc3545;
 }
 
 * { box-sizing: border-box; scroll-behavior: smooth; }
+
 body { 
     margin: 0; 
     font-family: 'Montserrat', sans-serif; 
@@ -30,7 +28,7 @@ body {
     line-height: 1.6;
 }
 
-/* Шапка */
+/* --- ШАПКА --- */
 header { background: var(--main-black); color: var(--white); padding: 15px 20px; border-bottom: 3px solid var(--main-yellow); }
 .header-top { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 15px; }
 
@@ -41,7 +39,7 @@ header img { height: 60px; border-radius: 8px; }
 .header-phone a.phone-num { color: var(--main-yellow); font-size: 1.3em; font-weight: 900; text-decoration: none; }
 .header-address { color: #ccc; font-size: 0.85em; text-decoration: none; display: block; margin-top: 4px; }
 
-/* Hero Баннер */
+/* --- HERO --- */
 .hero {
     position: relative;
     height: 450px;
@@ -52,130 +50,83 @@ header img { height: 60px; border-radius: 8px; }
     text-align: center;
     color: white;
 }
-.hero::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: rgba(0,0,0,0.65);
-}
+.hero::before { content: ""; position: absolute; inset: 0; background: rgba(0,0,0,0.65); }
 .hero-content { position: relative; z-index: 2; max-width: 800px; padding: 20px; }
 .hero h2 { font-size: 3em; font-weight: 900; text-transform: uppercase; margin: 0; line-height: 1.1; }
 .hero h2 span { color: var(--main-yellow); }
 .hero p { font-size: 1.2em; margin: 25px 0; font-weight: 400; }
 
-/* Блок бонусов */
+/* --- БОНУСЫ --- */
 .bonus-grid { 
-    display: grid; 
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
-    gap: 20px; 
-    max-width: 1200px; 
-    margin: -50px auto 40px; 
-    padding: 0 20px;
-    position: relative;
-    z-index: 10;
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+    gap: 20px; max-width: 1200px; margin: -50px auto 40px; padding: 0 20px; position: relative; z-index: 10;
 }
 .bonus-card {
-    background: white;
-    padding: 25px;
-    border-radius: var(--radius);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    border-bottom: 4px solid var(--main-yellow);
+    background: white; padding: 25px; border-radius: var(--radius);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1); display: flex; align-items: center; gap: 15px; border-bottom: 4px solid var(--main-yellow);
 }
 .bonus-card .icon { font-size: 2.5em; }
 .bonus-card h4 { margin: 0; font-size: 1.1em; font-weight: 900; text-transform: uppercase; }
-.bonus-card p { margin: 5px 0 0; font-size: 0.9em; color: #666; }
 
-/* Навигация */
-nav { background: var(--main-black); position: sticky; top: 0; z-index: 1000; display: flex; justify-content: center; gap: 20px; padding: 15px; border-top: 1px solid #333; flex-wrap: wrap; }
+/* --- НАВИГАЦИЯ --- */
+nav { background: var(--main-black); position: sticky; top: 0; z-index: 1000; display: flex; justify-content: center; gap: 20px; padding: 15px; border-top: 1px solid #333; }
 nav a { color: white; text-decoration: none; font-size: 0.85em; font-weight: 700; text-transform: uppercase; transition: 0.3s; }
 nav a:hover { color: var(--main-yellow); }
 
-/* Секции */
+/* --- КАТАЛОГ --- */
 section { max-width: 1200px; margin: 60px auto; padding: 0 20px; }
 .section-title { font-size: 2em; font-weight: 900; margin-bottom: 30px; text-transform: uppercase; border-left: 6px solid var(--main-yellow); padding-left: 15px; }
 
-.text-block { background: white; padding: 30px; border-radius: var(--radius); box-shadow: 0 5px 15px rgba(0,0,0,0.05); margin-bottom: 30px; }
-
-/* Каталог */
 .search-bar { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 30px; }
-.search-bar input, .search-bar select { flex: 1; padding: 15px; border: 1px solid #ddd; border-radius: var(--radius); font-family: inherit; outline: none; min-width: 200px; }
+.search-bar input, .search-bar select { flex: 1; padding: 15px; border: 1px solid #ddd; border-radius: var(--radius); outline: none; min-width: 200px; font-family: inherit; }
 
 .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; }
 
-/* Карточка товара с эффектом раскрытия */
+/* --- КАРТОЧКА ТОВАРА --- */
 .card { 
-    background: var(--white); 
-    border-radius: var(--radius); 
-    overflow: hidden; 
-    box-shadow: 0 5px 15px rgba(0,0,0,0.05); 
-    transition: all 0.3s ease; 
-    position: relative;
-    border: 1px solid #eee;
-    display: flex;
-    flex-direction: column;
-    cursor: pointer; /* Указываем, что на карточку можно нажать */
+    background: var(--white); border-radius: var(--radius); overflow: hidden; 
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05); transition: 0.3s; position: relative;
+    border: 1px solid #eee; display: flex; flex-direction: column; cursor: pointer;
 }
-.card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); border-color: var(--main-yellow); }
+.card:hover { transform: translateY(-5px); border-color: var(--main-yellow); }
 
-.photo-wrapper { position: relative; width: 100%; height: 200px; overflow: hidden; background: #f0f0f0; flex-shrink: 0; }
+.photo-wrapper { position: relative; width: 100%; height: 200px; background: #f0f0f0; }
 .card img { width: 100%; height: 100%; object-fit: cover; }
+
 .badge-no-deposit {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    background: var(--main-yellow);
-    color: black;
-    padding: 4px 10px;
-    font-size: 0.7em;
-    font-weight: 900;
-    border-radius: 4px;
-    text-transform: uppercase;
-    z-index: 5;
+    position: absolute; top: 10px; left: 10px; background: var(--main-yellow);
+    color: black; padding: 4px 10px; font-size: 0.7em; font-weight: 900; border-radius: 4px; z-index: 5;
 }
 
 .card-info { padding: 20px; flex-grow: 1; display: flex; flex-direction: column; }
-.card h3 { margin: 0 0 10px; font-size: 1.1em; font-weight: 700; min-height: 2.6em; line-height: 1.3; }
+.card h3 { margin: 0 0 10px; font-size: 1.1em; font-weight: 700; line-height: 1.3; min-height: 2.6em; }
 
-/* Стили описания */
+/* Описание с раскрытием */
 .card-desc {
-    font-size: 0.85em;
-    color: #666;
-    margin-bottom: 15px;
-    display: -webkit-box;
-    -webkit-line-clamp: 3; /* По умолчанию 3 строки */
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    line-height: 1.4;
-    transition: all 0.3s ease;
+    font-size: 0.85em; color: #666; margin-bottom: 15px;
+    display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;
+    overflow: hidden; line-height: 1.4; transition: 0.3s;
 }
-
-/* Состояние при раскрытии */
-.card.expanded .card-desc {
-    -webkit-line-clamp: unset; /* Убираем ограничение строк */
-    display: block;
-}
+.card.expanded .card-desc { -webkit-line-clamp: unset; display: block; }
 
 .price-table { background: #F9F9F9; border-radius: 8px; padding: 12px; margin-bottom: 15px; margin-top: auto; }
 .price-row { display: flex; justify-content: space-between; font-size: 0.85em; padding: 4px 0; border-bottom: 1px solid #eee; }
-.price-row:last-child { border: none; font-weight: 900; color: #000; font-size: 1em; padding-top: 8px; }
+.price-row:last-child { border: none; font-weight: 900; color: #000; padding-top: 8px; }
 
-/* Кнопки */
 .card-buttons { display: flex; flex-direction: column; gap: 8px; }
-button { width: 100%; padding: 14px; border: none; border-radius: 8px; font-weight: 900; cursor: pointer; transition: 0.2s; font-family: inherit; text-transform: uppercase; font-size: 0.85em; }
+button { width: 100%; padding: 14px; border: none; border-radius: 8px; font-weight: 900; cursor: pointer; text-transform: uppercase; font-family: inherit; }
 .btn-cart { background: var(--main-yellow); color: black; }
-.btn-cart:hover { background: var(--dark-yellow); }
 .btn-click { background: var(--main-black); color: white; }
 
-/* Плавающие элементы */
-.fab { position: fixed; bottom: 25px; right: 25px; background: #25D366; color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 30px; text-decoration: none; box-shadow: 0 5px 20px rgba(0,0,0,0.3); z-index: 1000; }
-.btn-up { position: fixed; bottom: 100px; right: 30px; background: white; color: black; width: 50px; height: 50px; border-radius: 50%; display: none; align-items: center; justify-content: center; cursor: pointer; z-index: 1000; box-shadow: 0 5px 15px rgba(0,0,0,0.1); border: 1px solid #ddd; font-weight: bold; }
+/* --- МОДАЛКА КОРЗИНЫ --- */
+#cartOverlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); display: none; justify-content: center; align-items: center; z-index: 2000; padding: 15px; }
+#cartModal { background: white; width: 100%; max-width: 450px; padding: 30px; border-radius: 20px; position: relative; }
 
-@media (max-width: 768px) {
-    .hero h2 { font-size: 1.8em; }
-}
+/* --- ФЛОАТ КНОПКИ --- */
+.fab { position: fixed; bottom: 25px; right: 25px; background: #25D366; color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 30px; text-decoration: none; box-shadow: 0 5px 20px rgba(0,0,0,0.3); z-index: 1000; }
+.btn-up { position: fixed; bottom: 100px; right: 30px; background: white; width: 50px; height: 50px; border-radius: 50%; display: none; align-items: center; justify-content: center; cursor: pointer; border: 1px solid #ddd; z-index: 1000; }
+
+@media (max-width: 768px) { .hero h2 { font-size: 1.8em; } }
 </style>
 </head>
 <body>
@@ -185,17 +136,15 @@ button { width: 100%; padding: 14px; border: none; border-radius: 8px; font-weig
 <header>
   <div class="header-top">
     <a href="/" class="logo-box">
-      <img src="logo.png" alt="РомАренда">
+      <img src="logo.png" alt="РомАренда" onerror="this.style.display='none'">
       <div style="line-height: 1.1;">
-        <span style="font-weight: 900; font-size: 1.5em; letter-spacing: -0.5px;">РомАренда</span><br>
-        <span style="font-size: 0.75em; color: var(--main-yellow); font-weight: 700; text-transform: uppercase;">Аренда инструмента</span>
+        <span style="font-weight: 900; font-size: 1.5em;">РомАренда</span><br>
+        <span style="font-size: 0.75em; color: var(--main-yellow); font-weight: 700;">ИНСТРУМЕНТ В АРЕНДУ</span>
       </div>
     </a>
     <div class="header-phone">
       <a href="tel:+79152772441" class="phone-num">+7 915 277 24 41</a>
-      <a href="https://yandex.ru/maps/?text=Москва, ул. Люблинская д.7/2 к.1" target="_blank" class="header-address">
-        📍 Москва, Люблинская д.7/2 к.1
-      </a>
+      <span class="header-address">📍 Москва, Люблинская д.7/2 к.1</span>
     </div>
   </div>
 </header>
@@ -203,74 +152,54 @@ button { width: 100%; padding: 14px; border: none; border-radius: 8px; font-weig
 <section class="hero" style="margin: 0; max-width: 100%;">
     <div class="hero-content">
         <h2>АРЕНДА ИНСТРУМЕНТА <span>БЕЗ ЗАЛОГА</span></h2>
-        <p>Работаем в Текстильщиках. Выдаем за 10 минут по паспорту РФ.</p>
-        <button onclick="document.getElementById('catalog').scrollIntoView()" style="width: auto; padding: 16px 45px; font-size: 1em; background: var(--main-yellow); color: #000; border-radius: 50px;">Выбрать оборудование</button>
+        <p>Для жителей Москвы и МО по паспорту РФ. Выдача за 10 минут.</p>
+        <button onclick="document.getElementById('catalog').scrollIntoView()" style="width: auto; padding: 16px 45px; background: var(--main-yellow); border-radius: 50px;">Перейти в каталог</button>
     </div>
 </section>
 
 <div class="bonus-grid">
-    <div class="bonus-card">
-        <div class="icon">🎁</div>
-        <div>
-            <h4>+2 часа бонусом</h4>
-            <p>Дарим 120 минут бесплатно на дорогу и возврат инструмента!</p>
-        </div>
-    </div>
-    <div class="bonus-card">
-        <div class="icon">🤝</div>
-        <div>
-            <h4>Без залога</h4>
-            <p>Для жителей Москвы и МО выдаем технику без денежного депозита.</p>
-        </div>
-    </div>
-    <div class="bonus-card">
-        <div class="icon">⏱</div>
-        <div>
-            <h4>10 минут</h4>
-            <p>Максимально быстрое оформление договора на месте.</p>
-        </div>
-    </div>
+    <div class="bonus-card"><div class="icon">🎁</div><div><h4>+2 часа бесплатно</h4><p>На дорогу и возврат</p></div></div>
+    <div class="bonus-card"><div class="icon">🤝</div><div><h4>Без залога</h4><p>Для Москвы и МО</p></div></div>
+    <div class="bonus-card"><div class="icon">⏱</div><div><h4>Быстро</h4><p>Оформление 10 мин</p></div></div>
 </div>
 
 <nav>
   <a href="#catalog">Каталог</a>
   <a href="#terms">Условия</a>
   <a href="#delivery">Доставка</a>
-  <a href="#contacts">Контакты</a>
 </nav>
 
 <section id="catalog">
   <h2 class="section-title">Каталог оборудования</h2>
   <div class="search-bar">
-    <input type="text" id="searchInput" placeholder="Поиск по названию...">
+    <input type="text" id="searchInput" placeholder="Поиск инструмента...">
     <select id="catSelect"><option value="all">Все категории</option></select>
-    <button onclick="showCart(); event.stopPropagation();" style="width: auto; background: var(--main-black); color: white; padding: 0 25px; border-radius: 50px;">🛒 (<span id="count">0</span>)</button>
+    <button onclick="showCart()" style="width: auto; background: var(--main-black); color: white; padding: 0 25px; border-radius: 50px;">🛒 <span id="count">0</span></button>
   </div>
   <div class="grid" id="productGrid"></div>
 </section>
 
 <section id="terms">
-    <h2 class="section-title">Условия аренды</h2>
-    <div class="text-block">
-        <ul style="list-style: none; padding: 0;">
-            <li style="margin-bottom: 12px;">✅ <b>Оформление:</b> По оригиналу паспорта РФ за 10 минут.</li>
-            <li style="margin-bottom: 12px;">✅ <b>Без залога:</b> Для граждан РФ с пропиской в Москве или МО.</li>
-            <li style="margin-bottom: 12px;">✅ <b>С залогом:</b> Для граждан без местной прописки предусмотрен страховой депозит.</li>
-        </ul>
+    <h2 class="section-title">Условия</h2>
+    <div style="background: white; padding: 30px; border-radius: var(--radius);">
+        <p>✅ <b>Для граждан РФ:</b> Только паспорт (прописка МСК/МО — без залога).</p>
+        <p>✅ <b>Для остальных:</b> Паспорт + страховой депозит (возвращается).</p>
     </div>
 </section>
 
 <a href="https://t.me/ArendMSK" class="fab">💬</a>
 
-<div id="cartOverlay" style="position: fixed; inset: 0; background: rgba(0,0,0,0.85); display: none; justify-content: center; align-items: center; z-index: 2000; padding: 15px;">
-  <div id="cartModal" style="background: white; width: 100%; max-width: 450px; padding: 30px; border-radius: 20px;">
-    <h3 style="font-weight: 900; text-transform: uppercase;">Оформление</h3>
-    <div id="cartItems" style="max-height: 200px; overflow-y: auto;"></div>
-    <div id="totalSum" style="font-weight:900; margin: 15px 0;"></div>
-    <input type="text" id="userName" placeholder="Ваше имя" style="width:100%; padding:12px; margin-bottom:10px; border-radius:8px; border:1px solid #ddd; font-family: inherit;">
-    <input type="text" id="userPhone" placeholder="+7 (___) ___-__-__" style="width:100%; padding:12px; margin-bottom:20px; border-radius:8px; border:1px solid #ddd; font-family: inherit;">
-    <button class="btn-cart" onclick="sendToTG()">Заказать аренду</button>
-    <button onclick="hideCart()" style="background:none; color: #999; margin-top: 10px;">← Закрыть</button>
+<div id="cartOverlay">
+  <div id="cartModal">
+    <h3 style="font-weight: 900; text-transform: uppercase;">Ваш заказ</h3>
+    <div id="cartItems" style="max-height: 250px; overflow-y: auto; margin-bottom: 20px;"></div>
+    <div id="totalSum" style="font-weight:900; margin-bottom: 20px; font-size: 1.2em;"></div>
+    
+    <input type="text" id="userName" placeholder="Ваше имя" style="width:100%; padding:12px; margin-bottom:10px; border-radius:8px; border:1px solid #ddd;">
+    <input type="text" id="userPhone" placeholder="+7 (___) ___-__-__" style="width:100%; padding:12px; margin-bottom:20px; border-radius:8px; border:1px solid #ddd;">
+    
+    <button class="btn-cart" onclick="sendToTG()">Заказать</button>
+    <button onclick="hideCart()" style="background:none; color: #999; margin-top: 10px;">← Назад</button>
   </div>
 </div>
 
@@ -282,24 +211,22 @@ const CSV_URL = "https://docs.google.com/spreadsheets/d/1DvUxIzOd4Eld-VmTkBR3y-X
 let tools = [];
 let cart = [];
 
-window.onscroll = function() {
-  const btn = document.getElementById("btnUp");
-  if(btn) btn.style.display = (window.scrollY > 500) ? "flex" : "none";
-};
-
+// Маска для телефона
 document.getElementById('userPhone').oninput = function(e){
   let x = e.target.value.replace(/\D/g, '').match(/(\d{0,1})(\d{0,3})(\d{0,3})(\d{0,2})(\d{0,2})/);
   e.target.value = !x[2] ? x[1] : '+7 (' + x[2] + (x[3] ? ') ' + x[3] : '') + (x[4] ? '-' + x[4] : '') + (x[5] ? '-' + x[5] : '');
 };
 
+// Загрузка данных
 async function loadData() {
   try {
     const res = await fetch(CSV_URL + "&v=" + Date.now());
     const data = await res.text();
     const rows = data.split('\n').slice(1);
+    
     tools = rows.map(row => {
       const cols = row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
-      if(!cols[1]) return null;
+      if(!cols[1] || cols[1].trim() === "") return null;
       return {
         cat: cols[0]?.replace(/"/g,'').trim(),
         name: cols[1]?.replace(/"/g,'').trim(),
@@ -311,33 +238,28 @@ async function loadData() {
       };
     }).filter(t => t !== null);
     
-    const cats = [...new Set(tools.map(t => t.cat))];
+    // Категории (без дублей и пустых строк)
+    const cats = [...new Set(tools.map(t => t.cat))].filter(c => c && c.trim() !== "");
     const select = document.getElementById('catSelect');
+    select.innerHTML = '<option value="all">Все категории</option>';
     cats.forEach(c => {
-      if(c) {
         let opt = document.createElement('option');
         opt.value = c; opt.textContent = c;
         select.appendChild(opt);
-      }
     });
+
     render(tools);
-  } catch(e) { console.error("Ошибка загрузки данных"); }
+  } catch(e) { console.error("Ошибка базы данных"); }
 }
 
 function render(arr) {
   const grid = document.getElementById('productGrid');
-  grid.innerHTML = '';
+  grid.innerHTML = arr.length ? '' : '<p>Ничего не найдено</p>';
+  
   arr.forEach(t => {
     const div = document.createElement('div');
     div.className = 'card';
-    
-    // Логика переключения описания при клике на карточку
-    div.onclick = (e) => {
-        // Если кликнули на кнопку, не сворачиваем карточку
-        if (e.target.tagName !== 'BUTTON') {
-            div.classList.toggle('expanded');
-        }
-    };
+    div.onclick = (e) => { if(e.target.tagName !== 'BUTTON') div.classList.toggle('expanded'); };
 
     div.innerHTML = `
       <div class="photo-wrapper">
@@ -346,15 +268,15 @@ function render(arr) {
       </div>
       <div class="card-info">
         <h3>${t.name}</h3>
-        <div class="card-desc">${t.desc ? t.desc : 'Профессиональное оборудование для строительных и ремонтных работ. Высокая надежность и производительность.'}</div>
+        <div class="card-desc">${t.desc || 'Профессиональный инструмент для качественной работы. Проверен и обслужен.'}</div>
         <div class="price-table">
           <div class="price-row"><span>1 сутки:</span> <span>${t.p1} ₽</span></div>
           ${t.p2 ? `<div class="price-row"><span>2 суток:</span> <span>${t.p2} ₽</span></div>` : ''}
           ${t.p3 ? `<div class="price-row"><span>от 3 суток:</span> <span>${t.p3} ₽</span></div>` : ''}
         </div>
         <div class="card-buttons">
-            <button class="btn-cart" onclick="addToCart('${t.name}', '${t.p1}'); event.stopPropagation();">В корзину</button>
-            <button class="btn-click" onclick="oneClick('${t.name}'); event.stopPropagation();">В 1 клик</button>
+            <button class="btn-cart" onclick="addToCart('${t.name.replace(/'/g, "\\'")}', '${t.p1}'); event.stopPropagation();">В корзину</button>
+            <button class="btn-click" onclick="oneClick('${t.name.replace(/'/g, "\\'")}'); event.stopPropagation();">В 1 клик</button>
         </div>
       </div>
     `;
@@ -362,65 +284,73 @@ function render(arr) {
   });
 }
 
-document.getElementById('searchInput').oninput = () => {
-  const val = document.getElementById('searchInput').value.toLowerCase();
-  render(tools.filter(t => t.name.toLowerCase().includes(val)));
-};
-document.getElementById('catSelect').onchange = (e) => {
-  const c = e.target.value;
-  render(c === 'all' ? tools : tools.filter(t => t.cat === c));
-};
+// Поиск и фильтр
+function filterProducts() {
+    const val = document.getElementById('searchInput').value.toLowerCase();
+    const cat = document.getElementById('catSelect').value;
+    let filtered = tools.filter(t => t.name.toLowerCase().includes(val));
+    if(cat !== 'all') filtered = filtered.filter(t => t.cat === cat);
+    render(filtered);
+}
+document.getElementById('searchInput').oninput = filterProducts;
+document.getElementById('catSelect').onchange = filterProducts;
 
+// Корзина
 function addToCart(name, price) {
   cart.push({name, price});
-  updateCount();
+  document.getElementById('count').textContent = cart.length;
+  alert('Добавлено: ' + name);
 }
 
 function showCart() {
-  document.getElementById('cartOverlay').style.display = 'flex';
+  const overlay = document.getElementById('cartOverlay');
   const list = document.getElementById('cartItems');
-  list.innerHTML = cart.length ? '' : 'Корзина пуста';
+  overlay.style.display = 'flex';
+  list.innerHTML = '';
   let total = 0;
   cart.forEach((item, i) => {
-    total += parseInt(item.price.replace(/\s/g, '')) || 0;
-    list.innerHTML += `<div style="display:flex; justify-content:space-between; margin-bottom:10px; font-size:0.85em;">
-      <span>${item.name}</span>
-      <span onclick="cart.splice(${i},1); showCart(); updateCount();" style="color:red; cursor:pointer;">✕</span>
+    total += parseInt(item.price.replace(/\D/g, '')) || 0;
+    list.innerHTML += `<div style="display:flex; justify-content:space-between; padding:10px; border-bottom:1px solid #eee;">
+      <span style="font-size:0.9em;">${item.name}</span>
+      <span onclick="cart.splice(${i},1); showCart();" style="color:red; cursor:pointer;">✕</span>
     </div>`;
   });
-  document.getElementById('totalSum').textContent = `Итого за 1-е сутки: ${total} ₽`;
+  document.getElementById('totalSum').textContent = 'Итого: ' + total + ' ₽';
+  document.getElementById('count').textContent = cart.length;
 }
 
-function updateCount() { document.getElementById('count').textContent = cart.length; }
 function hideCart() { document.getElementById('cartOverlay').style.display = 'none'; }
 
 async function sendToTG() {
   const name = document.getElementById('userName').value;
   const phone = document.getElementById('userPhone').value;
-  if(!name || phone.length < 16) return alert('Заполните данные');
-  let text = `<b>🛒 НОВЫЙ ЗАКАЗ</b>\n👤 ${name}\n📞 ${phone}\n\n`;
-  cart.forEach((t, i) => text += `${i+1}. ${t.name}\n`);
+  if(!name || phone.length < 16 || cart.length === 0) return alert('Заполните данные и добавьте товары');
+  
+  let text = `<b>📦 НОВЫЙ ЗАКАЗ</b>\n👤 Имя: ${name}\n📞 Тел: ${phone}\n\n`;
+  cart.forEach((t, i) => text += `${i+1}. ${t.name} (${t.p1}₽)\n`);
+  
   await fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ chat_id: CHAT_ID, text, parse_mode: 'HTML' })
   });
-  alert('Заявка принята! Мы скоро перезвоним.');
-  cart = []; updateCount(); hideCart();
+  alert('Заявка принята!');
+  cart = []; hideCart(); document.getElementById('count').textContent = '0';
 }
 
 function oneClick(name) {
   const p = prompt('Ваш телефон для заказа ' + name + ':');
   if(p && p.length > 5) {
-    const text = `<b>⚡ ЗАКАЗ В 1 КЛИК</b>\n🛠 ${name}\n📞 ${p}`;
+    const text = `<b>⚡ БЫСТРЫЙ ЗАКАЗ</b>\n🛠 ${name}\n📞 Тел: ${p}`;
     fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ chat_id: CHAT_ID, text, parse_mode: 'HTML' })
-    }).then(() => alert('Заявка отправлена!'));
+    }).then(() => alert('Отправлено!'));
   }
 }
 
+window.onscroll = () => { document.getElementById("btnUp").style.display = (window.scrollY > 500) ? "flex" : "none"; };
 loadData();
 </script>
 </body>
